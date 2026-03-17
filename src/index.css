@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@theme {
+  /* tipografia */
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+  /* colori */
+  --color-paper: #F3F0E6;
+  --color-paper-soft: #F3F0E6;
+  --color-artist: #8b3a3a;
+  --color-artist-dark: #6e2d2d;
+  --color-retro-dark: #2b2926;
+  --color-retro-cream: #f7f2df;
+  --color-retro-terracotta: #b45a3c;
+}
+html {
+  scroll-behavior: smooth;
+}
