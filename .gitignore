@@ -12,6 +12,8 @@ lerna-debug.log*
 *.mp4
 *.zip
 
+src/assets/*.exe
+src/assets/*.mp4
 
 node_modules
 dist
