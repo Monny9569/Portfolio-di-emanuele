@@ -80,13 +80,13 @@ export default function Timeline() {
                     <div className="relative aspect-square w-full transition-all duration-500 ease-out group-hover:scale-[1.04] group-hover:-translate-y-2">
                       {item.type === "press" ? (
                         <div
-                          className="relative h-full w-full rounded-xl bg-white p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.15)] transition-all duration-500 group-hover:shadow-[0_40px_100px_rgba(0,0,0,0.22)] overflow-hidden cursor-pointer"
+                          className="relative h-full w-full rounded-xl bg-white p-0 shadow-[0_20px_50px_rgba(0,0,0,0.15)] transition-all duration-500 group-hover:shadow-[0_40px_100px_rgba(0,0,0,0.22)] overflow-hidden cursor-pointer"
                           onClick={() => setOpenArticle(item.fullImage)}
                         >
                           <img
                             src={item.image}
                             alt={item.title}
-                            className="w-full h-full object-cover rounded-lg border border-gray-100"
+                            className="w-full h-full object-cover rounded-lg "
                           />
 
                           <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-lg">
@@ -96,11 +96,11 @@ export default function Timeline() {
                       ) : (
                         <div className="relative h-full w-full rounded-xl transition-transform duration-500 [transition-delay:450ms] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
                           {/* Fronte */}
-                          <div className="absolute inset-0 bg-white p-1.5 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] transition-all duration-500 group-hover:shadow-[0_40px_100px_rgba(0,0,0,0.28)] group-hover:ring-1 group-hover:ring-white/40 [backface-visibility:hidden] overflow-hidden">
+                          <div className="absolute inset-0 bg-white p-0 rounded-xl shadow-[0_30px_50px_rgba(0,0,0,0.18)] transition-all duration-500 group-hover:shadow-[0_40px_100px_rgba(0,0,0,0.28)] group-hover:ring-1 group-hover:ring-white/40 [backface-visibility:hidden] overflow-hidden">
                             <img
                               src={item.image}
                               alt={item.title}
-                              className="w-full h-full object-cover rounded-lg border border-gray-100"
+                              className="w-full h-full object-cover rounded-lg "
                             />
 
                             <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-lg">
@@ -109,12 +109,12 @@ export default function Timeline() {
                           </div>
 
                           {/* Retro */}
-                          <div className="absolute inset-0 bg-white p-1.5 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] [transform:rotateY(180deg)] [backface-visibility:hidden] overflow-hidden">
+                          <div className="absolute inset-0 bg-white p-0 rounded-xl shadow-[0_30px_50px_rgba(0,0,0,0.18)] [transform:rotateY(180deg)] [backface-visibility:hidden] overflow-hidden">
                             {item.backImage ? (
                               <img
                                 src={item.backImage}
                                 alt={`${item.title} retro`}
-                                className="w-full h-full object-cover rounded-lg border border-gray-100"
+                                className="w-full h-full object-cover rounded-lg "
                               />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center bg-paper rounded-lg">
