@@ -13,7 +13,7 @@ export default function App() {
       <main>
         <HeroGallery />
         <Timeline />
-       
+        <PressArticle />
         {/* Sezione Biografia Veloce */}
         <section className="py-24 px-10 max-w-4xl mx-auto text-center">
           <h3 className="font-serif text-3xl mb-6 italic text-gray-800 font-medium">

@@ -11,16 +11,6 @@ import pressThumb from "../assets/press/dikdik-article-thumb.jpg";
 import pressFull from "../assets/press/dikdik-article-full.jpg";
 
 export const releases = [
-   {
-    date: "1997",
-    title: "Corriere della Sera",
-    subtitle: "Rassegna stampa",
-    image: pressThumb,
-    fullImage: pressFull,
-    type: "press",
-    description:
-      "Il Corriere della Sera cita le canzoni di Emanuele Monetti tra i nuovi brani realizzati per i Dik Dik."
-  },
   {
     date: "Aprile 2024",
     title: "Tutto è già diverso",

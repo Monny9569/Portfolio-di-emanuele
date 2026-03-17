@@ -7,6 +7,7 @@ export default function Navbar() {
   const items = [
     { name: "Home", path: "/" },
     { name: "Discografia", path: "#timeline" },
+    { name: "Collaborazioni", path: "#collaborations" },
     { name: "Chi sono", path: "#about" },
     { name: "Contatti", path: "#contact" },
   ];
