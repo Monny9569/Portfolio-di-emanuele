@@ -97,19 +97,21 @@ export default function Timeline() {
                     
               {/*Linea Rossa*/ }
                     <div className="w-16 h-px bg-[#b01c24] mb-5" />
-                    
-                     {item.format && (
-                        <p className="text-[11px] uppercase tracking-[0.32em] text-[#8f3a3a] mb-4">
-                          {item.format}
-                        </p>
-                      )}
-                    {item.subtitle && (
-                      <p className="text-[11px] uppercase tracking-[0.38em] text-gray-500 mb-4">
-                        {item.subtitle}
+                    {/* inserisco il formato se LP,ALbum o Singolo */}
+                     {item.format && item.format.trim() !== "" && (
+                      <p className="inline-block text-[10px] uppercase tracking-[0.35em] text-[#b01c24] border border-[#b01c24] px-3 py-1 mb-4">
+                        {item.format}
                       </p>
                     )}
 
-                    <p className="font-serif text-[1.2rem] leading-[1.8] text-gray-800 mb-6">
+                    {/* inserisco un sottotitolo */}
+                    {item.subtitle && (
+                      <p className="text-[12px] uppercase tracking-[0.25em] text-gray-500 mb-3">
+                        {item.subtitle}
+                      </p>
+                    )}
+                    {/* inserisco la descrizione */}
+                   <p className="font-serif text-[1.1rem] leading-[1.9] text-gray-700 mb-6 max-w-[520px]">
                       {item.description}
                     </p>
 
@@ -118,8 +120,8 @@ export default function Timeline() {
                         {item.credits.map((credit, i) => (
                           <p
                             key={i}
-                            className="text-[0.95rem] leading-[1.7] text-gray-500"
-                          >
+                           className="text-[0.9rem] leading-[1.6] text-gray-500 italic">
+                          
                             {credit}
                           </p>
                         ))}

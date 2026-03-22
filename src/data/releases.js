@@ -2,20 +2,24 @@ const releases = [
   {
     disabled: false,
     date: "1983",
-    title: "45 Giri",
+    title: "La Spirale / Inventarmi un Dio",
     type: "music",
-    format: "LP",
+    format: " ",
     image: "/timeline/fs1.jpg",
     backImage: "/timeline/fs2.jpg",
-    subtitle:  "Etichetta: SUONO RECORDS - Distribuito da PANARECORDS S.p.A,",
-    description: "Primo LP di Emanuele Monetti, un viaggio sonoro che esplora le sfumature del rock progressivo italiano degli anni '80.",
-      spotifyEmbed: "https://...",
+    subtitle:  " ",
+    description: "prima pubblicazione per Emanuele Monetti con il 45 giri di esordio ",
+    spotifyEmbed: "https://...",
+    credits: [
+      "Etichetta: SUONO RECORDS ",
+      " Distribuito da PANARECORDS S.p.A.",
+    ],
     spotifyLink: "https://...",
     buyLink: "https://..."
   },
   {
     disabled: false,
-    date: "2024",
+    date: "2014",
     title: "Tutto è già diverso",
     type: "music",
     format: "Album",
@@ -31,7 +35,7 @@ const releases = [
   },
   {
     disabled: false,
-    date: "2023",
+    date: "2017",
     title: "Esse",
     type: "music",
     image: "/timeline/esse.jpeg",
@@ -48,7 +52,7 @@ const releases = [
   },
    {
     disabled: false,
-    date: "2024",
+    date: "2019",
     title: "La Bellezza della Sera",
     type: "music",
     format: "Singolo",
@@ -80,7 +84,7 @@ const releases = [
   },
     {
     disabled: false,
-    date: "2024",
+    date: "2026",
     title: "Giada",
     type: "music",
     format: "Singolo",
