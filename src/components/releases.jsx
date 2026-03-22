@@ -12,7 +12,7 @@ import pressFull from "../assets/press/dikdik-article-full.jpg";
 
 export const releases = [
   {
-    date: "Aprile 2024",
+    date: "2024",
     title: "Tutto è già diverso",
     image: tuttoegiadiverso,
     backImage: tuttoegiadiversoBack,
@@ -24,7 +24,7 @@ export const releases = [
   },
 
   {
-    date: "Marzo 2023",
+    date: "2023",
     title: "Esse",
     image: esse,
     backImage: esseback,
@@ -39,7 +39,7 @@ export const releases = [
     buyLink: "https://..."
   },
  {
-    date: "Marzo 2023",
+    date: "2023",
     title: "La bellezza della sera",
     subtitle: "Opera musicale in cinque parti",
     image: labellezzadellasera,
@@ -50,7 +50,7 @@ export const releases = [
     buyLink: "https://..."
   },
   {
-    date: "Marzo 2023",
+    date: "2024",
     title: "L' Amore Cos è",
     subtitle: "Opera musicale in cinque parti",
     image: lamorecose,
@@ -61,7 +61,7 @@ export const releases = [
     buyLink: "https://..."
   },
    {
-    date: "Marzo 2023",
+    date: "2025",
     title: "Giada",
     subtitle: "Opera musicale in cinque parti",
     image: giada,

@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+
 import Navbar from '../components/Navbar';
 import HeroGallery from "../sections/HeroGallery";
 import Timeline from '../sections/Timeline';
@@ -7,19 +6,7 @@ import PressArticle from "../components/PressArticle";
 import BackToTop from '../components/BackToTop';
 
 export default function HomePage() {
-  const location = useLocation();
-
-  useEffect(() => {
-    if (location.hash) {
-      const el = document.querySelector(location.hash);
-      if (el) {
-        setTimeout(() => {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 100);
-      }
-    }
-  }, [location]);
-
+ 
   return (
     <div className="min-h-screen bg-paper font-sans antialiased text-gray-900">
       <Navbar />
