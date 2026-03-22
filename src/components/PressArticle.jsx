@@ -38,6 +38,7 @@ export default function PressArticle() {
             aspectClass="aspect-[1/1]"
             shadowClass="shadow-[0_18px_50px_rgba(0,0,0,0.14)]"
             buttonStyle="light"
+            roundedClass="0"
           />
         </div>
 
@@ -84,6 +85,7 @@ export default function PressArticle() {
             aspectClass="aspect-[1/1]"
             shadowClass="shadow-[0_18px_50px_rgba(0,0,0,0.14)]"
             buttonStyle="light"
+            roundedClass="0"
           />
         </div>
 

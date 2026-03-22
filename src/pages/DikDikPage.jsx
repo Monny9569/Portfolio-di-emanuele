@@ -13,15 +13,19 @@ export default function DikDikPage() {
   return (
     <main className="min-h-screen bg-[#f3efe6] text-gray-900">
       <section className="max-w-[1300px] mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-20">
-        <div className="mb-10">
-          <Link
-            to="/#collaborations"
-           className="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.24em] text-gray-600 transition hover:text-black"
+      
+       <div className="mb-20 pb-0 border-b border-[#e6e1d6]">
+          <button
+            onClick={() => window.history.back()}
+            className="group inline-flex items-center gap-3 mb-10 rounded-full border border-gray-300 px-6 py-3 text-[11px] uppercase tracking-[0.24em] text-gray-900 transition-all duration-300 hover:border-gray-900 hover:bg-gray-900 hover:text-white"
           >
-            ← Torna a Collaborazioni
-          </Link>
-        </div>
-
+            <span className="transition-transform duration-300 group-hover:-translate-x-1">
+              ←
+            </span>
+            Torna alle collaborazioni
+          </button>
+      
+       </div>
         <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-start">
           {/* COLONNA SINISTRA */}
           <div className="flex flex-col gap-8 max-w-[560px] w-full">
@@ -35,6 +39,7 @@ export default function DikDikPage() {
                 aspectClass="aspect-square"
                 shadowClass="shadow-[0_22px_60px_rgba(0,0,0,0.16)]"
                 buttonStyle="light"
+                roundedClass="0"
               />
             </div>
 
@@ -48,6 +53,7 @@ export default function DikDikPage() {
                 aspectClass="aspect-square"
                 shadowClass="shadow-[0_22px_60px_rgba(0,0,0,0.16)]"
                 buttonStyle="light"
+                roundedClass="0"
               />
             </div>
 </div>

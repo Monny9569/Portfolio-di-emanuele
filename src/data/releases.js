@@ -1,9 +1,24 @@
 const releases = [
   {
     disabled: false,
+    date: "1983",
+    title: "45 Giri",
+    type: "music",
+    format: "LP",
+    image: "/timeline/fs1.jpg",
+    backImage: "/timeline/fs2.jpg",
+    subtitle:  "Etichetta: SUONO RECORDS - Distribuito da PANARECORDS S.p.A,",
+    description: "Primo LP di Emanuele Monetti, un viaggio sonoro che esplora le sfumature del rock progressivo italiano degli anni '80.",
+      spotifyEmbed: "https://...",
+    spotifyLink: "https://...",
+    buyLink: "https://..."
+  },
+  {
+    disabled: false,
     date: "2024",
     title: "Tutto è già diverso",
     type: "music",
+    format: "Album",
     image: "/timeline/tuttoegiadiverso.jpeg",
     backImage: "/timeline/tuttoegiadiversoback.jpg",
     description:
@@ -29,6 +44,54 @@ const releases = [
       "In copertina: Luca Dalmazio, Self-Portrait"
     ],
     spotifyLink: "https://open.spotify.com/...",
+    buyLink: "https://..."
+  },
+   {
+    disabled: false,
+    date: "2024",
+    title: "La Bellezza della Sera",
+    type: "music",
+    format: "Singolo",
+    image: "/timeline/labellezzadellasera.jpeg",
+    backImage: "/timeline/labellezzadellasera.jpeg",
+    description:
+      "Un viaggio nelle sonorità pop-rock moderne, con testi introspettivi e ritmi incalzanti.",
+    spotifyEmbed:
+      "https://..",
+    spotifyLink:
+      "https://..",
+    buyLink: "https://..."
+  },
+    {
+    disabled: false,
+    date: "2024",
+    title: "L'Amore Cos'È",
+    type: "music",
+    format: "Singolo",
+    image: "/timeline/lamorecose.jpeg",
+    backImage: "/timeline/lamorecose.jpeg",
+    description:
+      "Un viaggio nelle sonorità pop-rock moderne, con testi introspettivi e ritmi incalzanti.",
+    spotifyEmbed:
+      "https://..",
+    spotifyLink:
+      "https://..",
+    buyLink: "https://..."
+  },
+    {
+    disabled: false,
+    date: "2024",
+    title: "Giada",
+    type: "music",
+    format: "Singolo",
+    image: "/timeline/giada.jpeg",
+    backImage: "/timeline/giada.jpeg",
+    description:
+      "Un viaggio nelle sonorità pop-rock moderne, con testi introspettivi e ritmi incalzanti.",
+    spotifyEmbed:
+      "https://..",
+    spotifyLink:
+      "https://..",
     buyLink: "https://..."
   },
   {

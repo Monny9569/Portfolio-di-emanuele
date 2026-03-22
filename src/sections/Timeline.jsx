@@ -72,7 +72,7 @@ export default function Timeline() {
                         altBack={`${item.title} retro`}
                         className="h-full"
                         aspectClass="aspect-square"
-                        roundedClass="rounded-2xl"
+                        roundedClass="0"
                         shadowClass="shadow-[0_30px_50px_rgba(0,0,0,0.12)]"
                         buttonStyle="dark"
                       />
@@ -94,9 +94,15 @@ export default function Timeline() {
                     <h3 className="font-serif italic text-[2rem] md:text-[2.5rem] leading-none text-gray-900 mb-4">
                       {item.title}
                     </h3>
-
+                    
+              {/*Linea Rossa*/ }
                     <div className="w-16 h-px bg-[#b01c24] mb-5" />
-
+                    
+                     {item.format && (
+                        <p className="text-[11px] uppercase tracking-[0.32em] text-[#8f3a3a] mb-4">
+                          {item.format}
+                        </p>
+                      )}
                     {item.subtitle && (
                       <p className="text-[11px] uppercase tracking-[0.38em] text-gray-500 mb-4">
                         {item.subtitle}
@@ -213,7 +219,7 @@ export default function Timeline() {
               Chiudi
             </button>
 
-            <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
+            <div className="bg-white  overflow-hidden shadow-2xl">
               <img
                 src={openArticle.fullImage || openArticle.image}
                 alt={openArticle.title}
