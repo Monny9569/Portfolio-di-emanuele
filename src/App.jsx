@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import DikDikPage from "./pages/DikDikPage";
+import TuttoEGiaDiverso from "./pages/tuttoegiadiverso";
 import ScrollManager from "./components/ScrollManager";
 import BackToTop from "./components/BackToTop";
 import IreneFornaciari from "./pages/IreneFornaciari";
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/dik-dik" element={<DikDikPage />} />
         <Route path="/irene-fornaciari" element={<IreneFornaciari />} />
+        <Route path="/tuttoegiadiverso" element={<TuttoEGiaDiverso />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/cookie" element={<Cookie />} />
       </Routes>

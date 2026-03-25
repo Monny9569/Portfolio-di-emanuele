@@ -19,6 +19,23 @@ const releases = [
   },
   {
     disabled: false,
+    date: "1997",
+    title: "Collaborazione con i Dik Dik ",
+    type: "press",
+    format: " ",
+    image: "/timeline/V05.jpg",
+    backImage: "/timeline/V05.jpg",
+    description:
+      "Un viaggio nelle sonorità pop-rock moderne, con testi introspettivi e ritmi incalzanti.",
+    spotifyEmbed:
+      "https://open.spotify.com/embed/album/2EPBkFcUQLkJA4dcOOTDoo?utm_source=generator&theme=0",
+    spotifyLink:
+      "https://open.spotify.com/intl-it/album/2EPBkFcUQLkJA4dcOOTDoo",
+    buyLink: "https://...",
+    pageLink: "/dik-dik",
+  },
+  {
+    disabled: false,
     date: "2014",
     title: "Tutto è già diverso",
     type: "music",
@@ -31,7 +48,9 @@ const releases = [
       "https://open.spotify.com/embed/album/2EPBkFcUQLkJA4dcOOTDoo?utm_source=generator&theme=0",
     spotifyLink:
       "https://open.spotify.com/intl-it/album/2EPBkFcUQLkJA4dcOOTDoo",
-    buyLink: "https://..."
+    buyLink: "https://...",
+    pageLink: "/tuttoegiadiverso",
+
   },
   {
     disabled: false,

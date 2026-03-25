@@ -16,7 +16,7 @@ export default function HomePage() {
 
         <HeroGallery />
         <Timeline />
-        <PressArticle />
+      
 
       </main>
       <BackToTop />

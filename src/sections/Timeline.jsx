@@ -5,6 +5,7 @@ import BottomSpotifyPlayer from "../components/BottomSpotifyPlayer";
 import FlipCard from "../components/FlipCard";
 import Footprint from "../components/Footprint";
 import releasesData from "../data/releases";
+import { Link } from "react-router-dom";
 
 export default function Timeline() {
   const showFootprints = false;
@@ -14,15 +15,25 @@ export default function Timeline() {
 
   const releases = releasesData.filter((item) => item.disabled !== true);
 
+  // funzione per determinare la classe di aspect ratio in base al formato del disco
+  const getAspectClass = (item) => {
+    const format = item.format?.trim().toLowerCase();
+
+    if (format === "album") return  "aspect-square"//"aspect-[5/4]";
+    if (format === "singolo") return "aspect-square";
+    if (format === " ") return "aspect-square";
+    // fallback di sicurezza
+    return "aspect-square";
+  };
   return (
     <>
       <section
         id="timeline"
-        className="relative py-24 md:py-40 bg-paper overflow-hidden"
+        className="relative z-0 py-24 md:py-40 bg-paper overflow-hidden"
       >
         {showFootprints && <Footprint />}
 
-        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 relative">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 relative z-10">
           {/* titolo sezione */}
           <div className="text-center mb-20 md:mb-24">
             <h2 className="text-4xl md:text-5xl font-serif italic text-gray-900">
@@ -32,10 +43,10 @@ export default function Timeline() {
           </div>
 
           {/* linea centrale fissa */}
-          <div className="absolute left-1/2 top-32 md:top-36 bottom-0 -translate-x-1/2 w-px bg-[#d8d3c7]" />
+          <div className="absolute left-1/2 top-32 md:top-36 bottom-0 -translate-x-1/2 w-px bg-[#d8d3c7] z-0" />
 
           {/* contenuti */}
-          <div className="relative">
+          <div className="relative z-10">
             {releases.map((item, index) => (
               <motion.div
                 key={index}
@@ -71,7 +82,7 @@ export default function Timeline() {
                         altFront={item.title}
                         altBack={`${item.title} retro`}
                         className="h-full"
-                        aspectClass="aspect-square"
+                        aspectClass={getAspectClass(item)}
                         roundedClass="0"
                         shadowClass="shadow-[0_30px_50px_rgba(0,0,0,0.12)]"
                         buttonStyle="dark"
@@ -176,16 +187,22 @@ export default function Timeline() {
                             Compra
                           </a>
                         )}
-
-                      {item.type === "press" && (
-                        <button
-                          type="button"
-                          onClick={() => setOpenArticle(item)}
+                        {item.type === "music" && item.pageLink && (
+                        <Link
+                          to={item.pageLink}
                           className="group inline-flex items-center gap-3 rounded-full border border-gray-300 px-6 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-gray-900 transition-all duration-300 hover:border-gray-900 hover:bg-gray-900 hover:text-white"
                         >
                           Leggi
-                        </button>
+                        </Link>
                       )}
+                     {item.type === "press" && item.pageLink && (
+                      <Link
+                        to={item.pageLink}
+                        className="group inline-flex items-center gap-3 rounded-full border border-gray-300 px-6 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-gray-900 transition-all duration-300 hover:border-gray-900 hover:bg-gray-900 hover:text-white"
+                      >
+                        Leggi
+                      </Link>
+                    )}
                     </div>
                   </div>
                 </div>
