@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Instagram, Youtube, Music, Facebook } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -12,15 +13,15 @@ export default function Footer() {
     >
       {/* MENU */}
       <div className="flex flex-wrap justify-center gap-6 md:gap-10 text-[11px] uppercase tracking-[0.32em] text-gray-500 mb-10">
-        <a href="/contatti" className="hover:text-gray-900 transition">
+        <Link to="/contatti" className="hover:text-gray-900 transition">
           Contatti
-        </a>
-        <a href="/privacy" className="hover:text-gray-900 transition">
+        </Link>
+        <Link to="/privacy" className="hover:text-gray-900 transition">
           Privacy
-        </a>
-        <a href="/cookie" className="hover:text-gray-900 transition">
+        </Link>
+        <Link to="/cookie" className="hover:text-gray-900 transition">
           Cookie
-        </a>
+        </Link>
       </div>
 
         {/* SOCIAL */}

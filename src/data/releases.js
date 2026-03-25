@@ -36,6 +36,7 @@ const releases = [
   {
     disabled: false,
     date: "2017",
+    format: "Album",
     title: "Esse",
     type: "music",
     image: "/timeline/esse.jpeg",
@@ -45,7 +46,7 @@ const releases = [
       "Un'opera che attraversa i passaggi essenziali della vita, traducendo emozioni, tensioni interiori e percezioni in un linguaggio musicale sospeso tra scrittura e sperimentazione.",
     credits: [
       "Musiche originali di Emanuele Monetti",
-      "In copertina: Luca Dalmazio, Self-Portrait"
+      "In copertina l'opera 'self-portrait' dell'artista Luca Dalmazio"
     ],
     spotifyLink: "https://open.spotify.com/...",
     buyLink: "https://..."
@@ -59,7 +60,7 @@ const releases = [
     image: "/timeline/labellezzadellasera.jpeg",
     backImage: "/timeline/labellezzadellasera.jpeg",
     description:
-      "Un viaggio nelle sonorità pop-rock moderne, con testi introspettivi e ritmi incalzanti.",
+      " ",
     spotifyEmbed:
       "https://..",
     spotifyLink:
@@ -75,7 +76,7 @@ const releases = [
     image: "/timeline/lamorecose.jpeg",
     backImage: "/timeline/lamorecose.jpeg",
     description:
-      "Un viaggio nelle sonorità pop-rock moderne, con testi introspettivi e ritmi incalzanti.",
+      " ",
     spotifyEmbed:
       "https://..",
     spotifyLink:
@@ -91,7 +92,7 @@ const releases = [
     image: "/timeline/giada.jpeg",
     backImage: "/timeline/giada.jpeg",
     description:
-      "Un viaggio nelle sonorità pop-rock moderne, con testi introspettivi e ritmi incalzanti.",
+      " ",
     spotifyEmbed:
       "https://..",
     spotifyLink:

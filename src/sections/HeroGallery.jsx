@@ -4,130 +4,370 @@ import piano from "../assets/piano.jpg";
 import canto from "../assets/canto.jpg";
 import giada from "../assets/covergiada.jpg";
 import giadaTitle from "../assets/Cover Giada_titolo.png";
-import tuttoegiadiverso from "../assets/tuttoegiadiverso.jpeg";
-import esse from "../assets/esse.jpeg";
+import bio from "../assets/Bio.jpg";
 
 export default function HeroGallery() {
+  // Durata della dissolvenza tra due slide
+  const TRANSITION_MS = 2000;
+
+  // Tempo totale prima del cambio automatico
+  const AUTOPLAY_MS = 9000;
+
+  // Durata del movimento lento dell'immagine
+  const KEN_BURNS_MS = 9000;
+
+  // Configurazione slide
   const slides = [
     {
       title: "Giada",
-      subtitle:
-        "Un brano intimo e delicato, sospeso tra memoria, emozione e cantautorato contemporaneo.",
+      subtitle: "  ",
       image: giada,
       label: "Ultima uscita",
       overlayTitle: giadaTitle,
       overlayText: 'Tratto dall’album “Tutto già diverso”',
+      focusX: "50%",
+      focusY: "42%",
+      mode: "auto",
+      extraZoom: 1.02,
+      kenBurnsFrom: 1.02,
+      kenBurnsTo: 1.08,
     },
     {
       title: "",
       subtitle: "",
       image: piano,
       label: "",
+      focusX: "50%",
+      focusY: "50%",
+      mode: "auto",
+      extraZoom: 1.0,
+      kenBurnsFrom: 1.01,
+      kenBurnsTo: 1.06,
     },
     {
       title: "",
       subtitle: "",
       image: canto,
       label: "",
+      focusX: "50%",
+      focusY: "28%",
+      mode: "auto",
+      extraZoom: 1.01,
+      kenBurnsFrom: 1.03,
+      kenBurnsTo: 1.09,
+    },
+    {
+      title: "",
+      subtitle: "",
+      image: bio,
+      label: "",
+      focusX: "50%",
+      focusY: "35%",
+      mode: "auto",
+      extraZoom: 1.0,
+      kenBurnsFrom: 1.0,
+      kenBurnsTo: 1.05,
     },
   ];
 
+  // Slide attuale
   const [current, setCurrent] = useState(0);
-  const [next, setNext] = useState(0);
-  const [showNext, setShowNext] = useState(false);
 
-  const changeSlide = (newIndex) => {
-    setNext(newIndex);
-    setShowNext(true);
+  // Slide precedente, mantenuta durante il crossfade
+  const [previous, setPrevious] = useState(null);
 
-    setTimeout(() => {
-      setCurrent(newIndex);
-      setShowNext(false);
-    }, 1200);
+  // True mentre avviene la transizione
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Fase usata per far partire davvero il fade dopo il mount
+  const [fadePhase, setFadePhase] = useState("idle");
+
+  // Dimensioni reali delle immagini
+  const [imageMeta, setImageMeta] = useState({});
+
+  // Legge proporzioni reali dell'immagine
+  const preloadImage = (src) =>
+    new Promise((resolve) => {
+      const img = new Image();
+
+      img.onload = () =>
+        resolve({
+          src,
+          width: img.naturalWidth,
+          height: img.naturalHeight,
+        });
+
+      img.onerror = () =>
+        resolve({
+          src,
+          width: 0,
+          height: 0,
+        });
+
+      img.src = src;
+    });
+
+  // Precarica tutte le immagini all'avvio
+  useEffect(() => {
+    let mounted = true;
+
+    Promise.all(slides.map((slide) => preloadImage(slide.image))).then((results) => {
+      if (!mounted) return;
+
+      const metaMap = {};
+
+      results.forEach((item) => {
+        metaMap[item.src] = {
+          width: item.width,
+          height: item.height,
+          ratio: item.width && item.height ? item.width / item.height : 1,
+        };
+      });
+
+      setImageMeta(metaMap);
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // Decide come mostrare l'immagine: cover/contain, zoom iniziale/finale, focus
+  const getImageConfig = (slide) => {
+    const meta = imageMeta[slide.image];
+    const ratio = meta?.ratio || 1.5;
+
+    const focusX = slide.focusX || "50%";
+    const focusY = slide.focusY || "50%";
+    const extraZoom = slide.extraZoom ?? 1;
+
+    let fitMode = "cover";
+    let baseZoom = 1.04;
+
+    // Modalità forzata
+    if (slide.mode === "cover") {
+      fitMode = "cover";
+      baseZoom = 1.04;
+    } else if (slide.mode === "contain") {
+      fitMode = "contain";
+      baseZoom = 1;
+    } else {
+      // Modalità automatica in base alla proporzione
+      if (ratio >= 1.7) {
+        fitMode = "cover";
+        baseZoom = 1.02;
+      } else if (ratio >= 1.15) {
+        fitMode = "cover";
+        baseZoom = 1.05;
+      } else if (ratio >= 0.9) {
+        fitMode = "cover";
+        baseZoom = 1.08;
+      } else {
+        fitMode = "contain";
+        baseZoom = 1;
+      }
+    }
+
+    return {
+      fitMode,
+      objectPosition: `${focusX} ${focusY}`,
+      startScale: (slide.kenBurnsFrom ?? baseZoom) * extraZoom,
+      endScale: (slide.kenBurnsTo ?? baseZoom + 0.05) * extraZoom,
+    };
   };
 
+  // Avvia il crossfade tra slide
+  const goToSlide = (newIndex) => {
+    if (newIndex === current || isTransitioning) return;
+
+    // Salva la vecchia slide per tenerla sotto durante la dissolvenza
+    setPrevious(current);
+
+    // Imposta subito la nuova slide
+    setCurrent(newIndex);
+
+    // Avvia stato di transizione
+    setIsTransitioning(true);
+    setFadePhase("prepare");
+
+    // Doppio frame: assicura che il browser monti entrambe prima del fade
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setFadePhase("running");
+      });
+    });
+
+    // A fine transizione rimuove la precedente
+    setTimeout(() => {
+      setPrevious(null);
+      setIsTransitioning(false);
+      setFadePhase("idle");
+    }, TRANSITION_MS);
+  };
+
+  // Cambio automatico
   useEffect(() => {
     const interval = setInterval(() => {
       const newIndex = current === slides.length - 1 ? 0 : current + 1;
-      changeSlide(newIndex);
-    }, 8000);
+      goToSlide(newIndex);
+    }, AUTOPLAY_MS);
 
     return () => clearInterval(interval);
-  }, [current]);
+  }, [current, isTransitioning, slides.length]);
 
-  const active = slides[current];
-  const nextSlide = slides[next];
-  const hasTextContent = active.label || active.title || active.subtitle;
-  const hasOverlayContent = active.overlayTitle || active.overlayText;
+  // Render di una slide completa
+  const renderSlideLayer = (slide, index, type) => {
+    const config = getImageConfig(slide);
+    const fitClass = config.fitMode === "contain" ? "object-contain" : "object-cover";
 
-  return (
-    <section className="relative pb-0">
-      <div className="relative overflow-hidden h-screen">
-        {/* immagine attuale */}
+    const isPrevious = type === "previous";
+    const isCurrent = type === "current";
+
+    // Stato opacità:
+    // - la vecchia parte visibile e poi cala
+    // - la nuova parte invisibile e poi entra
+    let opacityClass = "opacity-100";
+
+    if (isTransitioning && isPrevious) {
+      opacityClass = fadePhase === "running" ? "opacity-0" : "opacity-100";
+    }
+
+    if (isTransitioning && isCurrent) {
+      opacityClass = fadePhase === "running" ? "opacity-100" : "opacity-0";
+    }
+
+    return (
+      <div
+        key={`${slide.image}-${index}-${type}`}
+        className={`absolute inset-0 ${opacityClass} transition-opacity ease-in-out`}
+        style={{ transitionDuration: `${TRANSITION_MS}ms` }}
+      >
+        {/* Sfondo nero di sicurezza */}
+        <div className="absolute inset-0 bg-black" />
+
+        {/* Immagine:
+            - parte già con lo zoom iniziale applicato
+            - poi continua col movimento lento */}
         <img
-          src={active.image}
-          alt={active.title || "slide"}
-          className="absolute inset-0 w-full h-full object-cover scale-105"
+          src={slide.image}
+          alt={slide.title || "slide"}
+          className={`absolute inset-0 h-full w-full ${fitClass} will-change-transform`}
+          style={{
+            objectPosition: config.objectPosition,
+
+            // Importantissimo: lo zoom iniziale è già presente al primo frame
+            transform: `scale(${config.startScale})`,
+
+            // Animazione lenta continua
+            animationName: "kenburns",
+            animationDuration: `${KEN_BURNS_MS}ms`,
+            animationTimingFunction: "ease-out",
+            animationFillMode: "forwards",
+
+            // Variabili per il keyframes
+            "--kb-from": config.startScale,
+            "--kb-to": config.endScale,
+
+            backfaceVisibility: "hidden",
+          }}
         />
 
-        {/* immagine successiva con fade */}
-        <img
-          src={nextSlide.image}
-          alt=""
-          className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1200ms] ease-in-out ${
-            showNext ? "opacity-100 scale-105" : "opacity-0 scale-110"
-          }`}
-        />
-
-        {/* overlay cinematico */}
+        {/* Overlay per profondità e leggibilità */}
         <div className="absolute inset-0 bg-black/15" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10" />
 
-        {/* overlay grafico solo per Giada */}
-        {hasOverlayContent && (
-          <div className="absolute top-32 md:top-36 lg:top-40 right-10 md:right-16 lg:right-24">
-            {active.overlayTitle && (
+        {/* Eventuale grafica in alto a destra */}
+        {(slide.overlayTitle || slide.overlayText) && (
+          <div className="absolute top-32 right-10 z-30 md:top-36 md:right-16 lg:top-40 lg:right-24">
+            {slide.overlayTitle && (
               <img
-                src={active.overlayTitle}
-                alt="Titolo Giada"
-                className="ml-auto w-[280px] md:w-[360px] lg:w-[420px] h-auto drop-shadow-[0_12px_40px_rgba(0,0,0,0.4)]"
+                src={slide.overlayTitle}
+                alt="Titolo"
+                className="ml-auto h-auto w-[280px] drop-shadow-[0_12px_40px_rgba(0,0,0,0.4)] md:w-[360px] lg:w-[420px]"
               />
             )}
           </div>
         )}
 
-        {/* contenuto */}
-        <div className="relative z-10 flex h-full items-end pb-20">
-          <div className="w-full px-8 md:px-14 lg:px-20 flex justify-start">
+        {/* Testi */}
+        <div className="relative z-30 flex h-full items-end pb-20">
+          <div className="flex w-full justify-start px-8 md:px-14 lg:px-20">
             <div className="max-w-3xl text-left">
-              {active.label && (
-                <p className="text-[11px] uppercase tracking-[0.38em] text-white/70 mb-4">
-                  {active.label}
+              {slide.label && (
+                <p className="mb-4 text-[11px] uppercase tracking-[0.38em] text-white/70">
+                  {slide.label}
                 </p>
               )}
 
-              {hasTextContent && (
-                <div className="w-20 h-px bg-artist mt-6 mb-6" />
+              {(slide.label || slide.title || slide.subtitle) && (
+                <div className="mt-6 mb-6 h-px w-20 bg-artist" />
               )}
 
-              {active.title && (
-                <h1 className="font-serif italic text-white text-6xl md:text-7xl lg:text-8xl leading-none">
-                  {active.title}
+              {slide.title && (
+                <h1 className="font-serif text-6xl leading-none text-white italic md:text-7xl lg:text-8xl">
+                  {slide.title}
                 </h1>
-                )}
-              {active.overlayText && (
-                <p className="mt-3 text-white/55 text-[11px] uppercase tracking-[0.38em]">
-                  Tratto dall’album “Tutto già diverso”
+              )}
+
+              {slide.overlayText && (
+                <p className="mt-3 text-[11px] uppercase tracking-[0.38em] text-white/55">
+                  {slide.overlayText}
                 </p>
               )}
-              {active.subtitle && (
-                <p className="text-white/80 text-base md:text-lg leading-relaxed max-w-xl mt-4">
-                  {active.subtitle}
+
+              {slide.subtitle && (
+                <p className="mt-4 max-w-xl text-base leading-relaxed text-white/80 md:text-lg">
+                  {slide.subtitle}
                 </p>
               )}
             </div>
           </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <section className="relative pb-0">
+      {/*
+      }
+      <style>
+        {`
+          /* Movimento lento dell'immagine */
+  /*        @keyframes kenburns {
+  /*          0% {
+ /*             transform: scale(var(--kb-from));
+ /*           }
+/*</section>            100% {
+/*              transform: scale(var(--kb-to));
+/*            } 
+/*          }
+/*        `}
+/*      </section>    
+      
+*/      } 
+      <div className="relative h-screen overflow-hidden bg-black">
+        {/* Vecchia slide: resta sotto e svanisce */}
+        {previous !== null && renderSlideLayer(slides[previous], previous, "previous")}
+
+        {/* Nuova slide: entra sopra con dissolvenza */}
+        {renderSlideLayer(slides[current], current, "current")}
+
+        {/* Pallini */}
+        <div className="absolute bottom-6 left-1/2 z-40 flex -translate-x-1/2 gap-3">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              aria-label={`Vai alla slide ${index + 1}`}
+              className={`h-2 w-2 rounded-full border transition-all duration-300 ${
+                current === index
+                  ? "scale-110 border-white/70 bg-white/35"
+                  : "border-white/25 bg-transparent hover:border-white/45"
+              }`}
+            />
+          ))}
         </div>
       </div>
     </section>
