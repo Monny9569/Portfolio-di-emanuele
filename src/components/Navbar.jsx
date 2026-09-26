@@ -101,7 +101,7 @@ export default function Navbar() {
     ? "border-b border-white/10 bg-white/10 shadow-lg shadow-black/10 md:backdrop-blur-xl"
     : heroLegacyBar
       ? "border-b border-stone-400/25 bg-[#efede6]/95 shadow-[0_6px_28px_rgba(0,0,0,0.07)]"
-      : "border-b border-black/5 bg-stone-200/90 shadow-[0_8px_28px_rgba(0,0,0,0.05)] backdrop-blur-md";
+      : "border-b border-black/5 bg-stone-200/90 shadow-[0_8px_28px_rgba(0,0,0,0.05)] md:backdrop-blur-md";
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
