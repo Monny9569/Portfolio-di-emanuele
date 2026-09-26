@@ -846,17 +846,6 @@ html.bio-experience-snap .bio-exp-scene {
     border-radius: 0;
   }
 
-  @supports (height: 100dvh) {
-    .bio-mobile-visual-scene,
-    .bio-mobile-text-scene,
-    .bio-mobile-document-scene {
-      min-height: calc(100dvh - var(--nav-height-current, 64px));
-    }
-
-    .bio-mobile-venice-chapter .bio-mobile-venice-chapter__text {
-      min-height: auto;
-    }
-  }
 }
 
 @media (max-width: 380px) {
