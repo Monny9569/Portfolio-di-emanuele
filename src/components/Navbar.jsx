@@ -14,6 +14,7 @@ export default function Navbar() {
   const [isOverHero, setIsOverHero] = useState(true);
   const [activeLink, setActiveLink] = useState(null);
   const headerRef = useRef(null);
+  const isOverHeroRef = useRef(true);
 
   const items = [
     { name: "Home", path: "/" },
@@ -27,9 +28,22 @@ export default function Navbar() {
     const header = headerRef.current;
     if (!header) return;
 
+    let navHeight = 0;
     const syncNavHeight = () => {
-      const h = Math.ceil(header.getBoundingClientRect().height);
-      document.documentElement.style.setProperty("--nav-height-current", `${h}px`);
+      const nextHeight = Math.ceil(header.getBoundingClientRect().height);
+      if (nextHeight === navHeight) return;
+
+      navHeight = nextHeight;
+      document.documentElement.style.setProperty(
+        "--nav-height-current",
+        `${nextHeight}px`
+      );
+    };
+
+    const updateIsOverHero = (nextValue) => {
+      if (nextValue === isOverHeroRef.current) return;
+      isOverHeroRef.current = nextValue;
+      setIsOverHero(nextValue);
     };
 
     syncNavHeight();
@@ -38,28 +52,29 @@ export default function Navbar() {
 
     const hero = document.getElementById("hero-gallery");
     if (!hero) {
-      setIsOverHero(false);
+      updateIsOverHero(false);
       return () => navRo.disconnect();
     }
 
     let ticking = false;
+    let rafId = null;
     const NAV_PAD = 4;
 
     const computeOverHero = () => {
       const r = hero.getBoundingClientRect();
-      const navH = header.getBoundingClientRect().height;
-      return r.bottom > navH + NAV_PAD && r.top < navH;
+      return r.bottom > navHeight + NAV_PAD && r.top < navHeight;
     };
 
     const flush = () => {
       ticking = false;
-      setIsOverHero(computeOverHero());
+      rafId = null;
+      updateIsOverHero(computeOverHero());
     };
 
     const schedule = () => {
       if (!ticking) {
         ticking = true;
-        requestAnimationFrame(flush);
+        rafId = requestAnimationFrame(flush);
       }
     };
 
@@ -71,6 +86,7 @@ export default function Navbar() {
     ro.observe(header);
 
     return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
       ro.disconnect();

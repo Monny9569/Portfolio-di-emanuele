@@ -23,13 +23,16 @@ export default function Timeline() {
   const showFootprints = false;
   const timelineRef = useRef(null);
   const timelineEndRef = useRef(null);
-  const timelineAxisRef = useRef(null);
 
   const [openArticle, setOpenArticle] = useState(null);
   const [currentPlayer, setCurrentPlayer] = useState(null);
   const [cinemaVideo, setCinemaVideo] = useState(null);
   const [showScrollCue, setShowScrollCue] = useState(false);
-  const [cueLeft, setCueLeft] = useState(null);
+  const [isScrollCueEnabled, setIsScrollCueEnabled] = useState(() =>
+    typeof window !== "undefined"
+      ? !window.matchMedia("(max-width: 430px)").matches
+      : false
+  );
 
   const releases = releasesData.filter((item) => item.disabled !== true);
 
@@ -45,68 +48,72 @@ export default function Timeline() {
   };
 
   useEffect(() => {
-    let rafId = null;
+    const mediaQuery = window.matchMedia("(max-width: 430px)");
+    const handleMediaChange = (event) => {
+      const enabled = !event.matches;
+      setIsScrollCueEnabled(enabled);
+      if (!enabled) setShowScrollCue(false);
+    };
 
-    const updateScrollCueVisibility = () => {
-      const section = timelineRef.current;
-      const end = timelineEndRef.current;
-      const axis = timelineAxisRef.current;
-      if (!section) return;
+    mediaQuery.addEventListener("change", handleMediaChange);
+    return () => mediaQuery.removeEventListener("change", handleMediaChange);
+  }, []);
 
-      if (axis) {
-        const axisRect = axis.getBoundingClientRect();
-        setCueLeft(axisRect.left + axisRect.width / 2);
-      } else {
-        setCueLeft(null);
-      }
+  useEffect(() => {
+    if (!isScrollCueEnabled || !("IntersectionObserver" in window)) return;
 
-      if (!end) return;
+    const section = timelineRef.current;
+    const end = timelineEndRef.current;
+    if (!section || !end) return;
 
-      const sectionRect = section.getBoundingClientRect();
-      const endRect = end.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
+    let timelineActive = false;
+    let endReached = false;
 
-      const timelineStarted = sectionRect.top < viewportHeight * 0.85;
+    const syncVisibility = () => {
+      const nextVisible = timelineActive && !endReached;
+      setShowScrollCue((current) =>
+        current === nextVisible ? current : nextVisible
+      );
+    };
 
-      /** Hide when sentinel enters lower band; show again only after scrolling up (showThreshold > hideThreshold). */
-      const hideOffset = Math.min(320, viewportHeight * 0.32);
-      const showOffset = Math.min(220, viewportHeight * 0.24);
-      const hideThreshold = viewportHeight - hideOffset;
-      const showThreshold = viewportHeight - showOffset;
+    const sectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        timelineActive = entry.isIntersecting;
+        syncVisibility();
+      },
+      { rootMargin: "0px 0px -15% 0px" }
+    );
 
-      setShowScrollCue((prev) => {
-        if (!timelineStarted) return false;
-
-        if (prev) {
-          if (endRect.top <= hideThreshold) return false;
-          return true;
+    const hideAtEndObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting || entry.boundingClientRect.top <= 0) {
+          endReached = true;
+          syncVisibility();
         }
+      },
+      { rootMargin: "0px 0px -32% 0px" }
+    );
 
-        if (endRect.top > showThreshold) return true;
-        return false;
-      });
-    };
+    const showBeforeEndObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting && entry.boundingClientRect.top > 0) {
+          endReached = false;
+          syncVisibility();
+        }
+      },
+      { rootMargin: "0px 0px -24% 0px" }
+    );
 
-    const scheduleUpdate = () => {
-      if (rafId != null) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        rafId = null;
-        updateScrollCueVisibility();
-      });
-    };
-
-    scheduleUpdate();
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleUpdate);
-    window.addEventListener("load", scheduleUpdate);
+    sectionObserver.observe(section);
+    hideAtEndObserver.observe(end);
+    showBeforeEndObserver.observe(end);
 
     return () => {
-      if (rafId != null) cancelAnimationFrame(rafId);
-      window.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("resize", scheduleUpdate);
-      window.removeEventListener("load", scheduleUpdate);
+      sectionObserver.disconnect();
+      hideAtEndObserver.disconnect();
+      showBeforeEndObserver.disconnect();
     };
-  }, []);
+  }, [isScrollCueEnabled]);
 
   return (
     <>
@@ -127,11 +134,7 @@ export default function Timeline() {
           </div>
 
           {/* linea centrale fissa */}
-          <div
-            ref={timelineAxisRef}
-            className="timeline-axis"
-            aria-hidden="true"
-          />
+          <div className="timeline-axis" aria-hidden="true" />
 
           {/* contenuti — mobile: editoriale 2 col + asse centrale; md+: layout desktop */}
           <div className="timeline-track relative z-10 min-w-0">
@@ -350,24 +353,25 @@ export default function Timeline() {
 
       </section>
 
-      <div
-        aria-hidden={!showScrollCue}
-        style={cueLeft !== null ? { left: `${cueLeft}px` } : undefined}
-        className={`timeline-scroll-cue ${showScrollCue ? "is-visible" : "is-hidden"}`}
-      >
-        <div className="timeline-scroll-cue__inner">
-          <span className="timeline-scroll-cue__text">
-            SCORRI
-          </span>
-          <motion.div
-            animate={{ y: [0, 7, 0] }}
-            transition={{ duration: 1.15, repeat: Infinity, ease: "easeInOut" }}
-            className="timeline-scroll-cue__circle"
-          >
-            <ChevronDownIcon className="timeline-scroll-cue__icon" />
-          </motion.div>
+      {isScrollCueEnabled && (
+        <div
+          aria-hidden={!showScrollCue}
+          className={`timeline-scroll-cue ${showScrollCue ? "is-visible" : "is-hidden"}`}
+        >
+          <div className="timeline-scroll-cue__inner">
+            <span className="timeline-scroll-cue__text">
+              SCORRI
+            </span>
+            <motion.div
+              animate={{ y: [0, 7, 0] }}
+              transition={{ duration: 1.15, repeat: Infinity, ease: "easeInOut" }}
+              className="timeline-scroll-cue__circle"
+            >
+              <ChevronDownIcon className="timeline-scroll-cue__icon" />
+            </motion.div>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* player YouTube */}
      {currentPlayer && (

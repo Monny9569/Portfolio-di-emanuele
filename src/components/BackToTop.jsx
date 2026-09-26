@@ -3,19 +3,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 export default function BackToTop() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(() =>
+    typeof window !== "undefined" ? window.scrollY > 300 : false
+  );
 
   // Monitoriamo lo scroll
   useEffect(() => {
+    let currentVisibility = window.scrollY > 300;
+
     const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      const nextVisibility = window.scrollY > 300;
+      if (nextVisibility === currentVisibility) return;
+
+      currentVisibility = nextVisibility;
+      setIsVisible(nextVisibility);
     };
 
-    window.addEventListener("scroll", toggleVisibility);
+    window.addEventListener("scroll", toggleVisibility, { passive: true });
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
