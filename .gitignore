@@ -15,6 +15,14 @@ lerna-debug.log*
 src/assets/*.exe
 src/assets/*.mp4
 
+# File locali esclusi esplicitamente dal repository
+/src/assets/Git-2.53.0.2-64-bit.exe
+/src/assets/La bellezza della sera_video.mp4
+/tmp-contact-payload.json
+
+# Cache locale degli strumenti di analisi
+/.codegraph/
+
 node_modules
 dist
 dist-ssr

@@ -95,13 +95,13 @@ export default function CookieConsent() {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-end justify-center bg-black/35 p-4">
-      <div className="w-full max-w-4xl rounded-2xl border border-[#e6e1d6] bg-[#f3efe6] p-6 md:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.18)]">
+    <div className="fixed inset-0 z-[200] flex items-end justify-center bg-black/35 p-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))]">
+      <div className="max-h-[min(88svh,100%)] w-full max-w-4xl overflow-y-auto overscroll-contain rounded-2xl border border-[#e6e1d6] bg-[#f3efe6] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.18)] sm:p-6 md:max-h-none md:p-8">
         <p className="text-[11px] uppercase tracking-[0.32em] text-gray-500 mb-3">
           Preferenze privacy
         </p>
 
-        <h2 className="font-serif italic text-3xl md:text-4xl text-gray-900 mb-4">
+        <h2 className="font-serif italic text-2xl sm:text-3xl md:text-4xl text-gray-900 mb-4 text-balance">
           Cookie e contenuti esterni
         </h2>
 
@@ -117,8 +117,8 @@ export default function CookieConsent() {
 
         <div className="space-y-5">
           {/* Necessari */}
-          <div className="flex items-center justify-between rounded-2xl border border-[#e6e1d6] bg-white/50 px-5 py-4">
-            <div className="pr-4">
+          <div className="flex flex-col gap-4 rounded-2xl border border-[#e6e1d6] bg-white/50 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+            <div className="min-w-0 sm:pr-4">
               <h3 className="text-lg font-serif text-gray-900">Necessari</h3>
               <p className="text-sm text-gray-600 mt-1">
                 Essenziali per il corretto funzionamento del sito. Sempre attivi.
@@ -129,8 +129,8 @@ export default function CookieConsent() {
           </div>
 
           {/* Contenuti esterni */}
-          <div className="flex items-center justify-between rounded-2xl border border-[#e6e1d6] bg-white/50 px-5 py-4">
-            <div className="pr-4">
+          <div className="flex flex-col gap-4 rounded-2xl border border-[#e6e1d6] bg-white/50 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+            <div className="min-w-0 sm:pr-4">
               <h3 className="text-lg font-serif text-gray-900">
                 Contenuti esterni
               </h3>
@@ -151,7 +151,7 @@ export default function CookieConsent() {
           <button
             type="button"
             onClick={handleRejectOptional}
-            className="inline-flex items-center justify-center rounded-full border border-gray-300 px-6 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-gray-900 transition-all duration-300 hover:border-gray-900 hover:bg-gray-900 hover:text-white"
+            className="inline-flex min-h-[44px] w-full items-center justify-center rounded-full border border-gray-300 px-6 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-gray-900 transition-all duration-300 hover:border-gray-900 hover:bg-gray-900 hover:text-white sm:w-auto"
           >
             Rifiuta opzionali
           </button>
@@ -159,7 +159,7 @@ export default function CookieConsent() {
           <button
             type="button"
             onClick={handleSave}
-            className="inline-flex items-center justify-center rounded-full border border-[#b01c24] px-6 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-[#b01c24] transition-all duration-300 hover:bg-[#b01c24] hover:text-white"
+            className="inline-flex min-h-[44px] w-full items-center justify-center rounded-full border border-[#b01c24] px-6 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-[#b01c24] transition-all duration-300 hover:bg-[#b01c24] hover:text-white sm:w-auto"
           >
             Salva preferenze
           </button>
@@ -167,7 +167,7 @@ export default function CookieConsent() {
           <button
             type="button"
             onClick={handleAcceptAll}
-            className="inline-flex items-center justify-center rounded-full border border-[#b01c24] bg-[#b01c24] px-6 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-white transition-all duration-300 hover:opacity-90"
+            className="inline-flex min-h-[44px] w-full items-center justify-center rounded-full border border-[#b01c24] bg-[#b01c24] px-6 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-white transition-all duration-300 hover:opacity-90 sm:w-auto"
           >
             Accetta tutti
           </button>

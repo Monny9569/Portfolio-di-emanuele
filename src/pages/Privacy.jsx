@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 export default function Privacy() {
   return (
-    <main className="min-h-screen bg-paper text-gray-900">
-      <section className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 py-20 md:py-24">
+    <main className="min-h-[100svh] w-full overflow-x-hidden bg-paper text-gray-900">
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 lg:px-16 py-16 sm:py-20 md:py-24">
         <div className="mb-12 pb-6 border-b border-[#e6e1d6]">
           <Link
             to="/"
@@ -17,7 +17,7 @@ export default function Privacy() {
         </div>
 
         <div className="mb-12">
-          <h1 className="font-serif italic text-5xl md:text-6xl leading-none text-gray-900 mb-5">
+          <h1 className="font-serif italic text-4xl sm:text-5xl md:text-6xl leading-none text-gray-900 mb-5 text-balance">
             Privacy
           </h1>
           <div className="w-24 h-px bg-[#b01c24]" />

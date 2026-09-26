@@ -1,3 +1,4 @@
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
 export default function FlipCard({
@@ -7,6 +8,7 @@ export default function FlipCard({
   altBack = "Immagine retro",
   className = "",
   aspectClass = "aspect-[1/1]",
+  shadowClass = "cover-elevated",
   roundedClass = "rounded-[22px]",
   buttonPosition = "bottom-3 right-3",
 }) {
@@ -27,50 +29,63 @@ export default function FlipCard({
             ${flipped ? "[transform:rotateY(180deg)]" : ""}
           `}
         >
-          {/* Fronte */}
+          {/* Fronte: ombra sul wrapper esterno (no overflow) così non viene tagliata */}
           <div
             className={`
-              absolute inset-0 overflow-hidden shadow-[0_18px_50px_rgba(0,0,0,0.14)]
+              absolute inset-0 ${shadowClass}
               [backface-visibility:hidden] ${roundedClass}
             `}
           >
-            <img
-              src={frontImage}
-              alt={altFront}
-              className="w-full h-full object-cover"
-            />
+            <div
+              className={`absolute inset-0 overflow-hidden ${roundedClass}`}
+            >
+              <img
+                src={frontImage}
+                alt={altFront}
+                className="h-full w-full object-cover"
+              />
+            </div>
           </div>
 
           {/* Retro */}
           <div
             className={`
-              absolute inset-0 overflow-hidden shadow-[0_18px_50px_rgba(0,0,0,0.14)]
+              absolute inset-0 ${shadowClass}
               [transform:rotateY(180deg)] [backface-visibility:hidden]
               ${roundedClass}
             `}
           >
-            <img
-              src={backImage}
-              alt={altBack}
-              className="w-full h-full object-cover"
-            />
+            <div
+              className={`absolute inset-0 overflow-hidden ${roundedClass}`}
+            >
+              <img
+                src={backImage}
+                alt={altBack}
+                className="h-full w-full object-cover"
+              />
+            </div>
           </div>
         </div>
 
-        {/* Pulsante flip solo mobile/tablet */}
+        {/* Flip solo mobile: freccia rotonda = “gira per vedere il retro” */}
         <button
           type="button"
           onClick={() => setFlipped((v) => !v)}
           className={`
             md:hidden absolute ${buttonPosition} z-20
-            inline-flex items-center justify-center
-            rounded-full border border-white/30 bg-black/65
-            px-3 py-2 text-[11px] uppercase tracking-[0.22em] text-white
-            shadow-lg backdrop-blur-sm transition active:scale-95
+            flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-full
+            border border-white/20 bg-black/30 text-white/80
+            shadow-none backdrop-blur-[6px] transition
+            active:scale-95 active:bg-black/45
           `}
-          aria-label={flipped ? "Mostra fronte" : "Gira immagine"}
+          aria-label={flipped ? "Mostra fronte" : "Vedi il retro della copertina"}
         >
-          {flipped ? "Fronte" : "Gira"}
+          <ArrowPathIcon
+            className={`h-4 w-4 stroke-[1.65] transition-transform duration-500 ease-out ${
+              flipped ? "rotate-180" : ""
+            }`}
+            aria-hidden
+          />
         </button>
       </div>
     </div>

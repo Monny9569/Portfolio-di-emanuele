@@ -1,8 +1,21 @@
 @import "tailwindcss";
+
+/* @font-face navbar: vedi public/fonts/navbar-fonts.css (link in index.html) */
+
 @theme {
   /* tipografia */
   --font-serif: "Playfair Display", serif;
   --font-sans: "Inter", sans-serif;
+  --font-open-sans-sc: "Open Sans Semi Condensed", ui-sans-serif, system-ui,
+    sans-serif;
+  --font-brand: "Black Napkins Personal Use", "Playfair Display", ui-serif,
+    Georgia, serif;
+  --font-menu: "Cormorant Garamond", "Playfair Display", ui-serif, Georgia,
+    serif;
+  /* Bio: tipografia editoriale (solo pagina Bio via utility) */
+  --font-bio-display: "Cormorant Garamond", "Playfair Display", ui-serif, Georgia,
+    serif;
+  --font-bio-body: "Spectral", Georgia, "Times New Roman", ui-serif, serif;
   /* colori */
   --color-paper: #F3F0E6;
   --color-paper-soft: #F3F0E6;
@@ -12,6 +25,871 @@
   --color-retro-cream: #f7f2df;
   --color-retro-terracotta: #b45a3c;
 }
+
+:root {
+  --nav-height-mobile: 64px;
+  --nav-height-desktop: 80px;
+  --nav-height-current: var(--nav-height-mobile);
+  --bottom-player-height-mobile: 88px;
+  --bottom-player-collapsed-height: 64px;
+  --bottom-player-open-height: 280px;
+  --bottom-player-tab-width: 40px;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: max(
+    env(safe-area-inset-top, 0px),
+    var(--nav-height-current, 64px)
+  );
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE, legacy Edge */
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  overflow-wrap: break-word;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --nav-height-current: var(--nav-height-desktop);
+  }
+}
+
+/* Player fisso: padding diverso se aperto o solo linguetta */
+body.has-bottom-player-collapsed {
+  --page-bottom-inset: calc(
+    var(--bottom-player-collapsed-height, 64px) + env(safe-area-inset-bottom, 0px)
+  );
+}
+
+body.has-bottom-player-open {
+  --page-bottom-inset: calc(
+    var(--bottom-player-open-height, var(--bottom-player-height-mobile, 88px)) +
+      env(safe-area-inset-bottom, 0px)
+  );
+}
+
+body.has-bottom-player-collapsed .page-with-bottom-player,
+body.has-bottom-player-open .page-with-bottom-player,
+body.has-bottom-player-collapsed main.page-with-bottom-player,
+body.has-bottom-player-open main.page-with-bottom-player {
+  padding-bottom: var(--page-bottom-inset, 0px);
+}
+
+body.has-bottom-player-collapsed .back-to-top-btn,
+body.has-bottom-player-open .back-to-top-btn {
+  bottom: calc(var(--page-bottom-inset, 5.5rem) + 0.75rem);
+}
+
+body.has-bottom-player-collapsed .timeline-scroll-cue,
+body.has-bottom-player-open .timeline-scroll-cue {
+  bottom: calc(var(--page-bottom-inset, 5.5rem) + 0.5rem);
+}
+
+@media (min-width: 768px) {
+  body.has-bottom-player-collapsed .back-to-top-btn,
+  body.has-bottom-player-open .back-to-top-btn {
+    bottom: 2rem;
+  }
+
+  body.has-bottom-player-collapsed .timeline-scroll-cue {
+    bottom: 28px;
+  }
+
+  body.has-bottom-player-open .timeline-scroll-cue {
+    bottom: calc(7rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Pagine progetto: contenuti lunghi senza overflow */
+.project-page main,
+.project-page section {
+  min-width: 0;
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Browsers without backdrop-filter: keep timeline stacking under fixed chrome */
+html.legacy-ui-compat #timeline {
+  isolation: isolate;
+}
+
+/*
+ * Fallback "In ascolto" player.
+ * Tailwind v4 compila i modificatori di opacità (es. bg-white/50, text-white/95)
+ * con color-mix() che non è supportato sui browser pre-2023 (Chrome <111,
+ * Safari <16.2, Firefox <113). In quel caso lo sfondo non viene applicato e si
+ * rischia testo chiaro su bianco. Forziamo qui colori solidi sicuri.
+ */
+.bottom-player-shell {
+  contain: layout style;
+}
+
+/* Cinema video: X sempre sopra iframe/fullscreen su mobile */
+.cinema-close-mobile {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  right: calc(env(safe-area-inset-right, 0px) + 12px);
+  z-index: 2147483647;
+  display: flex;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+@supports (backdrop-filter: blur(10px)) {
+  .cinema-close-mobile {
+    backdrop-filter: blur(10px);
+  }
+}
+
+.player-shell {
+  background-color: #242424;
+  color: #f7f1e8;
+}
+
+@supports not (color: color-mix(in oklab, red, blue)) {
+  .player-shell,
+  .player-shell * {
+    color: #f7f1e8;
+  }
+  .player-shell {
+    background-color: #242424 !important;
+  }
+}
+
+/* Navbar: stacking only — surface styles live in Navbar (Tailwind) */
+.site-header {
+  z-index: 60;
+}
+
+/*
+ * Tipografia editoriale centralizzata (pagina Dik Dik + Bio Experience).
+ * Replica esattamente font / peso / dimensioni / interlinea / letter-spacing /
+ * wrapping / peso dei <strong> usati nel corpo testo di DikDikPage.
+ * Il COLORE testo è volutamente lasciato fuori: va impostato dal consumer via
+ * utility Tailwind (text-gray-800 su fondo chiaro, colore chiaro su fondo scuro)
+ * per non compromettere la leggibilità nei due contesti.
+ */
+.dikdik-prose {
+  font-family: var(--font-open-sans-sc, "Open Sans Semi Condensed", ui-sans-serif,
+    system-ui, sans-serif);
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.92;
+  letter-spacing: normal;
+  text-wrap: pretty;
+  word-break: normal;
+  overflow-wrap: normal;
+  -webkit-hyphens: none;
+  hyphens: none;
+}
+@media (min-width: 640px) {
+  .dikdik-prose {
+    font-size: 1.125rem;
+    line-height: 1.98;
+  }
+}
+@media (min-width: 768px) {
+  .dikdik-prose {
+    font-size: 1.22rem;
+    line-height: 2.02;
+  }
+}
+.dikdik-prose strong {
+  font-weight: 800;
+}
+/* spaziatura verticale identica a space-y-7 / sm:space-y-8 della pagina Dik Dik */
+.dikdik-prose-stack > * + * {
+  margin-top: 1.75rem;
+}
+@media (min-width: 640px) {
+  .dikdik-prose-stack > * + * {
+    margin-top: 2rem;
+  }
+}
+
+.cover-elevated {
+  display: block;
+  box-shadow:
+    0 34px 68px rgba(18, 14, 10, 0.2),
+    0 14px 28px rgba(18, 14, 10, 0.12),
+    0 4px 10px rgba(18, 14, 10, 0.07);
+  outline: 1px solid rgba(30, 24, 18, 0.06);
+  outline-offset: 0;
+  transition:
+    box-shadow 220ms ease,
+    outline-color 220ms ease;
+}
+
+.cover-elevated:hover {
+  box-shadow:
+    0 38px 76px rgba(18, 14, 10, 0.22),
+    0 16px 32px rgba(18, 14, 10, 0.13),
+    0 5px 12px rgba(18, 14, 10, 0.08);
+  outline-color: rgba(30, 24, 18, 0.09);
+}
+
+.timeline-axis {
+  position: absolute;
+  left: 50%;
+  top: 8rem;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+  background: #d8d3c7;
+  z-index: 0;
+}
+
+@media (max-width: 767px) {
+  #timeline {
+    scroll-margin-top: var(--nav-height-current, 64px);
+  }
+
+  .timeline-axis {
+    top: 0;
+    z-index: 1;
+  }
+
+  /*
+   * Diario di Bordo — mobile:
+   * marker (anno + pallino) → contenuto 2 colonne alternate
+   */
+  .timeline-track {
+    position: relative;
+    min-width: 0;
+  }
+
+  .timeline-item-mobile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 3rem 0 4rem;
+    min-width: 0;
+  }
+
+  .timeline-track > .timeline-item-mobile:first-child {
+    padding-top: 2rem;
+  }
+
+  .timeline-item-mobile__marker {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto 1.5rem;
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+
+  .timeline-year-mobile {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: #6d7480;
+    white-space: nowrap;
+    line-height: 1;
+    background: #f3efe6;
+    padding: 0.15rem 0.45rem;
+  }
+
+  .timeline-dot-mobile {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background: #d91f26;
+    box-shadow: 0 0 0 6px #f3efe6;
+  }
+
+  .timeline-item-mobile__content {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 2rem;
+    align-items: start;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .timeline-item-mobile__left,
+  .timeline-item-mobile__right {
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .timeline-item-mobile__text,
+  .timeline-item-mobile__media {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .timeline-item-mobile__right .timeline-cover-mobile {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .timeline-item-mobile__left .timeline-cover-mobile {
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .timeline-cover-mobile {
+    display: block;
+    width: 100%;
+    max-width: 168px;
+  }
+
+  .timeline-cover-mobile__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .timeline-item-mobile__media .relative.w-full {
+    width: 100%;
+    max-width: 168px;
+  }
+
+  .timeline-scroll-cue {
+    bottom: max(1.125rem, env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 430px) {
+  .timeline-scroll-cue {
+    display: none !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .timeline-item-mobile__content {
+    column-gap: 1.25rem;
+  }
+
+  .timeline-cover-mobile,
+  .timeline-item-mobile__media .relative.w-full {
+    max-width: 132px;
+  }
+
+  .timeline-year-mobile {
+    font-size: 0.65rem;
+    letter-spacing: 0.28em;
+    padding: 0.1rem 0.28rem;
+  }
+
+  .timeline-dot-mobile {
+    width: 12px;
+    height: 12px;
+    box-shadow: 0 0 0 5px #f3efe6;
+  }
+
+  .timeline-item-mobile__text h3 {
+    font-size: 1rem;
+  }
+}
+
+.timeline-end-sentinel {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  pointer-events: none;
+}
+
+.timeline-scroll-cue {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  width: 0;
+  height: 0;
+  z-index: 40;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 280ms ease, transform 280ms ease;
+}
+
+.timeline-scroll-cue.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.timeline-scroll-cue.is-hidden {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+.timeline-scroll-cue__inner {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 72px;
+  pointer-events: none;
+}
+
+@supports (width: max-content) {
+  .timeline-scroll-cue__inner {
+    width: max-content;
+  }
+}
+
+.timeline-scroll-cue__text {
+  display: block;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-size: 0.62rem;
+  line-height: 1;
+  letter-spacing: 0.34em;
+  color: rgba(40, 50, 65, 0.72);
+}
+
+.timeline-scroll-cue__circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1.4px solid rgba(201, 65, 59, 0.78);
+  display: grid;
+  place-items: center;
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #c9413b;
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-scroll-cue__icon {
+  width: 17px;
+  height: 17px;
+  stroke: #c9413b;
+  stroke-width: 2.4;
+  fill: none;
+}
+
+@media (min-width: 768px) {
+  .timeline-axis {
+    top: 9rem;
+  }
+
+  .timeline-scroll-cue {
+    bottom: 28px;
+  }
+
+  .timeline-scroll-cue__text {
+    font-size: 0.68rem;
+  }
+
+  .timeline-scroll-cue__circle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .timeline-scroll-cue__icon {
+    width: 19px;
+    height: 19px;
+  }
+}
+
+/*
+ * Bio Experience: scroll snap “a capitoli” sul viewport.
+ * La classe `bio-experience-snap` viene applicata a `html` solo da BioExperiencePage.
+ * Mobile: proximity (meno rigido). Da md: mandatory per aggancio più netto.
+ *
+ * Ogni scena è alta esattamente un viewport (`--bio-viewport-scene = 100dvh`)
+ * quindi lo snap allinea bordo-scena ↔ bordo-viewport: niente offset navbar nello
+ * scroll-padding/margin (la navbar fixed sovrasta naturalmente i primi pixel,
+ * e i pt-20/24 interni alle scene tengono il contenuto sotto la navbar).
+ * Questo elimina i ~80px di scena successiva che "trasparivano" sotto la corrente.
+ */
+html.bio-experience-snap {
+  scroll-snap-type: y proximity;
+  scroll-padding-top: max(
+    env(safe-area-inset-top, 0px),
+    var(--bio-snap-pad-top, var(--nav-height-current, 64px))
+  );
+  scroll-padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (min-width: 768px) {
+  html.bio-experience-snap {
+    scroll-snap-type: y mandatory;
+    scroll-padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+html.bio-experience-snap .bio-exp-scene {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  scroll-margin-top: env(safe-area-inset-top, 0px);
+  scroll-margin-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/*
+ * Bio Experience — diario visivo mobile (BioMobileExperience.jsx).
+ * Alternanza scena visiva / scena testuale; desktop invariato.
+ */
+@media (max-width: 767px) {
+  .bio-mobile-experience {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    overflow-x: hidden;
+    background: #0a0908;
+    scroll-padding-top: max(
+      env(safe-area-inset-top, 0px),
+      var(--nav-height-current, 64px)
+    );
+  }
+
+  /* —— Scena visiva: solo immagine —— */
+  .bio-mobile-visual-scene {
+    position: relative;
+    min-height: calc(100svh - var(--nav-height-current, 64px));
+    overflow: hidden;
+    background: #0f0f0f;
+  }
+
+  .bio-mobile-visual-media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .bio-mobile-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .bio-mobile-image--contain {
+    object-fit: contain;
+    background: #0a0908;
+  }
+
+  .bio-mobile-visual-scene--intro .bio-mobile-image {
+    object-position: 28% 100%;
+  }
+
+  .bio-mobile-visual-scene--piano .bio-mobile-image {
+    object-position: 50% 22%;
+  }
+
+  .bio-mobile-visual-scene--venice .bio-mobile-image {
+    object-position: 58% 52%;
+  }
+
+  /* Capitolo Venezia / Archivio RAI — testo → immagine → scheda documento */
+  .bio-mobile-venice-chapter {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bio-mobile-venice-chapter .bio-mobile-venice-chapter__text {
+    order: 1;
+    min-height: auto;
+    align-items: flex-start;
+    padding-top: max(3rem, calc(var(--nav-height-current, 64px) + 1.25rem));
+    padding-bottom: 1.5rem;
+  }
+
+  .bio-mobile-venice-chapter__visual {
+    order: 2;
+  }
+
+  .bio-mobile-venice-chapter__doc {
+    order: 3;
+  }
+
+  /* Capitolo Castrocaro 1984 — testo → immagine live */
+  .bio-mobile-castrocaro-chapter {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bio-mobile-castrocaro-chapter .bio-mobile-castrocaro-chapter__text {
+    order: 1;
+    min-height: auto;
+    align-items: flex-start;
+    padding-top: max(3rem, calc(var(--nav-height-current, 64px) + 1.25rem));
+    padding-bottom: 1.25rem;
+  }
+
+  .bio-mobile-castrocaro-chapter__visual {
+    order: 2;
+  }
+
+  /* Capitolo Dik Dik 1997 — foto studio → testo → abbraccio (senza kicker) */
+  .bio-mobile-dikdik-chapter {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bio-mobile-dikdik-chapter__visual {
+    order: 1;
+  }
+
+  .bio-mobile-dikdik-chapter .bio-mobile-dikdik-chapter__text {
+    order: 2;
+    min-height: auto;
+    align-items: flex-start;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .bio-mobile-dikdik-chapter__doc {
+    order: 3;
+    min-height: auto;
+    padding-top: 0.5rem;
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
+    gap: 0.75rem;
+    justify-content: flex-start;
+  }
+
+  .bio-mobile-dikdik-chapter__doc .bio-mobile-document-scene__kicker {
+    display: none;
+  }
+
+  .bio-mobile-dikdik-chapter__doc .bio-mobile-document-frame {
+    margin-top: 0;
+  }
+
+  .bio-mobile-visual-scene--studio .bio-mobile-image {
+    object-position: 50% 38%;
+  }
+
+  .bio-mobile-visual-scene--dikdik .bio-mobile-image {
+    object-position: 48% 36%;
+  }
+
+  .bio-mobile-visual-scene--copertine .bio-mobile-image {
+    object-position: 50% 40%;
+  }
+
+  /* —— Scena testuale: carta calda, testo scuro —— */
+  .bio-mobile-text-scene {
+    box-sizing: border-box;
+    min-height: calc(100svh - var(--nav-height-current, 64px));
+    padding: max(3.5rem, calc(var(--nav-height-current, 64px) + 1.5rem)) 1.1rem
+      max(2.5rem, env(safe-area-inset-bottom, 0px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(circle at top left, rgba(150, 120, 80, 0.16), transparent 38%),
+      linear-gradient(180deg, #f3efe6 0%, #e7dfd0 100%);
+    color: #111827;
+  }
+
+  .bio-mobile-text-scene--dark {
+    background:
+      radial-gradient(circle at top, rgba(160, 40, 40, 0.18), transparent 35%),
+      linear-gradient(180deg, #141210 0%, #1c1714 100%);
+    color: #f3efe8;
+  }
+
+  .bio-mobile-panel {
+    width: 100%;
+    max-width: 36rem;
+    border-radius: 1.4rem;
+    padding: 1.25rem 1.2rem;
+    background: rgba(255, 252, 244, 0.78);
+    border: 1px solid rgba(40, 30, 20, 0.12);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
+  }
+
+  .bio-mobile-text-scene--dark .bio-mobile-panel {
+    background: rgba(22, 20, 18, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+  }
+
+  .bio-mobile-copy {
+    font-size: clamp(1rem, 4vw, 1.15rem);
+    line-height: 1.65;
+    color: #1f2933;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-shadow: none;
+  }
+
+  .bio-mobile-text-scene--dark .bio-mobile-copy {
+    color: #e8e0d4;
+  }
+
+  /* —— Scena documento: cornice protagonista —— */
+  .bio-mobile-document-scene {
+    box-sizing: border-box;
+    min-height: calc(100svh - var(--nav-height-current, 64px));
+    padding: max(3rem, calc(var(--nav-height-current, 64px) + 1rem)) 1rem
+      max(2rem, env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    background: linear-gradient(180deg, #151515 0%, #2a211b 100%);
+  }
+
+  .bio-mobile-document-scene--dark {
+    background: linear-gradient(180deg, #0a0908 0%, #1a1512 100%);
+  }
+
+  .bio-mobile-document-scene--album {
+    background: linear-gradient(180deg, #0f0d0b 0%, #1a1612 55%, #0a0908 100%);
+  }
+
+  .bio-mobile-document-scene__kicker {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(217, 200, 168, 0.9);
+    text-align: center;
+  }
+
+  .bio-mobile-document-frame {
+    width: min(92vw, 360px);
+    margin-inline: auto;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    padding: 0.5rem;
+    background: rgba(243, 239, 230, 0.9);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+  }
+
+  .bio-mobile-document-scene--album .bio-mobile-document-frame,
+  .bio-mobile-document-scene--dark .bio-mobile-document-frame--photo-only {
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .bio-mobile-document-frame canvas,
+  .bio-mobile-document-frame__photo {
+    display: block;
+    width: 100%;
+    max-height: 58svh;
+    height: auto !important;
+    object-fit: contain;
+    border-radius: 0.8rem;
+  }
+
+  .bio-mobile-document-scene--album .bio-mobile-document-frame__photo {
+    max-height: 56svh;
+    filter: drop-shadow(0 24px 60px rgba(0, 0, 0, 0.55));
+    border-radius: 0;
+  }
+
+  @supports (height: 100dvh) {
+    .bio-mobile-visual-scene,
+    .bio-mobile-text-scene,
+    .bio-mobile-document-scene {
+      min-height: calc(100dvh - var(--nav-height-current, 64px));
+    }
+
+    .bio-mobile-venice-chapter .bio-mobile-venice-chapter__text {
+      min-height: auto;
+    }
+  }
+}
+
+@media (max-width: 380px) {
+  .bio-mobile-panel {
+    padding: 1rem;
+    border-radius: 1.2rem;
+  }
+
+  .bio-mobile-copy {
+    font-size: 0.95rem;
+    line-height: 1.58;
+  }
+
+  .bio-mobile-document-frame canvas,
+  .bio-mobile-document-frame__photo {
+    max-height: 52svh;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #hero-gallery img[style*="animationName"] {
+    animation: none !important;
+  }
+
+  html.bio-experience-snap {
+    scroll-snap-type: none;
+    scroll-padding-top: 0;
+    scroll-padding-bottom: 0;
+  }
+
+  html.bio-experience-snap .bio-exp-scene {
+    scroll-margin-top: 0;
+    scroll-margin-bottom: 0;
+  }
 }

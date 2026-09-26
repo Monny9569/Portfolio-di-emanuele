@@ -35,7 +35,7 @@ export default function BackToTop() {
         exit={{ opacity: 0, scale: 0.5 }}
         onClick={scrollToTop}
         // Ecco la nuova configurazione colori:
-        className="fixed bottom-8 right-8 p-3 bg-black text-white border-2 border-black rounded-full shadow-xl hover:bg-white hover:text-black transition-all duration-300 z-50"
+        className="back-to-top-btn fixed bottom-[max(1.5rem,env(safe-area-inset-bottom,0px)+0.75rem)] right-4 flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-full border-2 border-black bg-black p-3 text-white shadow-xl transition-all duration-300 hover:bg-white hover:text-black sm:right-8 md:bottom-8 z-50"
         >
         <ChevronUpIcon className="w-6 h-6" />
         </motion.button>

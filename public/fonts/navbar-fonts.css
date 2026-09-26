@@ -1,0 +1,10 @@
+/*
+  Solo firma/logo (Black Napkins). Voci menu: Google Fonts · Cormorant Garamond (index.html).
+*/
+@font-face {
+  font-family: "Black Napkins Personal Use";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://db.onlinewebfonts.com/t/37875cbca6bb4233637960e49902173f.woff2") format("woff2");
+}

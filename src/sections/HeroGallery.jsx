@@ -61,7 +61,7 @@ export default function HeroGallery() {
       subtitle: "",
       image: bio,
       label: "",
-      focusX: "50%",
+      focusX: "100%",
       focusY: "35%",
       mode: "auto",
       extraZoom: 1.0,
@@ -273,26 +273,26 @@ export default function HeroGallery() {
         />
 
         {/* Overlay per profondità e leggibilità */}
-        <div className="absolute inset-0 bg-black/15" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10" />
+        <div className="absolute inset-0 bg-black/10 md:bg-black/15" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/15 to-transparent md:from-black/55 md:via-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/8 md:from-black/30 md:to-black/10" />
 
         {/* Eventuale grafica in alto a destra */}
         {(slide.overlayTitle || slide.overlayText) && (
-          <div className="absolute top-32 right-10 z-30 md:top-36 md:right-16 lg:top-40 lg:right-24">
+          <div className="absolute top-[calc(var(--nav-height-current,64px)+1rem)] right-4 z-30 max-w-[min(72vw,280px)] sm:right-6 md:top-36 md:right-16 md:max-w-none lg:top-40 lg:right-24">
             {slide.overlayTitle && (
               <img
                 src={slide.overlayTitle}
                 alt="Titolo"
-                className="ml-auto h-auto w-[280px] drop-shadow-[0_12px_40px_rgba(0,0,0,0.4)] md:w-[360px] lg:w-[420px]"
+                className="ml-auto h-auto w-full max-w-[220px] drop-shadow-[0_12px_40px_rgba(0,0,0,0.4)] sm:max-w-[260px] md:max-w-[360px] md:w-[360px] lg:w-[420px]"
               />
             )}
           </div>
         )}
 
         {/* Testi */}
-        <div className="relative z-30 flex h-full items-end pb-20">
-          <div className="flex w-full justify-start px-8 md:px-14 lg:px-20">
+        <div className="relative z-30 flex h-full items-end pb-[max(4.5rem,env(safe-area-inset-bottom,0px)+3.5rem)] md:pb-20">
+          <div className="flex w-full justify-start px-4 sm:px-6 md:px-14 lg:px-20">
             <div className="max-w-3xl text-left">
               {slide.label && (
                 <p className="mb-4 text-[11px] uppercase tracking-[0.38em] text-white/70">
@@ -305,7 +305,7 @@ export default function HeroGallery() {
               )}
 
               {slide.title && (
-                <h1 className="font-serif text-6xl leading-none text-white italic md:text-7xl lg:text-8xl">
+                <h1 className="font-serif text-4xl leading-none text-white italic sm:text-5xl md:text-7xl lg:text-8xl">
                   {slide.title}
                 </h1>
               )}
@@ -329,7 +329,7 @@ export default function HeroGallery() {
   };
 
   return (
-    <section className="relative pb-0">
+    <section id="hero-gallery" className="relative pb-0">
       {/*
       }
       <style>
@@ -347,7 +347,7 @@ export default function HeroGallery() {
 /*      </section>    
       
 */      } 
-      <div className="relative h-screen overflow-hidden bg-black">
+      <div className="relative min-h-[100svh] max-h-[100svh] overflow-hidden bg-black">
         {/* Vecchia slide: resta sotto e svanisce */}
         {previous !== null && renderSlideLayer(slides[previous], previous, "previous")}
 
@@ -355,18 +355,27 @@ export default function HeroGallery() {
         {renderSlideLayer(slides[current], current, "current")}
 
         {/* Pallini */}
-        <div className="absolute bottom-6 left-1/2 z-40 flex -translate-x-1/2 gap-3">
+        <div className="absolute bottom-[max(1.25rem,env(safe-area-inset-bottom,0px)+0.75rem)] left-1/2 z-40 flex -translate-x-1/2 gap-3 md:bottom-6">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
               aria-label={`Vai alla slide ${index + 1}`}
-              className={`h-2 w-2 rounded-full border transition-all duration-300 ${
+              className={`flex h-11 w-11 items-center justify-center rounded-full transition-all duration-300 ${
                 current === index
-                  ? "scale-110 border-white/70 bg-white/35"
-                  : "border-white/25 bg-transparent hover:border-white/45"
+                  ? "scale-110"
+                  : ""
               }`}
-            />
+            >
+              <span
+                className={`block h-2 w-2 rounded-full border transition-all duration-300 ${
+                  current === index
+                    ? "border-white/70 bg-white/35"
+                    : "border-white/25 bg-transparent"
+                }`}
+                aria-hidden
+              />
+            </button>
           ))}
         </div>
       </div>

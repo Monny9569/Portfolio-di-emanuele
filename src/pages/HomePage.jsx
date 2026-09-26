@@ -10,13 +10,12 @@ import CookieConsent from "../components/CookieConsent";
 export default function HomePage() {
  
   return (
-    <div className="min-h-screen bg-paper font-sans antialiased text-gray-900">
+    <div className="min-h-[100svh] w-full min-w-0 overflow-x-hidden bg-paper font-sans antialiased text-gray-900">
       <Navbar />
-      <main>
+      <main className="page-with-bottom-player min-w-0">
 
         <HeroGallery />
         <Timeline />
-      
 
       </main>
       <BackToTop />

@@ -9,7 +9,7 @@ export default function Discography() {
     image: giada,
     description:
       "Un brano intimo e delicato, sospeso tra memoria, emozione e cantautorato contemporaneo.",
-    spotifyLink: "https://open.spotify.com/...",
+    listenLink: "https://open.spotify.com/...",
     buyLink: "https://..."
   };
 
@@ -37,7 +37,7 @@ export default function Discography() {
 
             <div className="flex flex-wrap gap-4 mt-8">
               <a
-                href={latestRelease.spotifyLink}
+                href={latestRelease.listenLink}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-2 border border-gray-300 px-5 py-3 hover:bg-black hover:text-white transition-all"
@@ -60,7 +60,7 @@ export default function Discography() {
 
           {/* Copertina */}
           <div className="group">
-            <div className="aspect-square w-full bg-paperSoft p-2 rounded-2xl shadow-[0_25px_70px_rgba(0,0,0,0.15)] transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_35px_70px_rgba(0,0,0,0.18)]">
+            <div className="cover-elevated aspect-square w-full bg-paperSoft p-2 rounded-2xl transition-all duration-500">
               <img
                 src={latestRelease.image}
                 alt={latestRelease.title}

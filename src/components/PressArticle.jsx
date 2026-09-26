@@ -36,8 +36,6 @@ export default function PressArticle() {
             altFront="Dik Dik - copertina"
             altBack="Dik Dik - retro copertina"
             aspectClass="aspect-[1/1]"
-            shadowClass="shadow-[0_18px_50px_rgba(0,0,0,0.14)]"
-            buttonStyle="light"
             roundedClass="0"
           />
         </div>
@@ -83,8 +81,6 @@ export default function PressArticle() {
             altFront="Irene Fornaciari - copertina"
             altBack="Irene Fornaciari - retro copertina"
             aspectClass="aspect-[1/1]"
-            shadowClass="shadow-[0_18px_50px_rgba(0,0,0,0.14)]"
-            buttonStyle="light"
             roundedClass="0"
           />
         </div>

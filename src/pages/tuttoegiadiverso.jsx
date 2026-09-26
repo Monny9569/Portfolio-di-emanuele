@@ -1,162 +1,119 @@
+// TuttoEGiaDiversoPage.jsx
+// Vite + React + Tailwind
 import { Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-
-// immagini principali della pagina
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import BottomYouTubePlayer from "../components/BottomYouTubePlayer";
+import releasesData from "../data/releases";
+import {
+  getPlayableTracks,
+  releasePlayerKey,
+} from "../utils/releasePlayer";
+// Immagini
 import coverFront from "../assets/albums/tutto-front.jpg";
 import coverBack from "../assets/albums/tutto-back.jpg";
-import interno from "../assets/albums/interno.jpg";
-import label from "../assets/albums/label.jpg";
-import credits from "../assets/albums/credits.jpg";
 import articolo from "../assets/albums/articolo-la-nuova.jpg";
-import sfondo from "../assets/sfondo.png";
-import disco from "../assets/albums/discoa.jpg";
+import credits from "../assets/albums/credits.jpg";
+import discoa from "../assets/albums/discoa.jpg";
+const easeOut = [0.22, 1, 0.36, 1];
+const SECTION_COUNT = 5;
+
+const tracklistContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.045, delayChildren: 0.06 },
+  },
+};
+const tracklistItemVariants = {
+  hidden: { opacity: 0, x: -12 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.42, ease: easeOut },
+  },
+};
 
 export default function TuttoEGiaDiversoPage() {
-  // stato per aprire il modal con l'immagine ingrandita
+  const prefersReducedMotion = useReducedMotion();
+  const scrollReveal = prefersReducedMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 28, scale: 0.988 },
+        whileInView: { opacity: 1, y: 0, scale: 1 },
+        viewport: { once: true, margin: "-72px 0px -40px 0px", amount: 0.2 },
+        transition: { duration: 0.68, ease: easeOut },
+      };
+
+  const heroEnter = prefersReducedMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 24 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.75, ease: easeOut },
+      };
+
   const [openImage, setOpenImage] = useState(null);
-  // traccia attiva nella sezione tracklist
   const [activeTrackIndex, setActiveTrackIndex] = useState(null);
+  const [currentPlayer, setCurrentPlayer] = useState(null);
 
-  // ref e altezza del blocco tracklist, usati per allineare la copertina
-  const tracklistBlockRef = useRef(null);
-  const [tracklistHeight, setTracklistHeight] = useState(0);
+  const tuttoRelease = useMemo(
+    () => releasesData.find((r) => r.pageLink === "/tuttoegiadiverso"),
+    []
+  );
 
-// ref e stato per animare la sezione immersiva quando entra in viewport
-  const highlightRef = useRef(null);
-  const [highlightVisible, setHighlightVisible] = useState(false);
-  // tracklist del disco
-  const tracks = [
-    { title: "Giada", duration: "4.08" },
-    { title: "Parole d’amore", duration: "4.06" },
-    { title: "La spesa", duration: "3.49" },
-    { title: "Come fosse una canzone", duration: "3.56" },
-    { title: "Dopo di me", duration: "4.40" },
-    { title: "Come il vento", duration: "4.20" },
-    { title: "Negli occhi miei", duration: "4.15" },
-    { title: "L’ultimo battito del cuore", duration: "3.53" },
-    { title: "Sorriderai", duration: "4.09" },
-    { title: "…Tutto è già diverso", duration: "4.05" },
-  ];
-  //************************************************ */
-//track item con evidenziazione del brano attivo al click
-  
-function TrackItem({
-      index,
-      title,
-      duration,
-      activeTrackIndex,
-      setActiveTrackIndex,
-    }) {
-      const itemRef = useRef(null);
-
-      useEffect(() => {
-        const node = itemRef.current;
-        if (!node) return;
-
-        const isMobile = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
-        if (!isMobile) return;
-
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) {
-              setActiveTrackIndex(index);
-            }
-          },
-          {
-            threshold: 0.75,
+  const openTuttoPlayer = () => {
+    if (!tuttoRelease) return;
+    const playable = getPlayableTracks(tuttoRelease);
+    if (playable.length === 0) return;
+    const key = releasePlayerKey(tuttoRelease);
+    setCurrentPlayer((prev) =>
+      prev?.playerKey === key
+        ? null
+        : {
+            playerKey: key,
+            albumTitle: tuttoRelease.title,
+            coverImage: tuttoRelease.image,
+            tracks: playable,
           }
-        );
-
-        observer.observe(node);
-
-        return () => observer.disconnect();
-      }, [index, setActiveTrackIndex]);
-
-      const isActive = activeTrackIndex === index;
-
-      return (
-        <li
-          ref={itemRef}
-          className="flex justify-between items-baseline gap-6 group cursor-default"
-          onMouseEnter={() => setActiveTrackIndex(index)}
-          onMouseLeave={() => {
-            const isMobile = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
-            if (!isMobile) {
-              setActiveTrackIndex(null);
-            }
-          }}
-        >
-          <span
-            className={`
-              font-serif
-              text-[1.32rem] md:text-[1.48rem]
-              leading-[1.45]
-              transition-colors duration-300
-              ${isActive ? "text-[#92484f]" : "text-gray-900"}
-            `}
-          >
-            {String(index + 1).padStart(2, "0")}. {title}
-          </span>
-
-          <span
-            className={`
-              text-[1.18rem] md:text-[1.28rem]
-              italic shrink-0
-              transition-colors duration-300
-              ${isActive ? "text-[#92484f]/80" : "text-gray-500/80"}
-            `}
-          >
-            {duration}
-          </span>
-        </li>
-      );
-    }
-//************************************************************************* */    
-// effetto per aggiornare l'altezza del blocco tracklist al caricamento e al resize, usata per allineare la copertina a destra
-   useEffect(() => {
-  const node = tracklistBlockRef.current;
-  if (!node) return;
-
-  const updateTracklistHeight = () => {
-    setTracklistHeight(node.offsetHeight);
+    );
   };
-
-  updateTracklistHeight();
-
-  const observer = new ResizeObserver(() => {
-    updateTracklistHeight();
+  const { scrollYProgress } = useScroll();
+  const heroSectionRef = useRef(null);
+  const { scrollYProgress: heroScrollProgress } = useScroll({
+    target: heroSectionRef,
+    offset: ["start start", "end start"],
   });
+  const heroCoverY = useTransform(heroScrollProgress, [0, 1], [0, 52]);
 
-  observer.observe(node);
-  window.addEventListener("resize", updateTracklistHeight);
-
-  return () => {
-    observer.disconnect();
-    window.removeEventListener("resize", updateTracklistHeight);
-  };
-}, []);
-
-/******************************************************* */
-// gruppi crediti
+  const sectionRefs = useRef([]);
+  const [blurSectionIndex, setBlurSectionIndex] = useState(null);
+  // Tracklist
+  const tracks = [
+    { title: "Giada", duration: "4:08" },
+    { title: "Parole d'amore", duration: "4:06" },
+    { title: "La spesa", duration: "3:49" },
+    { title: "Come fosse una canzone", duration: "3:56" },
+    { title: "Dopo di me", duration: "4:40" },
+    { title: "Come il vento", duration: "4:20" },
+    { title: "Negli occhi miei", duration: "4:15" },
+    { title: "L'ultimo battito del cuore", duration: "3:53" },
+    { title: "Sorriderai", duration: "4:09" },
+    { title: "…Tutto è già diverso", duration: "4:05" },
+  ];
+  // Crediti
   const creditGroups = [
     {
-      title: "Scrittura",
-      lines: ["Testi e musiche di Emanuele Monetti"],
-    },
-    {
-      title: "Produzione",
-      lines: [
-        "Produzione artistica Piercarlo D’Amato",
-        "Produttore esecutivo Ricky Gianco",
-      ],
+      title: "Testi e musica",
+      lines: ["Emanuele Monetti"],
     },
     {
       title: "Arrangiamenti",
-      lines: [
-        "Daniele Cimitan",
-        "Piercarlo D’Amato",
-        "Emanuele Monetti",
-      ],
+      lines: ["Daniele Cimitan", "Piercarlo D'Amato", "Emanuele Monetti"],
     },
     {
       title: "Musicisti",
@@ -165,517 +122,416 @@ function TrackItem({
         "Pianoforte: Emanuele Monetti, Francesco Sartori",
         "Chitarra elettrica e acustica: Al Guariento",
         "Basso: Massimo Vanzan",
-        "Sax soprano ne 'L’ultimo battito del cuore': Maurizio Caldura",
-      ],
-    },
-    {
-      title: "Recording",
-      lines: [
-        "Registrato al New Tendency Studio da Daniele Cimitan",
-        "Mixato al Condulmer Recording Studio da Sandro Franchin",
-        "Mastering: Davide Trucco",
+        "Sax soprano: Maurizio Caldura",
       ],
     },
   ];
- //**************************************************************************** */ 
-//effetto per attivare l'animazione della sezione immersiva quando entra in viewport
-    useEffect(() => {
-  const node = highlightRef.current;
-  if (!node) return;
-
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      // quando entra → attiva animazione
-      if (entry.isIntersecting) {
-        setHighlightVisible(true);
-      } else {
-        // quando esce → resetta
-        setHighlightVisible(false);
-      }
-    },
-    {
-      threshold: 0.3, // più alto = deve essere più visibile
+  const creditStudioBlocks = [
+    "Registrato al New Tendency Studio da Daniele Cimitan. Mixato al Condulmer Recording Studio da Sandro Franchin. Mastering: Davide Truccolo.",
+    "Produzione artistica: Piercarlo D'Amato. Produttore esecutivo: Ricky Gianco.",
+  ];
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setBlurSectionIndex(null);
+      return;
     }
-  );
+    const mobileMq = window.matchMedia("(max-width: 767px)");
+    if (mobileMq.matches) {
+      setBlurSectionIndex(null);
+      return;
+    }
+    const updateBlur = () => {
+      const list = sectionRefs.current;
+      if (!list[0]) return;
+      const mid = window.innerHeight * 0.36;
+      let idx = 0;
+      for (let i = 0; i < SECTION_COUNT; i++) {
+        const el = list[i];
+        if (!el) continue;
+        if (el.getBoundingClientRect().top <= mid) idx = i;
+      }
+      let blur = null;
+      if (idx > 0) {
+        const prevEl = list[idx - 1];
+        if (prevEl) {
+          const r = prevEl.getBoundingClientRect();
+          if (r.bottom > 12 && r.top < window.innerHeight - 12) blur = idx - 1;
+        }
+      }
+      setBlurSectionIndex(blur);
+    };
+    const onScroll = () => requestAnimationFrame(updateBlur);
+    updateBlur();
+    queueMicrotask(updateBlur);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [prefersReducedMotion]);
 
-  observer.observe(node);
-
-  return () => observer.disconnect();
-}, []);
-
-//**************************************************************************** */
+  /** Indizio visivo molto leggero sulla sezione sopra (niente scroll snap sul documento) */
+  const sectionLayerClass = (index) => {
+    const blurred =
+      !prefersReducedMotion && blurSectionIndex === index;
+    return [
+      "min-h-0",
+      "transition-[filter,opacity] duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
+      blurred
+        ? "max-md:blur-0 max-md:opacity-100 max-md:saturate-100 blur-[0.5px] opacity-[0.98] saturate-[0.995]"
+        : "blur-0 opacity-100 saturate-100",
+    ].join(" ");
+  };
 
   return (
     <>
-      {/* keyframes per il bordo animato del bottone Ascolta */}
-      <style>
-        {`
-          @keyframes spinBorder {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-          }
-        `}
-      </style>
-
-      {/* pagina principale */}
-      <section className="bg-paper min-h-screen pt-28 md:pt-36 pb-24 overflow-hidden">
-        {/* contenitore centrale del contenuto */}
-        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
-          {/* bottone ritorno alla discografia */}
-          <div className="mb-10 md:mb-14">
-            <Link
-              to="/#timeline"
-              className="group inline-flex items-center gap-3 rounded-full border border-gray-300 px-6 py-3 text-[11px] uppercase tracking-[0.24em] text-gray-900 transition-all duration-300 hover:border-gray-900 hover:bg-gray-900 hover:text-white"
-            >
-              <span className="transition-transform duration-300 group-hover:-translate-x-1">
-                ←
-              </span>
-              Torna alla discografia
-            </Link>
-          </div>
-
-          {/* =========================================================
-              1. HERO
-              Titolo pagina + testo introduttivo + copertina album
-             ========================================================= */}
-          <section className="relative min-h-[760px] md:min-h-[860px] flex items-center py-10 md:py-16">
-            {/* leggero gradiente di fondo */}
-            <div className="absolute inset-0 z-0">
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-bg-paper/80" />
+      {!prefersReducedMotion && (
+        <motion.div
+          className="pointer-events-none fixed top-0 left-0 right-0 z-[55] h-[2px] origin-left bg-gradient-to-r from-[#92484f] via-[#b85d66] to-[#92484f]"
+          style={{ scaleX: scrollYProgress }}
+          aria-hidden
+        />
+      )}
+      <section className="page-with-bottom-player min-h-[100svh] w-full min-w-0 overflow-x-hidden bg-[#f3efe6]">
+        
+        {/* =======================================================
+            1. HERO
+           ======================================================= */}
+        <section
+          ref={(el) => {
+            sectionRefs.current[0] = el;
+            heroSectionRef.current = el;
+          }}
+          className={`relative flex min-h-[min(100svh,920px)] items-center overflow-x-hidden px-4 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-24 md:px-10 md:pt-28 lg:px-16 ${sectionLayerClass(0)}`}
+        >
+          <motion.div
+            className="mx-auto w-full min-w-0 max-w-7xl"
+            {...heroEnter}
+          >
+            
+            {/* Link ritorno */}
+            <div className="mb-14">
+              <Link
+                to="/#timeline"
+                className="group inline-flex min-h-[44px] items-center gap-3 text-[11px] uppercase tracking-[0.24em] text-gray-500 transition-colors duration-300 hover:text-gray-900"
+              >
+                <span className="transition-transform duration-300 group-hover:-translate-x-1">←</span>
+                Torna al Diario di Bordo
+              </Link>
             </div>
-
-            <div className="relative z-10 w-full grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-              {/* colonna sinistra con testi */}
-              <div className="md:col-span-7 flex flex-col items-start text-left">
-                <span className="text-[11px] uppercase tracking-[0.3em] text-gray-500 mb-6 block">
-                  Album · 2014
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+              
+              {/* Colonna testo */}
+              <div className="order-2 lg:order-1">
+                <span className="text-[11px] uppercase tracking-[0.35em] text-[#92484f] mb-4 block">
+                  Album · Ottobre 2014
                 </span>
-
-                {/* titolo principale con ombra molto leggera */}
-                <h1
-                  className="
-                    font-serif
-                    text-5xl md:text-7xl lg:text-8xl
-                    text-[#92484f]
-                    leading-tight
-                    mb-8
-                    drop-shadow-[0_1px_2px_rgba(0,0,0,0.15)]
-                  "
-                >
-                  ...Tutto è già <br />
-                  <i className="font-normal">diverso</i>
+                <h1 className="mb-10 max-w-full font-serif text-3xl leading-[1.15] text-balance text-[#161616] sm:text-4xl md:text-5xl lg:text-5xl xl:max-w-none xl:text-[3.4rem] xl:whitespace-nowrap">
+                  …Tutto è già <span className="italic">diverso</span>
                 </h1>
-
-                {/* testo introduttivo */}
-                <p className="font-serif text-lg md:text-xl text-gray-600 max-w-lg leading-relaxed italic opacity-90">
-                  Un viaggio nel tempo interiore, dove musica e parola si fanno
-                  memoria, e ogni brano lascia il segno di qualcosa che, nel
-                  momento stesso in cui si ascolta, è già cambiato.
-                </p>
-
-                {/* pulsante ascolta con bordo animato sempre attivo
-                    e riempimento rosso al passaggio del mouse */}
-                <div className="mt-10 flex flex-wrap gap-3">
-                  <a
-                    href="https://open.spotify.com/intl-it/album/2EPBkFcUQLkJA4dcOOTDoo"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="
-                      relative
-                      inline-flex items-center justify-center
-                      rounded-full
-                      px-7 py-3
-                      text-[11px] font-medium uppercase tracking-[0.24em]
-                      text-gray-900
-                      overflow-hidden
-                      group
-                    "
-                  >
-                    {/* bordo animato */}
-                    <span
-                      className="absolute inset-0 rounded-full"
-                      style={{
-                        padding: "1.5px",
-                        background:
-                          "conic-gradient(from 0deg, transparent 0deg, transparent 280deg, #92484f 310deg, #d46a73 340deg, transparent 360deg)",
-                        animation: "spinBorder 3.5s linear infinite",
-                      }}
-                    />
-
-                    {/* fondo interno che si riempie di rosso in hover */}
-                    <span
-                      className="
-                        absolute inset-[1.5px]
-                        rounded-full
-                        bg-[#f3efe6]
-                        transition-all duration-400 ease-out
-                        group-hover:bg-[#92484f]
-                      "
-                    />
-
-                    {/* bordo base */}
-                    <span
-                      className="
-                        absolute inset-0
-                        rounded-full
-                        border border-gray-300
-                        z-10
-                        transition-all duration-300
-                        group-hover:border-[#92484f]
-                      "
-                    />
-
-                    {/* testo */}
-                    <span
-                      className="
-                        relative z-20
-                        transition-colors duration-300
-                        group-hover:text-white
-                      "
-                    >
-                      Ascolta
-                    </span>
-                  </a>
-                </div>
+                {/* Bottone Ascolta — apre il player YouTube in basso */}
+                <button
+                  type="button"
+                  onClick={openTuttoPlayer}
+                  className="group inline-flex min-h-[44px] cursor-pointer items-center gap-3 rounded-full border border-gray-300 px-6 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-gray-900 transition-all duration-300 hover:border-[#92484f] hover:bg-[#92484f] hover:text-white sm:px-8 sm:py-4"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                  Ascolta
+                </button>
               </div>
-
-              {/* colonna destra con copertina album */}
-              <div className="md:col-span-5 relative flex justify-center">
+              {/* Colonna immagine */}
+              <div className="order-1 lg:order-2 flex justify-center overflow-visible">
                 <button
                   type="button"
                   onClick={() => setOpenImage(coverFront)}
-                  className="group w-full flex justify-center items-center bg-transparent cursor-zoom-in"
+                  className="group cursor-zoom-in"
                 >
-                  <img
-                    src={coverFront}
-                    alt="Copertina album Tutto è già diverso"
-                    className="
-                      max-h-[760px]
-                      w-auto
-                      object-contain
-                      will-change-transform
-                      drop-shadow-[0_30px_60px_rgba(0,0,0,0.28)]
-                      transition-all duration-500 ease-out
-                      group-hover:scale-[1.025]
-                      group-hover:-translate-y-1
-                      group-hover:drop-shadow-[0_38px_70px_rgba(0,0,0,0.34)]
-                    "
-                  />
+                  <div className="cover-elevated w-full max-w-md lg:max-w-lg">
+                    <motion.img
+                      src={coverFront}
+                      alt="Copertina album Tutto è già diverso"
+                      className="block w-full transition-shadow duration-500 will-change-transform"
+                      style={{
+                        y: prefersReducedMotion ? 0 : heroCoverY,
+                      }}
+                    />
+                  </div>
                 </button>
               </div>
             </div>
-          </section>
-        </div>
-
-        {/* =========================================================
-            2. SEZIONE FULL WIDTH CON SFONDO
-            Questa sezione esce dal contenitore centrale e prende
-            tutta la larghezza dello schermo
-           ========================================================= */}
-          <section
-              ref={highlightRef}
-              className={`
-                relative
-                w-screen
-                left-1/2
-                right-1/2
-                -ml-[50vw]
-                -mr-[50vw]
-                h-[420px] md:h-[600px] lg:h-[750px]
-                overflow-hidden
-                my-10 md:my-16
-                flex items-center justify-center
-                transition-all duration-1000 ease-out
-                ${
-                  highlightVisible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }
-              `}
+          </motion.div>
+        </section>
+        {/* =======================================================
+            2. CD APERTO — immagine full (al posto sezione Giada)
+           ======================================================= */}
+        <section
+          ref={(el) => {
+            sectionRefs.current[1] = el;
+          }}
+          className={`relative flex min-h-[min(72svh,640px)] items-center justify-center overflow-hidden bg-[#ebe6df] px-4 py-14 sm:py-16 md:min-h-[85svh] md:py-20 ${sectionLayerClass(
+            1
+          )}`}
+        >
+          <motion.div className="mx-auto w-full max-w-5xl" {...scrollReveal}>
+            <button
+              type="button"
+              onClick={() => setOpenImage(discoa)}
+              className="cover-elevated mx-auto block w-full max-w-4xl cursor-zoom-in"
+              aria-label="Ingrandisci foto CD jewel case"
             >
-              {/* immagine di background */}
               <img
-                src={sfondo}
-                alt="Sfondo emozionale album"
-                className="absolute inset-0 w-full h-full object-cover"
+                src={discoa}
+                alt="Jewel case con CD aperto"
+                className="block h-auto w-full object-contain"
               />
-
-              {/* overlay per migliorare la leggibilità del testo */}
-              <div className="absolute inset-0 bg-black/20" />
-
-              {/* contenuto centrale */}
-              <div className="relative z-10 max-w-4xl px-6 text-center">
-                <span className="text-[11px] uppercase tracking-[0.3em] text-[#92484f] block mb-6">
-                  Brano in evidenza · Giada
-                </span>
-
-                <blockquote
-                  className="
-                    font-serif
-                    text-2xl md:text-4xl lg:text-5xl
-                    italic
-                    text-[#92484f]
-                    leading-[1.6]
-                    drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]
-                  "
-                >
-                  “E non c’è niente da capire, se non il tempo che ci passa sopra,
-                  lasciando il segno di una vita intera…”
-                </blockquote>
-
-                <div className="mt-10 w-24 h-px bg-[#92484f]/40 mx-auto" />
-              </div>
-            </section>
-        {/* il resto del contenuto torna dentro il contenitore centrale */}
-        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
-{/* =========================================================
-    3. TRACKLIST + COPERTINA + ARTICOLO
-    Nuovo layout bilanciato:
-    - sopra: tracklist a sinistra e copertina a destra
-    - sotto: articolo giornale a tutta larghezza
-   ========================================================= */}
-          <section className="pt-20 pb-32">
-            {/* BLOCCO SUPERIORE */}
-            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto] gap-24 items-start">
-              {/* colonna sinistra: tracklist */}
-              <div ref={tracklistBlockRef}>
-                <header className="mb-8">
-                  <h2 className="font-serif text-4xl text-[#725a43] mb-2">
-                    Tracklist
-                  </h2>
-                  <div className="h-0.5 w-12 bg-[#725a43]/30" />
-                </header>
-
-                <ul className="text-gray-900 space-y-4">
-                  {tracks.map((track, index) => (
-                    <TrackItem
-                      key={track.title}
-                      index={index}
-                      title={track.title}
-                      duration={track.duration}
-                      activeTrackIndex={activeTrackIndex}
-                      setActiveTrackIndex={setActiveTrackIndex}
-                    />
-                  ))}
-                </ul>
-              </div>
-
-              {/* colonna destra: copertina intera, proporzioni corrette */}
-              <div className="flex justify-center lg:justify-end">
+            </button>
+          </motion.div>
+        </section>
+        {/* =======================================================
+            3. TRACKLIST
+           ======================================================= */}
+        <section
+          ref={(el) => {
+            sectionRefs.current[2] = el;
+          }}
+          className={`py-24 md:py-32 bg-[#f3efe6] ${sectionLayerClass(2)}`}
+        >
+          <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6 md:px-10 lg:px-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+              
+              {/* Lista brani */}
+              <motion.div {...scrollReveal}>
+                <h2 className="font-serif text-3xl md:text-4xl text-gray-900 mb-4">
+                  Tracklist
+                </h2>
+                <div className="h-px w-12 bg-[#92484f] mb-10" />
+                {prefersReducedMotion ? (
+                  <ul className="space-y-4">
+                    {tracks.map((track, index) => (
+                      <li
+                        key={track.title}
+                        className="flex justify-between items-baseline gap-4 group cursor-default"
+                        onMouseEnter={() => setActiveTrackIndex(index)}
+                        onMouseLeave={() => setActiveTrackIndex(null)}
+                      >
+                        <span
+                          className={`font-serif text-lg md:text-xl transition-colors duration-300 ${
+                            activeTrackIndex === index
+                              ? "text-[#92484f]"
+                              : "text-gray-900"
+                          }`}
+                        >
+                          {String(index + 1).padStart(2, "0")}. {track.title}
+                        </span>
+                        <span
+                          className={`text-sm italic transition-colors duration-300 ${
+                            activeTrackIndex === index
+                              ? "text-[#92484f]/70"
+                              : "text-gray-400"
+                          }`}
+                        >
+                          {track.duration}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <motion.ul
+                    className="space-y-4"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-48px 0px", amount: 0.2 }}
+                    variants={tracklistContainerVariants}
+                  >
+                    {tracks.map((track, index) => (
+                      <motion.li
+                        key={track.title}
+                        className="flex justify-between items-baseline gap-4 group cursor-default"
+                        variants={tracklistItemVariants}
+                        onMouseEnter={() => setActiveTrackIndex(index)}
+                        onMouseLeave={() => setActiveTrackIndex(null)}
+                      >
+                        <span
+                          className={`font-serif text-lg md:text-xl transition-colors duration-300 ${
+                            activeTrackIndex === index
+                              ? "text-[#92484f]"
+                              : "text-gray-900"
+                          }`}
+                        >
+                          {String(index + 1).padStart(2, "0")}. {track.title}
+                        </span>
+                        <span
+                          className={`text-sm italic transition-colors duration-300 ${
+                            activeTrackIndex === index
+                              ? "text-[#92484f]/70"
+                              : "text-gray-400"
+                          }`}
+                        >
+                          {track.duration}
+                        </span>
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                )}
+              </motion.div>
+              {/* Retro copertina */}
+              <motion.div
+                className="flex justify-center lg:justify-end"
+                {...scrollReveal}
+                transition={
+                  prefersReducedMotion
+                    ? undefined
+                    : {
+                        duration: 0.65,
+                        ease: easeOut,
+                        delay: 0.12,
+                      }
+                }
+              >
                 <button
                   type="button"
                   onClick={() => setOpenImage(coverBack)}
-                  className="group cursor-zoom-in flex justify-center"
+                  className="cursor-zoom-in"
                 >
-                  <img
-                    className="
-                      w-full
-                      max-w-[630px]
-                      h-auto
-                      object-contain
-                      shadow-[0_25px_60px_rgba(0,0,0,0.16)]
-                      transition-transform duration-300
-                    "
-                    alt="Retro copertina album"
-                    src={coverBack}
-                  />
+                  <div className="cover-elevated w-full max-w-md">
+                    <img
+                      src={coverBack}
+                      alt="Retro copertina"
+                      className="block w-full transition-shadow duration-500"
+                    />
+                  </div>
+                </button>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+        {/* =======================================================
+            4. CREDITI
+           ======================================================= */}
+        <section
+          ref={(el) => {
+            sectionRefs.current[3] = el;
+          }}
+          className={`py-20 md:py-28 bg-[#eae6de] ${sectionLayerClass(3)}`}
+        >
+          <motion.div
+            className="mx-auto w-full min-w-0 max-w-7xl px-4 md:px-10 lg:px-4"
+            {...scrollReveal}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-y-12 lg:gap-x-20">
+              {/* Immagine crediti */}
+              <div className="w-full flex items-start lg:justify-start">
+                <button
+                  type="button"
+                  onClick={() => setOpenImage(credits)}
+                  className="cursor-zoom-in w-full h-full"
+                  aria-label="Guarda immagine crediti"
+                >
+                  <div className="cover-elevated w-full max-w-none overflow-hidden rounded">
+                    <img
+                      src={credits}
+                      alt="Crediti album"
+                      className="block h-auto w-full"
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
                 </button>
               </div>
-            </div>
 
-
-          {/* =========================================================
-              4. CREDITI
-             ========================================================= */}
-          <section className="py-24 bg-[#eae8e4] relative mt-32 mb-16">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center px-6 md:px-12">
-              {/* testi crediti */}
-              <div className="order-2 md:order-1">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-sm">
-                  {creditGroups.map((group) => (
-                    <div key={group.title} className="space-y-4">
-                      <h4 className="uppercase tracking-widest text-[#92484f] text-xs">
-                        {group.title}
-                      </h4>
-                      <div className="font-serif text-gray-700 leading-[1.8]">
-                        {group.lines.map((line) => (
-                          <p key={line}>{line}</p>
-                        ))}
+              {/* Testo crediti: sinistra titoli; destra studio/produzione senza titoli */}
+              <div className="flex min-w-0 flex-col justify-stretch md:px-10 lg:px-12">
+                <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 sm:gap-x-10 lg:gap-x-14">
+                  <div className="space-y-6 sm:space-y-7">
+                    {creditGroups.map((group) => (
+                      <div key={group.title}>
+                        <h4 className="text-[13px] md:text-sm uppercase tracking-[0.19em] text-[#92484f] font-semibold mb-2 md:mb-2.5">
+                          {group.title}
+                        </h4>
+                        <div className="space-y-0.5 break-words text-[1rem] font-[450] leading-snug text-[#222326] md:text-base">
+                          {group.lines.map((line) => (
+                            <p key={line} className="whitespace-pre-line">
+                              {line}
+                            </p>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* immagine crediti */}
-              <div className="order-1 md:order-2">
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() => setOpenImage(credits)}
-                    className="w-full cursor-zoom-in"
-                  >
-                    <img
-                      className="w-full aspect-video object-cover shadow-inner opacity-85"
-                      alt="Crediti album"
-                      src={credits}
-                    />
-                  </button>
-
-                  <div className="absolute -top-4 -right-4 w-24 h-24 bg-[#92484f] rounded-full flex items-center justify-center text-white font-serif italic transform rotate-12 shadow-lg">
-                    Credits
+                    ))}
+                  </div>
+                  <div className="space-y-4 break-words text-[1rem] font-[450] leading-relaxed text-[#222326] md:text-base sm:pt-0.5">
+                    {creditStudioBlocks.map((block) => (
+                      <p key={block}>{block}</p>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
-          </section>
-
-{/********************************************************** 
-        Articolo giornale a tutta larghezza, con immagine cliccabile per ingrandiree didascalia
-         **********************************************************/}
-            {/* BLOCCO INFERIORE: articolo giornale */}
-            <div className="mt-20">
-              <div className="relative py-4 md:py-6">
-                <div
-                  className="absolute inset-0 pointer-events-none opacity-[0.03]"
-                  style={{
-                    backgroundImage:
-                      "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")",
-                  }}
-                />
-
-                <h2 className="font-serif text-3xl text-[#92484f] mb-6">
-                  Uscita e risonanza
-                </h2>
-
-                <p className="text-lg text-gray-700 leading-relaxed mb-8 font-serif max-w-3xl">
-                  L’album arriva in un momento importante del percorso artistico
-                  di Emanuele Monetti e trova spazio anche sulla stampa,
-                  lasciando una testimonianza concreta della sua identità, della
-                  sua scrittura e del valore del progetto.
-                </p>
-
-                <button
-                    type="button"
-                    onClick={() => setOpenImage(articolo)}
-                    className="relative group mx-auto block w-fit text-left cursor-zoom-in"
-                  >
-                    <img
-                      className="
-                        block
-                        max-w-full
-                        h-auto
-                        shadow-[0_30px_70px_rgba(0,0,0,0.22)]
-                        transition-transform duration-700
-                        group-hover:scale-[1.01]
-                      "
-                      alt="Articolo di giornale dedicato all'album"
-                      src={articolo}
-                    />
-                  </button>
-
-                <p className="text-[10px] uppercase tracking-widest mt-4 text-gray-500/70">
-                  Rassegna stampa · La Nuova
-                </p>
-              </div>
-            </div>
-          </section>
-          {/* =========================================================
-              5. VISUAL ARCHIVE
-             ========================================================= */}
-          <section className="py-28">
-            <header className="mb-20 text-center">
-              <h2 className="font-serif text-4xl text-[#725a43] italic">
-                Visual Archive
-              </h2>
-              <p className="text-sm text-gray-500 uppercase tracking-[0.4em] mt-4">
-                Una memoria visiva del disco
-              </p>
-            </header>
-
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-              {/* immagine grande */}
-              <button
-                type="button"
-                onClick={() => setOpenImage(interno)}
-                className="md:col-span-8 group relative overflow-hidden aspect-[16/9] bg-[#efeeea] cursor-zoom-in"
-              >
-                <img
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
-                  alt="Interno album"
-                  src={interno}
-                />
-                <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-widest">
-                  Interno
-                </div>
-              </button>
-
-              {/* label */}
-              <button
-                type="button"
-                onClick={() => setOpenImage(label)}
-                className="md:col-span-4 group relative overflow-hidden aspect-[3/4] bg-[#efeeea] cursor-zoom-in"
-              >
-                <img
-                  className="w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-1000"
-                  alt="Label del disco"
-                  src={label}
-                />
-                <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-widest">
-                  Label
-                </div>
-              </button>
-
-              {/* immagine panoramica finale */}
-              <button
-                type="button"
-                onClick={() => setOpenImage(coverFront)}
-                className="md:col-span-12 group relative overflow-hidden aspect-[21/9] bg-[#efeeea] mt-2 md:mt-8 cursor-zoom-in"
-              >
-                <img
-                  className="w-full h-full object-cover opacity-80"
-                  alt="Copertina album in formato panoramico"
-                  src={coverFront}
-                />
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <h3 className="font-serif text-4xl md:text-6xl text-white/35 select-none italic">
-                    L’archivio vivente
-                  </h3>
-                </div>
-              </button>
-            </div>
-          </section>
-        </div>
+          </motion.div>
+        </section>
+        {/* =======================================================
+            5. RASSEGNA STAMPA
+           ======================================================= */}
+        <section
+          ref={(el) => {
+            sectionRefs.current[4] = el;
+          }}
+          className={`py-24 md:py-32 bg-[#f3efe6] ${sectionLayerClass(4)}`}
+        >
+          <motion.div
+            className="mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 md:px-10 lg:px-16"
+            {...scrollReveal}
+          >
+            <p className="font-serif text-lg md:text-xl text-gray-800 text-center leading-relaxed mb-10 max-w-3xl mx-auto">
+              Articolo di Alessandro Torre dalla &ldquo;NUOVA di Venezia Mestre&rdquo; del
+              10.10.2014
+            </p>
+            <button
+              type="button"
+              onClick={() => setOpenImage(articolo)}
+              className="cursor-zoom-in block w-full"
+            >
+              <img
+                src={articolo}
+                alt="Articolo La Nuova"
+                className="w-full h-auto shadow-[0_30px_70px_rgba(0,0,0,0.2)] hover:shadow-[0_40px_90px_rgba(0,0,0,0.25)] transition-shadow duration-500"
+              />
+            </button>
+          </motion.div>
+        </section>
       </section>
-
-      {/* =========================================================
+      {/* =======================================================
           MODAL IMMAGINI
-          Si apre quando clicchi una delle immagini della pagina
-         ========================================================= */}
+         ======================================================= */}
+      {currentPlayer && (
+        <BottomYouTubePlayer
+          player={currentPlayer}
+          onClose={() => setCurrentPlayer(null)}
+        />
+      )}
+
       {openImage && (
         <div
-          className="fixed inset-0 z-[100] bg-black/88 backdrop-blur-sm flex items-center justify-center p-4 cursor-zoom-out"
+          className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-black/90 p-4 supports-[backdrop-filter]:backdrop-blur-sm"
           onClick={() => setOpenImage(null)}
         >
           <div
-            className="relative max-w-6xl w-full max-h-[92vh] overflow-auto"
+            className="relative max-w-6xl w-full max-h-[90vh] overflow-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               type="button"
               onClick={() => setOpenImage(null)}
-              className="absolute top-4 right-4 z-20 rounded-full bg-white/92 px-4 py-2 text-xs uppercase tracking-[0.2em] text-gray-900 shadow-lg"
+              className="absolute right-4 top-[max(1rem,env(safe-area-inset-top,0px))] z-20 inline-flex min-h-[44px] items-center rounded-full bg-white/90 px-5 py-2.5 text-xs uppercase tracking-[0.2em] text-gray-900 shadow-lg transition-colors hover:bg-white"
             >
               Chiudi
             </button>
-
-            <div className="bg-white overflow-hidden shadow-2xl">
-              <img
-                src={openImage}
-                alt="Dettaglio album"
-                className="w-full h-auto object-contain"
-              />
-            </div>
+            <img
+              src={openImage}
+              alt="Dettaglio"
+              className="h-auto max-h-[min(88svh,100%)] w-full max-w-full object-contain"
+            />
           </div>
         </div>
       )}
