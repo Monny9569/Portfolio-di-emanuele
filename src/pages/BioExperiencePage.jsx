@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useSyncExternalStore } from "react";
 import { motion, useMotionTemplate, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import Navbar from "../components/Navbar";
@@ -370,61 +370,84 @@ const bioFinaleGrainStyle = {
   backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
 };
 
+const DESKTOP_MEDIA_QUERY = "(min-width: 768px)";
+
+function subscribeDesktopViewport(callback) {
+  const mediaQuery = window.matchMedia(DESKTOP_MEDIA_QUERY);
+  mediaQuery.addEventListener("change", callback);
+  return () => mediaQuery.removeEventListener("change", callback);
+}
+
+function getDesktopViewportSnapshot() {
+  return typeof window !== "undefined" &&
+    window.matchMedia(DESKTOP_MEDIA_QUERY).matches;
+}
+
+function getDesktopViewportServerSnapshot() {
+  return false;
+}
+
 export default function BioExperiencePage() {
+  const isDesktop = useSyncExternalStore(
+    subscribeDesktopViewport,
+    getDesktopViewportSnapshot,
+    getDesktopViewportServerSnapshot,
+  );
+
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
-    const syncSnap = () => {
-      document.documentElement.classList.toggle("bio-experience-snap", !mq.matches);
-    };
-    syncSnap();
-    mq.addEventListener("change", syncSnap);
+    const root = document.documentElement;
+    root.classList.toggle("bio-experience-snap", isDesktop);
+
     return () => {
-      mq.removeEventListener("change", syncSnap);
-      document.documentElement.classList.remove("bio-experience-snap");
+      root.classList.remove("bio-experience-snap");
     };
-  }, []);
+  }, [isDesktop]);
 
   useLayoutEffect(() => {
     const root = document.documentElement;
+    const clearDesktopLayoutState = () => {
+      root.style.removeProperty("--bio-snap-pad-top");
+      root.style.removeProperty("--bio-viewport-scene");
+      root.style.removeProperty("--bio-viewport-scene-dvh");
+    };
+
+    if (!isDesktop) {
+      clearDesktopLayoutState();
+      return clearDesktopLayoutState;
+    }
+
     const measure = () => {
       const header = document.querySelector(".site-header");
       const h = header?.getBoundingClientRect().height ?? 72;
       const pad = Math.ceil(h + 8);
       root.style.setProperty("--bio-snap-pad-top", `${pad}px`);
-      const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-      if (isDesktop) {
-        root.style.setProperty("--bio-viewport-scene", "100svh");
-        root.style.removeProperty("--bio-viewport-scene-dvh");
-      } else {
-        root.style.removeProperty("--bio-viewport-scene");
-        root.style.removeProperty("--bio-viewport-scene-dvh");
-      }
+      root.style.setProperty("--bio-viewport-scene", "100svh");
+      root.style.removeProperty("--bio-viewport-scene-dvh");
     };
+
     measure();
     const header = document.querySelector(".site-header");
     const ro = header ? new ResizeObserver(measure) : null;
     if (header && ro) ro.observe(header);
     window.addEventListener("resize", measure);
+
     return () => {
       ro?.disconnect();
       window.removeEventListener("resize", measure);
-      root.style.removeProperty("--bio-snap-pad-top");
-      root.style.removeProperty("--bio-viewport-scene");
-      root.style.removeProperty("--bio-viewport-scene-dvh");
+      clearDesktopLayoutState();
     };
-  }, []);
+  }, [isDesktop]);
 
   const sceneViewport = { once: true, amount: 0.22, margin: "-8% 0px -8% 0px" };
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#0a0908] text-[#ebe6dc]">
-      {grainLayer}
+      {isDesktop ? grainLayer : null}
       <Navbar />
 
-      <BioMobileExperience />
-
-      <div className="relative z-10 hidden md:block">
-      <main>
+      {isDesktop ? (
+        <div className="relative z-10">
+        <main>
         {/* Scena I — frame cinematografico unico: media full-bleed + testo integrato */}
         <motion.section
           id="bio-scene-1"
@@ -1006,8 +1029,11 @@ export default function BioExperiencePage() {
             <BioSceneScrollCue sceneIndex={10} footerFade={false} />
           </div>
         </motion.section>
-      </main>
-      </div>
+        </main>
+        </div>
+      ) : (
+        <BioMobileExperience />
+      )}
 
       <div className="relative z-10 [scroll-snap-align:none] border-t border-white/[0.06] bg-[#0a0908]">
         <Footer />
