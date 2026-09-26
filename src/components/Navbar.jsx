@@ -98,7 +98,7 @@ export default function Navbar() {
   const heroLegacyBar = isOverHero && !backdropOk;
 
   const headerSurface = heroGlass
-    ? "border-b border-white/10 bg-white/10 shadow-lg shadow-black/10 backdrop-blur-xl"
+    ? "border-b border-white/10 bg-white/10 shadow-lg shadow-black/10 md:backdrop-blur-xl"
     : heroLegacyBar
       ? "border-b border-stone-400/25 bg-[#efede6]/95 shadow-[0_6px_28px_rgba(0,0,0,0.07)]"
       : "border-b border-black/5 bg-stone-200/90 shadow-[0_8px_28px_rgba(0,0,0,0.05)] backdrop-blur-md";
