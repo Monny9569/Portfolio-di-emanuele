@@ -9,7 +9,7 @@ export default function IreneFornaciari() {
   const [openImage, setOpenImage] = useState(null);
 
   return (
-    <main className="project-page min-h-[100svh] w-full min-w-0 overflow-x-hidden bg-[#f3efe6] text-gray-900 pb-[max(1.25rem,env(safe-area-inset-bottom,0px))]">
+    <main className="project-page min-h-[100svh] w-full min-w-0 overflow-x-clip bg-[#f3efe6] text-gray-900 pb-[max(1.25rem,env(safe-area-inset-bottom,0px))]">
       <section className="mx-auto w-full min-w-0 max-w-[1300px] px-4 py-14 sm:px-6 sm:py-16 md:px-10 md:py-20 lg:px-16">
         
         {/* TORNA INDIETRO */}

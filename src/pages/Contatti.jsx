@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-// eslint-disable-next-line no-unused-vars -- motion.* (Framer Motion)
 import { AnimatePresence, motion } from "framer-motion";
 import { Check } from "lucide-react";
 import Navbar from "../components/Navbar";
@@ -11,6 +10,7 @@ const initialForm = {
   email: "",
   oggetto: "",
   messaggio: "",
+  website: "", // honeypot anti-bot: deve restare vuoto
 };
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -103,6 +103,7 @@ export default function Contatti() {
       email: form.email.trim(),
       subject: form.oggetto.trim(),
       message: form.messaggio.trim(),
+      website: form.website,
     };
 
     try {
@@ -146,10 +147,10 @@ export default function Contatti() {
   };
 
   return (
-    <div className="min-h-[100svh] w-full min-w-0 overflow-x-hidden bg-paper font-sans text-gray-900">
+    <div className="min-h-[100svh] w-full min-w-0 overflow-x-clip bg-paper font-sans text-gray-900">
       <Navbar />
 
-      <main className="page-with-bottom-player relative overflow-x-hidden pt-[calc(var(--nav-height-current,64px)+1.25rem)] md:pt-36">
+      <main className="page-with-bottom-player relative overflow-x-clip pt-[calc(var(--nav-height-current,64px)+1.25rem)] md:pt-36">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_92%_at_50%_-8%,rgba(255,254,250,0.95)_0%,rgba(246,241,231,0.95)_46%,rgba(237,228,211,0.96)_100%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(172,138,92,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(172,138,92,0.06)_1px,transparent_1px)] bg-size-[28px_28px] opacity-50" />
         <div
@@ -233,6 +234,16 @@ export default function Contatti() {
                     transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
                     className="rounded-4xl border border-[#d5c7b0] bg-[#fcf8ef]/90 p-5 shadow-[0_16px_48px_rgba(41,28,20,0.12)] ring-1 ring-white/70 sm:p-6 md:p-8 md:backdrop-blur-[2px]"
                   >
+                    <input
+                      type="text"
+                      name="website"
+                      value={form.website}
+                      onChange={(e) => setForm((prev) => ({ ...prev, website: e.target.value }))}
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                    />
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                       <Field
                         id="nome"

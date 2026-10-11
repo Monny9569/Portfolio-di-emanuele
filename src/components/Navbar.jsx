@@ -321,7 +321,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 z-[120] flex min-h-0 max-w-[100vw] flex-col overflow-x-hidden overflow-y-auto overscroll-contain bg-paper will-change-[transform,opacity,filter] md:hidden"
+            className="fixed inset-0 z-[120] flex min-h-0 max-w-[100vw] flex-col overflow-x-clip overflow-y-auto overscroll-contain bg-paper will-change-[transform,opacity,filter] md:hidden"
             variants={menuOverlayVariants}
             initial="hidden"
             animate="show"

@@ -91,7 +91,31 @@ export default function CarnevaleArchivePreview({ variant = "paper" }) {
     setPortalEl(document.body);
   }, []);
 
+  // Il PDF (libreria + worker + parsing) viene caricato solo quando la card sta
+  // per entrare nel viewport: evita lavoro pesante durante lo scroll iniziale.
+  const [nearViewport, setNearViewport] = useState(false);
+
   useEffect(() => {
+    const el = thumbCanvasRef.current?.parentElement ?? thumbCanvasRef.current;
+    if (!el || !("IntersectionObserver" in window)) {
+      setNearViewport(true);
+      return undefined;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setNearViewport(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "600px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!nearViewport) return undefined;
     let cancelled = false;
 
     (async () => {
@@ -117,7 +141,7 @@ export default function CarnevaleArchivePreview({ variant = "paper" }) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [nearViewport]);
 
   const layoutLightbox = useCallback(async () => {
     if (!open || !pdfRef.current || !lightboxCanvasRef.current || !viewerScrollRef.current) return;
@@ -225,7 +249,7 @@ export default function CarnevaleArchivePreview({ variant = "paper" }) {
 
               <div
                 ref={viewerScrollRef}
-                className="flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden bg-[radial-gradient(100%_70%_at_50%_0%,rgba(48,42,36,0.35)_0%,#0e0c0b_72%)]"
+                className="flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-clip bg-[radial-gradient(100%_70%_at_50%_0%,rgba(48,42,36,0.35)_0%,#0e0c0b_72%)]"
               >
                 <div className="flex w-full flex-1 items-start justify-center px-2 pb-5 pt-14 sm:px-4 sm:pb-6 sm:pt-16">
                   <canvas

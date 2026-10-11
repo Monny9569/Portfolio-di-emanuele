@@ -7,9 +7,6 @@ import giada from "../assets/giada.jpeg";
 import tuttoegiadiversoBack from "../assets/tuttoegiadiversoback.jpg";
 import esseback from "../assets/esseback.jpg";
 
-import pressThumb from "../assets/press/dikdik-article-thumb.jpg";
-import pressFull from "../assets/press/dikdik-article-full.jpg";
-
 export const releases = [
   {
     date: "2024",

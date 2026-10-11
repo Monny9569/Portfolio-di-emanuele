@@ -132,6 +132,7 @@ export default function TuttoEGiaDiversoPage() {
   ];
   useEffect(() => {
     if (prefersReducedMotion) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reset una tantum quando il blur viene disattivato
       setBlurSectionIndex(null);
       return;
     }
@@ -193,7 +194,7 @@ export default function TuttoEGiaDiversoPage() {
           aria-hidden
         />
       )}
-      <section className="page-with-bottom-player min-h-[100svh] w-full min-w-0 overflow-x-hidden bg-[#f3efe6]">
+      <section className="page-with-bottom-player min-h-[100svh] w-full min-w-0 overflow-x-clip bg-[#f3efe6]">
         
         {/* =======================================================
             1. HERO
@@ -203,7 +204,7 @@ export default function TuttoEGiaDiversoPage() {
             sectionRefs.current[0] = el;
             heroSectionRef.current = el;
           }}
-          className={`relative flex min-h-[min(100svh,920px)] items-center overflow-x-hidden px-4 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-24 md:px-10 md:pt-28 lg:px-16 ${sectionLayerClass(0)}`}
+          className={`relative flex min-h-[min(100svh,920px)] items-center overflow-x-clip px-4 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-24 md:px-10 md:pt-28 lg:px-16 ${sectionLayerClass(0)}`}
         >
           <motion.div
             className="mx-auto w-full min-w-0 max-w-7xl"

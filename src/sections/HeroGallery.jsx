@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import piano from "../assets/piano.jpg";
 import canto from "../assets/canto.jpg";
@@ -6,70 +6,68 @@ import giada from "../assets/covergiada.jpg";
 import giadaTitle from "../assets/Cover Giada_titolo.png";
 import bio from "../assets/Bio.jpg";
 
+// Durata della dissolvenza tra due slide
+const TRANSITION_MS = 2000;
+
+// Tempo totale prima del cambio automatico
+const AUTOPLAY_MS = 9000;
+
+// Configurazione slide
+const slides = [
+  {
+    title: "Giada",
+    alt: "Giada, copertina del singolo di Emanuele Monetti",
+    subtitle: "  ",
+    image: giada,
+    label: "Ultima uscita",
+    overlayTitle: giadaTitle,
+    overlayText: 'Tratto dall’album “Tutto già diverso”',
+    focusX: "50%",
+    focusY: "42%",
+    mode: "auto",
+    extraZoom: 1.02,
+    kenBurnsFrom: 1.02,
+    kenBurnsTo: 1.08,
+  },
+  {
+    title: "",
+    subtitle: "",
+    image: piano,
+    label: "",
+    focusX: "50%",
+    focusY: "50%",
+    mode: "auto",
+    extraZoom: 1.0,
+    kenBurnsFrom: 1.01,
+    kenBurnsTo: 1.06,
+  },
+  {
+    title: "",
+    subtitle: "",
+    image: canto,
+    label: "",
+    focusX: "50%",
+    focusY: "28%",
+    mode: "auto",
+    extraZoom: 1.01,
+    kenBurnsFrom: 1.03,
+    kenBurnsTo: 1.09,
+  },
+  {
+    title: "",
+    subtitle: "",
+    image: bio,
+    label: "",
+    focusX: "100%",
+    focusY: "35%",
+    mode: "auto",
+    extraZoom: 1.0,
+    kenBurnsFrom: 1.0,
+    kenBurnsTo: 1.05,
+  },
+];
+
 export default function HeroGallery() {
-  // Durata della dissolvenza tra due slide
-  const TRANSITION_MS = 2000;
-
-  // Tempo totale prima del cambio automatico
-  const AUTOPLAY_MS = 9000;
-
-  // Durata del movimento lento dell'immagine
-  const KEN_BURNS_MS = 9000;
-
-  // Configurazione slide
-  const slides = [
-    {
-      title: "Giada",
-      subtitle: "  ",
-      image: giada,
-      label: "Ultima uscita",
-      overlayTitle: giadaTitle,
-      overlayText: 'Tratto dall’album “Tutto già diverso”',
-      focusX: "50%",
-      focusY: "42%",
-      mode: "auto",
-      extraZoom: 1.02,
-      kenBurnsFrom: 1.02,
-      kenBurnsTo: 1.08,
-    },
-    {
-      title: "",
-      subtitle: "",
-      image: piano,
-      label: "",
-      focusX: "50%",
-      focusY: "50%",
-      mode: "auto",
-      extraZoom: 1.0,
-      kenBurnsFrom: 1.01,
-      kenBurnsTo: 1.06,
-    },
-    {
-      title: "",
-      subtitle: "",
-      image: canto,
-      label: "",
-      focusX: "50%",
-      focusY: "28%",
-      mode: "auto",
-      extraZoom: 1.01,
-      kenBurnsFrom: 1.03,
-      kenBurnsTo: 1.09,
-    },
-    {
-      title: "",
-      subtitle: "",
-      image: bio,
-      label: "",
-      focusX: "100%",
-      focusY: "35%",
-      mode: "auto",
-      extraZoom: 1.0,
-      kenBurnsFrom: 1.0,
-      kenBurnsTo: 1.05,
-    },
-  ];
-
   // Slide attuale
   const [current, setCurrent] = useState(0);
 
@@ -177,7 +175,7 @@ export default function HeroGallery() {
   };
 
   // Avvia il crossfade tra slide
-  const goToSlide = (newIndex) => {
+  const goToSlide = useCallback((newIndex) => {
     if (newIndex === current || isTransitioning) return;
 
     // Salva la vecchia slide per tenerla sotto durante la dissolvenza
@@ -203,7 +201,7 @@ export default function HeroGallery() {
       setIsTransitioning(false);
       setFadePhase("idle");
     }, TRANSITION_MS);
-  };
+  }, [current, isTransitioning]);
 
   // Cambio automatico
   useEffect(() => {
@@ -213,7 +211,7 @@ export default function HeroGallery() {
     }, AUTOPLAY_MS);
 
     return () => clearInterval(interval);
-  }, [current, isTransitioning, slides.length]);
+  }, [current, goToSlide]);
 
   // Render di una slide completa
   const renderSlideLayer = (slide, index, type) => {
@@ -250,26 +248,15 @@ export default function HeroGallery() {
             - poi continua col movimento lento */}
         <img
           src={slide.image}
-          alt={slide.title || "slide"}
-          className={`absolute inset-0 h-full w-full ${fitClass} will-change-transform`}
+          alt={slide.alt || ""}
+          className={`absolute inset-0 h-full w-full ${fitClass}`}
           style={{
             objectPosition: config.objectPosition,
-
-            // Importantissimo: lo zoom iniziale è già presente al primo frame
             transform: `scale(${config.startScale})`,
-
-            // Animazione lenta continua
-            animationName: "kenburns",
-            animationDuration: `${KEN_BURNS_MS}ms`,
-            animationTimingFunction: "ease-out",
-            animationFillMode: "forwards",
-
-            // Variabili per il keyframes
-            "--kb-from": config.startScale,
-            "--kb-to": config.endScale,
-
-            backfaceVisibility: "hidden",
           }}
+          decoding="async"
+          loading={index === 0 ? "eager" : "lazy"}
+          fetchPriority={index === 0 && isCurrent ? "high" : undefined}
         />
 
         {/* Overlay per profondità e leggibilità */}
@@ -283,7 +270,7 @@ export default function HeroGallery() {
             {slide.overlayTitle && (
               <img
                 src={slide.overlayTitle}
-                alt="Titolo"
+                alt="Giada"
                 className="ml-auto h-auto w-full max-w-[220px] drop-shadow-[0_12px_40px_rgba(0,0,0,0.4)] sm:max-w-[260px] md:max-w-[360px] md:w-[360px] lg:w-[420px]"
               />
             )}
@@ -305,9 +292,9 @@ export default function HeroGallery() {
               )}
 
               {slide.title && (
-                <h1 className="font-serif text-4xl leading-none text-white italic sm:text-5xl md:text-7xl lg:text-8xl">
+                <h2 className="font-serif text-4xl leading-none text-white italic sm:text-5xl md:text-7xl lg:text-8xl">
                   {slide.title}
-                </h1>
+                </h2>
               )}
 
               {slide.overlayText && (
@@ -330,23 +317,6 @@ export default function HeroGallery() {
 
   return (
     <section id="hero-gallery" className="relative pb-0">
-      {/*
-      }
-      <style>
-        {`
-          /* Movimento lento dell'immagine */
-  /*        @keyframes kenburns {
-  /*          0% {
- /*             transform: scale(var(--kb-from));
- /*           }
-/*</section>            100% {
-/*              transform: scale(var(--kb-to));
-/*            } 
-/*          }
-/*        `}
-/*      </section>    
-      
-*/      } 
       <div className="relative min-h-[100svh] max-h-[100svh] overflow-hidden bg-black">
         {/* Vecchia slide: resta sotto e svanisce */}
         {previous !== null && renderSlideLayer(slides[previous], previous, "previous")}

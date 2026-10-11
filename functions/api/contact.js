@@ -101,6 +101,11 @@ async function handlePost(request, env) {
       return jsonResponse({ success: false, error: "Invalid payload" }, 400);
     }
 
+    // Honeypot: i bot compilano il campo nascosto. Rispondiamo "ok" senza inviare nulla.
+    if (typeof payload.website === "string" && payload.website.trim() !== "") {
+      return jsonResponse({ success: true });
+    }
+
     const name = typeof payload.name === "string" ? payload.name.trim() : "";
     const email = typeof payload.email === "string" ? payload.email.trim() : "";
     const subjectRaw =
@@ -193,13 +198,10 @@ export async function onRequest(context) {
   const { request, env } = context;
 
   if (request.method === "OPTIONS") {
+    // Il form usa la stessa origine: nessun header CORS permissivo.
     return new Response(null, {
       status: 204,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
-      },
+      headers: { Allow: "POST, OPTIONS" },
     });
   }
 

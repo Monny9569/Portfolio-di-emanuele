@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Privacy() {
   return (
-    <main className="min-h-[100svh] w-full overflow-x-hidden bg-paper text-gray-900">
+    <main className="min-h-[100svh] w-full overflow-x-clip bg-paper text-gray-900">
       <section className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 lg:px-16 py-16 sm:py-20 md:py-24">
         <div className="mb-12 pb-6 border-b border-[#e6e1d6]">
           <Link

@@ -29,15 +29,6 @@ const sceneSection = {
   },
 };
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 26 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1.12, ease: easeCinema },
-  },
-};
-
 const fadeSlow = {
   hidden: { opacity: 0 },
   visible: {
@@ -343,7 +334,7 @@ const bioSceneStage =
   "bio-scene-stage relative md:flex md:min-h-0 md:flex-1 md:flex-col md:overflow-hidden";
 
 const bioSceneFrame =
-  "relative box-border min-h-[var(--bio-viewport-scene,100svh)] overflow-x-hidden md:flex md:h-[var(--bio-viewport-scene,100svh)] md:max-h-[var(--bio-viewport-scene,100svh)] md:min-h-0 md:flex-col md:overflow-hidden";
+  "relative box-border min-h-[var(--bio-viewport-scene,100svh)] overflow-x-clip md:flex md:h-[var(--bio-viewport-scene,100svh)] md:max-h-[var(--bio-viewport-scene,100svh)] md:min-h-0 md:flex-col md:overflow-hidden";
 
 const bioSceneFill =
   "relative z-10 w-full md:flex md:min-h-0 md:flex-1 md:flex-col md:overflow-hidden";
@@ -441,7 +432,7 @@ export default function BioExperiencePage() {
   const sceneViewport = { once: true, amount: 0.22, margin: "-8% 0px -8% 0px" };
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#0a0908] text-[#ebe6dc]">
+    <div className="relative min-h-screen overflow-x-clip bg-[#0a0908] text-[#ebe6dc]">
       {isDesktop ? grainLayer : null}
       <Navbar />
 
@@ -455,7 +446,7 @@ export default function BioExperiencePage() {
           whileInView="visible"
           viewport={sceneViewport}
           variants={sceneSection}
-          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-hidden`}
+          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-clip`}
         >
           <div className={bioSceneStage}>
             <motion.div
@@ -507,7 +498,7 @@ export default function BioExperiencePage() {
           whileInView="visible"
           viewport={sceneViewport}
           variants={sceneSection}
-          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-hidden`}
+          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-clip`}
         >
           <div className={bioSceneStage}>
             <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-black">
@@ -570,7 +561,7 @@ export default function BioExperiencePage() {
           whileInView="visible"
           viewport={sceneViewport}
           variants={sceneSection}
-          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-hidden bg-[#0a0807]`}
+          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-clip bg-[#0a0807]`}
         >
           <div className={bioSceneStage}>
             <ParallaxSceneBg
@@ -629,7 +620,7 @@ export default function BioExperiencePage() {
           whileInView="visible"
           viewport={sceneViewport}
           variants={sceneSection}
-          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-hidden bg-[#060504]`}
+          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-clip bg-[#060504]`}
         >
           <div className={bioSceneStage}>
             <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-black">
@@ -681,7 +672,7 @@ export default function BioExperiencePage() {
           whileInView="visible"
           viewport={sceneViewport}
           variants={sceneSection}
-          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-hidden bg-[#060504]`}
+          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-clip bg-[#060504]`}
         >
           <div className={bioSceneStage}>
             <div
@@ -750,7 +741,7 @@ export default function BioExperiencePage() {
           whileInView="visible"
           viewport={sceneViewport}
           variants={fadeSlow}
-          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-hidden`}
+          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-clip`}
         >
           <motion.div className={bioSceneStage}>
             <motion.div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -818,7 +809,7 @@ export default function BioExperiencePage() {
           whileInView="visible"
           viewport={sceneViewport}
           variants={fadeSlow}
-          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-hidden`}
+          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-clip`}
         >
           <div className={bioSceneStage}>
             <div className="pointer-events-none absolute inset-0 z-0">
@@ -880,7 +871,7 @@ export default function BioExperiencePage() {
           whileInView="visible"
           viewport={sceneViewport}
           variants={sceneSection}
-          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-hidden bg-linear-to-b from-[#0a0908] via-[#0f0d0b] to-[#14110e]`}
+          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-clip bg-linear-to-b from-[#0a0908] via-[#0f0d0b] to-[#14110e]`}
         >
           <div className={bioSceneStage}>
             <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-px bg-linear-to-r from-transparent via-[#c4a574]/35 to-transparent" />
@@ -927,7 +918,7 @@ export default function BioExperiencePage() {
           whileInView="visible"
           viewport={sceneViewport}
           variants={sceneSection}
-          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-hidden border-t border-white/[0.06] bg-[#0a0b0e]`}
+          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-clip border-t border-white/[0.06] bg-[#0a0b0e]`}
         >
           <div className={bioSceneStage}>
             <ParallaxEsseArt
@@ -975,7 +966,7 @@ export default function BioExperiencePage() {
           whileInView="visible"
           viewport={sceneViewport}
           variants={sceneSection}
-          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-hidden`}
+          className={`bio-exp-scene ${bioSceneFrame} snap-start snap-always overflow-x-clip`}
         >
           <div className={bioSceneStage}>
             <motion.div

@@ -198,7 +198,7 @@ export default function Esse() {
 
   return (
     <>
-      <div className="page-with-bottom-player min-h-[100svh] w-full min-w-0 overflow-x-hidden bg-[#f3efe6] font-sans text-[#1a1816]">
+      <div className="page-with-bottom-player min-h-[100svh] w-full min-w-0 overflow-x-clip bg-[#f3efe6] font-sans text-[#1a1816]">
         {/* —— 1. Hero —— */}
         <section className="relative overflow-hidden border-b border-[#e6e1d6]/80">
           <div

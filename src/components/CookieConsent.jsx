@@ -6,13 +6,14 @@ import {
   saveCookieConsent,
 } from "../utils/cookieConsent";
 
-function Toggle({ checked, disabled = false, onChange }) {
+function Toggle({ checked, disabled = false, onChange, label }) {
   return (
     <button
       type="button"
       onClick={onChange}
       disabled={disabled}
       aria-pressed={checked}
+      aria-label={label}
       className={`relative h-8 w-16 rounded-full transition-all duration-300 ${
         checked ? "bg-[#b01c24]" : "bg-gray-400"
       } ${disabled ? "opacity-70 cursor-not-allowed" : "cursor-pointer"}`}
@@ -42,8 +43,6 @@ export default function CookieConsent() {
     checkConsent();
 
     const handleReset = () => {
-        console.log("cookie-reset ricevuto");
-
         setPreferences(defaultConsent);
         setIsOpen(true);
     };
@@ -125,7 +124,7 @@ export default function CookieConsent() {
               </p>
             </div>
 
-            <Toggle checked={true} disabled={true} />
+            <Toggle checked={true} disabled={true} label="Cookie necessari (sempre attivi)" />
           </div>
 
           {/* Contenuti esterni */}
@@ -142,6 +141,7 @@ export default function CookieConsent() {
 
             <Toggle
               checked={preferences.externalMedia}
+              label="Contenuti esterni (YouTube, Spotify)"
               onChange={() => updatePreference("externalMedia")}
             />
           </div>
