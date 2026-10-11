@@ -37,7 +37,7 @@ export const PAGES = {
   "/contatti": {
     title: "Contatti — Emanuele Monetti",
     description:
-      "Scrivi a Emanuele Monetti per collaborazioni, concerti, richieste stampa e informazioni.",
+      "Scrivi a Emanuele Monetti per collaborazioni, richieste stampa e informazioni.",
   },
   "/privacy": {
     title: "Privacy — Emanuele Monetti",
