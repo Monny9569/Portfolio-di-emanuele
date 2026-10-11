@@ -13,6 +13,7 @@ import BottomYouTubePlayer from "../components/BottomYouTubePlayer";
 import CinemaVideoModal from "../components/CinemaVideoModal";
 import FlipCard from "../components/FlipCard";
 import Footprint from "../components/Footprint";
+import { t } from "../i18n";
 import releasesData from "../data/releases";
 import {
   getPlayableTracks,
@@ -41,7 +42,7 @@ export default function Timeline() {
     const format = item.format?.trim().toLowerCase();
 
     if (format === "album") return  "aspect-square"//"aspect-[5/4]";
-    if (format === "singolo") return "aspect-square";
+    if (format === "singolo" || format === "single") return "aspect-square";
     if (format === " ") return "aspect-square";
     // fallback di sicurezza
     return "aspect-square";
@@ -128,7 +129,7 @@ export default function Timeline() {
           {/* titolo sezione */}
           <div className="text-center mb-12 sm:mb-16 md:mb-24">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif italic text-gray-900">
-              Diario di Bordo
+              {t("Diario di Bordo", "Logbook")}
             </h2>
             <div className="w-24 h-px bg-[#b01c24] mx-auto mt-4" />
           </div>
@@ -163,7 +164,7 @@ export default function Timeline() {
                         frontImage={item.image}
                         backImage={item.backImage || item.image}
                         altFront={item.title}
-                        altBack={`${item.title} retro`}
+                        altBack={t(`${item.title} retro`, `${item.title} back cover`)}
                         className="w-full"
                         aspectClass={getAspectClass(item)}
                         roundedClass="0"
@@ -226,11 +227,11 @@ export default function Timeline() {
                             });
                             requestCinemaFullscreenFromGesture();
                           }}
-                          aria-label={`Guarda il video ${item.title}`}
+                          aria-label={t(`Guarda il video ${item.title}`, `Watch the video ${item.title}`)}
                           className="group inline-flex min-h-[44px] max-md:px-4 max-md:py-2 max-md:text-[9px] max-md:tracking-[0.2em] items-center gap-2 rounded-full border border-gray-300 px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.24em] text-gray-900 transition-all duration-300 hover:border-gray-900 hover:bg-gray-900 hover:text-white sm:px-6 sm:py-3"
                         >
                           <VideoCameraIcon className="h-3.5 w-3.5 shrink-0 md:h-4 md:w-4" />
-                          Video
+                          {t("Video", "Video")}
                         </button>
                       )}
 
@@ -256,7 +257,7 @@ export default function Timeline() {
                             className="group inline-flex min-h-[44px] max-md:px-4 max-md:py-2 max-md:text-[9px] max-md:tracking-[0.2em] items-center gap-2 rounded-full border border-gray-300 px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.24em] text-gray-900 transition-all duration-300 hover:border-gray-900 hover:bg-gray-900 hover:text-white sm:px-6 sm:py-3"
                           >
                             <PlayIcon className="h-3.5 w-3.5 shrink-0 md:h-4 md:w-4" />
-                            Ascolta
+                            {t("Ascolta", "Listen")}
                           </button>
                         )}
 
@@ -271,7 +272,7 @@ export default function Timeline() {
                             className="group inline-flex min-h-[44px] max-md:px-4 max-md:py-2 max-md:text-[9px] max-md:tracking-[0.2em] items-center gap-2 rounded-full border border-gray-300 px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.24em] text-gray-900 transition-all duration-300 hover:border-gray-900 hover:bg-gray-900 hover:text-white sm:px-6 sm:py-3"
                           >
                             <PlayIcon className="h-3.5 w-3.5 shrink-0 md:h-4 md:w-4" />
-                            Ascolta
+                            {t("Ascolta", "Listen")}
                           </a>
                         )}
 
@@ -288,7 +289,7 @@ export default function Timeline() {
                             className="group inline-flex min-h-[44px] max-md:px-4 max-md:py-2 max-md:text-[9px] max-md:tracking-[0.2em] items-center gap-2 rounded-full border border-gray-300 px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.24em] text-gray-900 transition-all duration-300 hover:border-gray-900 hover:bg-gray-900 hover:text-white sm:px-6 sm:py-3"
                           >
                             <ShoppingBagIcon className="h-3.5 w-3.5 shrink-0 md:h-4 md:w-4" />
-                            Compra
+                            {t("Compra", "Buy")}
                           </a>
                         )}
                     </div>
@@ -360,7 +361,7 @@ export default function Timeline() {
         >
           <div className="timeline-scroll-cue__inner">
             <span className="timeline-scroll-cue__text">
-              SCORRI
+              {t("SCORRI", "SCROLL")}
             </span>
             <motion.div
               animate={{ y: [0, 7, 0] }}
@@ -404,7 +405,7 @@ export default function Timeline() {
               onClick={() => setOpenArticle(null)}
               className="absolute top-4 right-4 z-20 min-h-[44px] rounded-full bg-white/90 px-4 py-2.5 text-xs uppercase tracking-[0.2em] text-gray-900 shadow-lg"
             >
-              Chiudi
+              {t("Chiudi", "Close")}
             </button>
 
             <div className="bg-white  overflow-hidden shadow-2xl">

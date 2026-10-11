@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Check } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../sections/footer";
+import { t } from "../i18n";
 
 const initialForm = {
   nome: "",
@@ -17,7 +18,10 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const SEND_ERROR_GENERIC =
-  "Non è stato possibile inviare il messaggio. Riprova più tardi.";
+  t(
+    "Non è stato possibile inviare il messaggio. Riprova più tardi.",
+    "Your message could not be sent. Please try again later.",
+  );
 
 const isMobileViewport = () =>
   typeof window !== "undefined" &&
@@ -60,17 +64,17 @@ export default function Contatti() {
     const nextErrors = {};
 
     if (!form.nome.trim()) {
-      nextErrors.nome = "Inserisci il tuo nome.";
+      nextErrors.nome = t("Inserisci il tuo nome.", "Please enter your name.");
     }
 
     if (!form.email.trim()) {
-      nextErrors.email = "Inserisci la tua email.";
+      nextErrors.email = t("Inserisci la tua email.", "Please enter your email.");
     } else if (!emailRegex.test(form.email.trim())) {
-      nextErrors.email = "Inserisci una email valida.";
+      nextErrors.email = t("Inserisci una email valida.", "Please enter a valid email address.");
     }
 
     if (!form.messaggio.trim()) {
-      nextErrors.messaggio = "Inserisci un messaggio.";
+      nextErrors.messaggio = t("Inserisci un messaggio.", "Please enter a message.");
     }
 
     return nextErrors;
@@ -184,18 +188,20 @@ export default function Contatti() {
                 className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-[#786756] transition hover:text-[#4f4337]"
               >
                 <span aria-hidden>←</span>
-                Torna alla home
+                {t("Torna alla home", "Back to home")}
               </Link>
             </div>
 
             <header className="mb-10 md:mb-12">
               <h1 className="font-serif text-4xl italic leading-none text-balance text-[#3a3028] sm:text-5xl md:text-6xl">
-                Contatti
+                {t("Contatti", "Contact")}
               </h1>
               <div className="mt-4 h-px w-24 bg-[#b8945d]" />
               <p className="mt-6 max-w-2xl font-serif text-[1.08rem] leading-relaxed text-[#5f5144] md:text-[1.16rem]">
-                Per collaborazioni artistiche, informazioni o richieste, compila il
-                modulo qui sotto.
+                {t(
+                  "Per collaborazioni artistiche, informazioni o richieste, compila il modulo qui sotto.",
+                  "For artistic collaborations, information or enquiries, please fill in the form below.",
+                )}
               </p>
             </header>
 
@@ -247,7 +253,7 @@ export default function Contatti() {
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                       <Field
                         id="nome"
-                        label="Nome"
+                        label={t("Nome", "Name")}
                         value={form.nome}
                         onChange={handleChange}
                         error={errors.nome}
@@ -267,7 +273,7 @@ export default function Contatti() {
                     <div className="mt-5">
                       <Field
                         id="oggetto"
-                        label="Oggetto"
+                        label={t("Oggetto", "Subject")}
                         value={form.oggetto}
                         onChange={handleChange}
                         error={errors.oggetto}
@@ -280,7 +286,7 @@ export default function Contatti() {
                         htmlFor="messaggio"
                         className="mb-2 block text-[0.74rem] uppercase tracking-[0.24em] text-[#6f5d4d]"
                       >
-                        Messaggio
+                        {t("Messaggio", "Message")}
                       </label>
                       <textarea
                         id="messaggio"
@@ -289,7 +295,10 @@ export default function Contatti() {
                         value={form.messaggio}
                         onChange={handleChange}
                         disabled={isBusy}
-                        placeholder="Scrivi qui il tuo messaggio..."
+                        placeholder={t(
+                          "Scrivi qui il tuo messaggio...",
+                          "Write your message here...",
+                        )}
                         className="w-full resize-y rounded-2xl border border-[#ccbca3] bg-[#f8f1e3] px-4 py-3 font-serif text-[1.02rem] leading-relaxed text-[#453a30] caret-[#b8905b] outline-none transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] placeholder:text-[#9a846b] placeholder:transition-opacity placeholder:duration-300 focus:-translate-y-px focus:border-[#b8905b] focus:bg-[#fdf8ee] focus:placeholder:opacity-45 focus:shadow-[0_0_0_2px_rgba(201,156,95,0.2),0_10px_18px_rgba(80,56,33,0.09)] disabled:cursor-not-allowed disabled:opacity-75"
                       />
                       {errors.messaggio ? (
@@ -305,8 +314,8 @@ export default function Contatti() {
                         className="inline-flex min-h-[44px] w-full items-center justify-center rounded-full border border-[#b99058]/55 bg-linear-to-r from-[#7d5a35] via-[#9d7141] to-[#7d5832] px-7 py-3.5 text-[0.78rem] font-semibold uppercase tracking-[0.24em] text-[#f9efdf] shadow-[0_12px_30px_rgba(64,44,27,0.2)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:brightness-105 hover:shadow-[0_18px_38px_rgba(76,52,30,0.26),0_0_16px_rgba(185,144,83,0.22)] disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
                       >
                         {submitPhase === "sending"
-                          ? "Invio in corso..."
-                          : "Invia messaggio"}
+                          ? t("Invio in corso...", "Sending...")
+                          : t("Invia messaggio", "Send message")}
                       </motion.button>
                     </div>
                   </motion.form>
@@ -336,7 +345,12 @@ export default function Contatti() {
                         <Check className="h-[15px] w-[15px]" strokeWidth={2.15} />
                       </span>
                       <p className="font-serif text-[1.06rem] leading-[1.85] tracking-[0.012em]">
-                        <span className="block">Messaggio inviato correttamente.</span>
+                        <span className="block">
+                          {t(
+                            "Messaggio inviato correttamente.",
+                            "Message sent successfully.",
+                          )}
+                        </span>
                       </p>
                     </div>
                   </motion.div>

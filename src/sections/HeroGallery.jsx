@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { t } from "../i18n";
 
 import piano from "../assets/piano.jpg";
 import canto from "../assets/canto.jpg";
@@ -16,12 +17,12 @@ const AUTOPLAY_MS = 9000;
 const slides = [
   {
     title: "Giada",
-    alt: "Giada, copertina del singolo di Emanuele Monetti",
+    alt: t("Giada, copertina del singolo di Emanuele Monetti", "Giada, cover of the single by Emanuele Monetti"),
     subtitle: "  ",
     image: giada,
-    label: "Ultima uscita",
+    label: t("Ultima uscita", "Latest release"),
     overlayTitle: giadaTitle,
-    overlayText: 'Tratto dall’album “Tutto già diverso”',
+    overlayText: t('Tratto dall’album “Tutto già diverso”', 'From the album “Tutto già diverso”'),
     focusX: "50%",
     focusY: "42%",
     mode: "auto",
@@ -330,7 +331,7 @@ export default function HeroGallery() {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              aria-label={`Vai alla slide ${index + 1}`}
+              aria-label={t(`Vai alla slide ${index + 1}`, `Go to slide ${index + 1}`)}
               className={`flex h-11 w-11 items-center justify-center rounded-full transition-all duration-300 ${
                 current === index
                   ? "scale-110"

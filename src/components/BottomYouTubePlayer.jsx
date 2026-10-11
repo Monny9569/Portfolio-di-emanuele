@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { hasExternalMediaConsent } from "../utils/cookieConsent";
 import { getBackdropFilterSupported } from "../utils/backdropSupport";
+import { t } from "../i18n";
 
 const YT_API_SRC = "https://www.youtube.com/iframe_api";
 /** Linguetta laterale: fissa, non misurata dal ResizeObserver (evita loop layout). */
@@ -307,7 +308,7 @@ export default function BottomYouTubePlayer({ player, onClose }) {
                 className="text-[9px] uppercase tracking-[0.28em] mb-0.5"
                 style={{ color: "rgba(247, 241, 232, 0.55)" }}
               >
-                In ascolto
+                {t("In ascolto", "Now playing")}
               </p>
 
               <h3
@@ -331,8 +332,8 @@ export default function BottomYouTubePlayer({ player, onClose }) {
               onClick={onClose}
               className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] shrink-0 items-center justify-center text-xl leading-none transition hover:text-[#f7f1e8]!"
               style={{ color: "rgba(247, 241, 232, 0.55)" }}
-              aria-label="Chiudi player"
-              title="Chiudi player"
+              aria-label={t("Chiudi player", "Close player")}
+              title={t("Chiudi player", "Close player")}
             >
               ✕
             </button>
@@ -349,7 +350,7 @@ export default function BottomYouTubePlayer({ player, onClose }) {
                   border: "1px solid rgba(247, 241, 232, 0.22)",
                   color: "rgba(247, 241, 232, 0.9)",
                 }}
-                aria-label="Traccia precedente"
+                aria-label={t("Traccia precedente", "Previous track")}
               >
                 <ChevronLeftIcon className="h-4 w-4" />
               </button>
@@ -368,7 +369,7 @@ export default function BottomYouTubePlayer({ player, onClose }) {
                   border: "1px solid rgba(247, 241, 232, 0.22)",
                   color: "rgba(247, 241, 232, 0.9)",
                 }}
-                aria-label="Traccia successiva"
+                aria-label={t("Traccia successiva", "Next track")}
               >
                 <ChevronRightIcon className="h-4 w-4" />
               </button>
@@ -378,10 +379,14 @@ export default function BottomYouTubePlayer({ player, onClose }) {
                 aria-expanded={showTrackList}
                 aria-label={
                   showTrackList
-                    ? "Torna alla copertina"
-                    : "Mostra elenco tracce"
+                    ? t("Torna alla copertina", "Back to cover")
+                    : t("Mostra elenco tracce", "Show track list")
                 }
-                title={showTrackList ? "Torna alla copertina" : "Elenco tracce"}
+                title={
+                  showTrackList
+                    ? t("Torna alla copertina", "Back to cover")
+                    : t("Elenco tracce", "Track list")
+                }
                 className="inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-full transition"
                 style={{
                   border: showTrackList
@@ -414,7 +419,10 @@ export default function BottomYouTubePlayer({ player, onClose }) {
                     src={embedSrc}
                     width="100%"
                     height="168"
-                    title={`YouTube: ${currentTrack?.title ?? player.albumTitle}`}
+                    title={t(
+                      `YouTube: ${currentTrack?.title ?? player.albumTitle}`,
+                      `YouTube: ${currentTrack?.title ?? player.albumTitle}`,
+                    )}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                     loading="lazy"
@@ -457,11 +465,11 @@ export default function BottomYouTubePlayer({ player, onClose }) {
                             className="shrink-0 px-2 pt-2 pb-1 text-[8px] uppercase tracking-[0.35em]"
                             style={{ color: "rgba(247, 241, 232, 0.45)" }}
                           >
-                            Tracce
+                            {t("Tracce", "Tracks")}
                           </p>
                           <ul className="min-h-0 flex-1 space-y-0.5 overflow-y-auto overscroll-contain px-1.5 pb-2">
-                            {tracks.map((t, i) => (
-                              <li key={`${t.title}-${i}`}>
+                            {tracks.map((trk, i) => (
+                              <li key={`${trk.title}-${i}`}>
                                 <button
                                   type="button"
                                   onClick={() => {
@@ -489,7 +497,7 @@ export default function BottomYouTubePlayer({ player, onClose }) {
                                     {i + 1}
                                   </span>
                                   <span className="min-w-0 flex-1 font-serif">
-                                    {t.title}
+                                    {trk.title}
                                   </span>
                                 </button>
                               </li>
@@ -518,8 +526,12 @@ export default function BottomYouTubePlayer({ player, onClose }) {
                     <button
                       type="button"
                       onClick={togglePlayPause}
-                      aria-label={isPlaying ? "Metti in pausa" : "Riproduci"}
-                      title={isPlaying ? "Metti in pausa" : "Riproduci"}
+                      aria-label={
+                        isPlaying ? t("Metti in pausa", "Pause") : t("Riproduci", "Play")
+                      }
+                      title={
+                        isPlaying ? t("Metti in pausa", "Pause") : t("Riproduci", "Play")
+                      }
                       className="absolute left-1/2 top-1/2 z-30 inline-flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full transition active:scale-95"
                       style={{
                         backgroundColor: "rgba(0, 0, 0, 0.7)",
@@ -556,14 +568,19 @@ export default function BottomYouTubePlayer({ player, onClose }) {
                       color: "#f7f1e8",
                     }}
                   >
-                    {showVideo ? "Solo audio" : "Mostra youtube"}
+                    {showVideo
+                      ? t("Solo audio", "Audio only")
+                      : t("Mostra youtube", "Show YouTube")}
                   </button>
                 </div>
               </>
             ) : (
               <div className="rounded-xl border border-[#e6e1d6] bg-[#f3efe6] p-6 text-center">
                 <p className="font-serif text-lg text-gray-800 mb-4">
-                  Per visualizzare questo contenuto è necessario abilitare i contenuti esterni.
+                  {t(
+                    "Per visualizzare questo contenuto è necessario abilitare i contenuti esterni.",
+                    "To view this content you need to enable external content.",
+                  )}
                 </p>
 
                 <button
@@ -573,7 +590,7 @@ export default function BottomYouTubePlayer({ player, onClose }) {
                   }}
                   className="inline-flex items-center justify-center rounded-full border border-[#b01c24] px-6 py-3 text-[11px] font-medium uppercase tracking-[0.24em] text-[#b01c24] transition-all duration-300 hover:bg-[#b01c24] hover:text-white"
                 >
-                  Gestisci preferenze
+                  {t("Gestisci preferenze", "Manage preferences")}
                 </button>
               </div>
             )}
@@ -593,7 +610,9 @@ export default function BottomYouTubePlayer({ player, onClose }) {
             border: "1px solid rgba(247, 241, 232, 0.12)",
             borderLeft: 0,
           }}
-          aria-label={isOpen ? "Nascondi player" : "Mostra player"}
+          aria-label={
+            isOpen ? t("Nascondi player", "Hide player") : t("Mostra player", "Show player")
+          }
         >
           <span className="text-lg leading-none">
             {isOpen ? "‹" : "›"}

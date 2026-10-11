@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import CarnevaleArchivePreview from "../components/CarnevaleArchivePreview";
 import { BIO_PARAGRAPHS } from "../data/bioNarrative";
+import { t } from "../i18n";
 
 import img174 from "../assets/bio/img174.png";
 import img176 from "../assets/bio/img176.png";
@@ -128,13 +129,13 @@ function BioMobileDocumentVisualScene({
 
 export default function BioMobileExperience() {
   return (
-    <main className="bio-mobile-experience md:hidden" aria-label="Biografia — diario visivo mobile">
+    <main className="bio-mobile-experience md:hidden" aria-label={t("Biografia — diario visivo mobile", "Biography — mobile visual diary")}>
       {/* Capitolo I — Origini */}
       <BioMobileVisualScene
         id="bio-m-visual-1"
         sceneClass="bio-mobile-visual-scene--intro"
         image={img263}
-        alt="Emanuele Monetti, anni delle prime canzoni"
+        alt={t("Emanuele Monetti, anni delle prime canzoni", "Emanuele Monetti, the years of his first songs")}
         objectPosition="28% 100%"
         eager
       />
@@ -148,7 +149,7 @@ export default function BioMobileExperience() {
         id="bio-m-visual-2"
         sceneClass="bio-mobile-visual-scene--piano"
         image={img174}
-        alt="Emanuele Monetti al pianoforte"
+        alt={t("Emanuele Monetti al pianoforte", "Emanuele Monetti at the piano")}
         objectPosition="50% 22%"
       />
       <BioMobileTextScene id="bio-m-text-2" paragraphs={[BIO_PARAGRAPHS[2]]} />
@@ -165,12 +166,12 @@ export default function BioMobileExperience() {
           id="bio-m-visual-3"
           sceneClass="bio-mobile-visual-scene--venice bio-mobile-venice-chapter__visual order-2"
           image={venezia}
-          alt="Maschera veneziana e gondole al Bacino di San Marco"
+          alt={t("Maschera veneziana e gondole al Bacino di San Marco", "Venetian mask and gondolas at the St Mark's Basin")}
           objectPosition="58% 52%"
         />
         <BioMobileDocumentVisualScene
           id="bio-m-doc-3"
-          kicker="Archivio RAI"
+          kicker={t("Archivio RAI", "RAI Archive")}
           sceneClass="bio-mobile-document-scene--pdf bio-mobile-venice-chapter__doc order-3"
         >
           <CarnevaleArchivePreview variant="cinematic" />
@@ -188,7 +189,7 @@ export default function BioMobileExperience() {
           id="bio-m-visual-4"
           sceneClass="bio-mobile-castrocaro-chapter__visual order-2"
           image={leleLive}
-          alt="Emanuele Monetti in concerto"
+          alt={t("Emanuele Monetti in concerto", "Emanuele Monetti in concert")}
           objectPosition="50% 42%"
         />
       </div>
@@ -198,7 +199,7 @@ export default function BioMobileExperience() {
         id="bio-m-visual-5"
         sceneClass="bio-mobile-visual-scene--studio"
         image={img262}
-        alt="Emanuele Monetti in studio"
+        alt={t("Emanuele Monetti in studio", "Emanuele Monetti in the studio")}
         objectPosition="50% 38%"
       />
       <BioMobileTextScene id="bio-m-text-5" paragraphs={[BIO_PARAGRAPHS[5]]} dark />
@@ -209,7 +210,7 @@ export default function BioMobileExperience() {
           id="bio-m-visual-6"
           sceneClass="bio-mobile-visual-scene--dikdik bio-mobile-dikdik-chapter__visual order-1"
           image={img176}
-          alt="Emanuele Monetti al pianoforte"
+          alt={t("Emanuele Monetti al pianoforte", "Emanuele Monetti at the piano")}
           objectPosition="48% 36%"
         />
         <BioMobileTextScene
@@ -219,13 +220,13 @@ export default function BioMobileExperience() {
         />
         <BioMobileDocumentVisualScene
           id="bio-m-doc-6"
-          kicker="In studio con i Dik Dik"
+          kicker={t("In studio con i Dik Dik", "In the studio with the Dik Dik")}
           sceneClass="bio-mobile-dikdik-chapter__doc order-3"
           darkBg
         >
           <img
             src={dikDikPhoto}
-            alt="Emanuele Monetti con i Dik Dik"
+            alt={t("Emanuele Monetti con i Dik Dik", "Emanuele Monetti with the Dik Dik")}
             className="bio-mobile-document-frame__photo"
             loading="lazy"
             decoding="async"
@@ -237,7 +238,7 @@ export default function BioMobileExperience() {
       <BioMobileVisualScene
         id="bio-m-visual-7"
         image={img262}
-        alt="Emanuele Monetti dal vivo"
+        alt={t("Emanuele Monetti dal vivo", "Emanuele Monetti live")}
         objectPosition="44% 40%"
       />
       <BioMobileTextScene id="bio-m-text-7" paragraphs={[BIO_PARAGRAPHS[7]]} dark />
@@ -250,7 +251,7 @@ export default function BioMobileExperience() {
       >
         <img
           src={tuttoCd}
-          alt="Album …Tutto è già diverso"
+          alt={t("Album …Tutto è già diverso", "Album …Tutto è già diverso")}
           className="bio-mobile-document-frame__photo"
           loading="lazy"
           decoding="async"
@@ -267,7 +268,7 @@ export default function BioMobileExperience() {
         id="bio-m-visual-9"
         sceneClass="bio-mobile-visual-scene--esse"
         image={esseArt}
-        alt="ESSE — opera strumentale"
+        alt={t("ESSE — opera strumentale", "ESSE — instrumental work")}
         objectPosition="50% 46%"
         fit="contain"
       />
@@ -278,7 +279,7 @@ export default function BioMobileExperience() {
         id="bio-m-visual-10"
         sceneClass="bio-mobile-visual-scene--copertine"
         image={copertineImg}
-        alt="Copertine dei singoli recenti"
+        alt={t("Copertine dei singoli recenti", "Covers of the recent singles")}
         objectPosition="50% 40%"
       />
       <BioMobileTextScene id="bio-m-text-10" paragraphs={[BIO_PARAGRAPHS[10]]} />

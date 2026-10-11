@@ -1,3 +1,5 @@
+import { t } from "../i18n";
+
 const releases = [
   {
     disabled: false,
@@ -8,11 +10,11 @@ const releases = [
     image: "/timeline/fs1.jpg",
     backImage: "/timeline/fs2.jpg",
     subtitle:  " ",
-    description: "45 giri di esordio ",
+    description: t("45 giri di esordio ", "Debut 45 rpm single "),
     youtubeEmbed: "https://...",
     credits: [
-      "Etichetta: SUONO RECORDS ",
-      " Distribuito da PANARECORDS S.p.A.",
+      t("Etichetta: SUONO RECORDS ", "Label: SUONO RECORDS "),
+      t(" Distribuito da PANARECORDS S.p.A.", " Distributed by PANARECORDS S.p.A."),
     ],
     listenLink: "https://...",
     buyLink: "https://..."
@@ -20,7 +22,7 @@ const releases = [
   {
     disabled: false,
     date: "1997",
-    title: "Collaborazione con\nDik Dik ",
+    title: t("Collaborazione con\nDik Dik ", "Collaboration with\nDik Dik "),
     type: "press",
     format: " ",
     image: "/timeline/V05.jpg",
@@ -37,7 +39,7 @@ const releases = [
   {
     disabled: false,
     date: "2009",
-    title: "Collaborazione con\nIrene Fornaciari ",
+    title: t("Collaborazione con\nIrene Fornaciari ", "Collaboration with\nIrene Fornaciari "),
     type: "press",
     format: " ",
     image: "/timeline/V01.jpg",
@@ -86,11 +88,11 @@ const releases = [
     type: "music",
     image: "/timeline/esse.jpeg",
     backImage: "/timeline/esseback.jpg",
-    subtitle: "Opera musicale in cinque parti",
+    subtitle: t("Opera musicale in cinque parti", "A musical work in five parts"),
     pageLink: "/esse",
     credits: [
-      "Musiche originali di Emanuele Monetti",
-      "In copertina l'opera 'self-portrait' dell'artista Luca Dalmazio"
+      t("Musiche originali di Emanuele Monetti", "Original music by Emanuele Monetti"),
+      t("In copertina l'opera 'self-portrait' dell'artista Luca Dalmazio", "Cover artwork: 'self-portrait' by the artist Luca Dalmazio")
     ],
     tracks: [
       { title: "I — La nascita", youtubeEmbed: "https://youtu.be/r-BayW8enQM?si=f949mtpR05gfYLdg" },
@@ -106,7 +108,7 @@ const releases = [
     date: "2019",
     title: "La Bellezza della Sera",
     type: "music",
-    format: "Singolo",
+    format: t("Singolo", "Single"),
     image: "/timeline/labellezzadellasera.jpeg",
     backImage: "/timeline/labellezzadellasera.jpeg",
     description:
@@ -120,7 +122,7 @@ const releases = [
     date: "2024",
     title: "L'Amore Cos'È",
     type: "music",
-    format: "Singolo",
+    format: t("Singolo", "Single"),
     image: "/timeline/lamorecose.jpeg",
     backImage: "/timeline/lamorecose.jpeg",
     description:
@@ -134,7 +136,7 @@ const releases = [
     date: "2026",
     title: "Giada",
     type: "music",
-    format: "Singolo",
+    format: t("Singolo", "Single"),
     image: "/timeline/giada.jpeg",
     backImage: "/timeline/giada.jpeg",
     description:
@@ -150,7 +152,7 @@ const releases = [
     type: "press",
     image: "/timeline/dikdik-article-thumb.jpg",
     fullImage: "/timeline/dikdik-article-full.jpg",
-    description: "Rassegna stampa dedicata alla collaborazione."
+    description: t("Rassegna stampa dedicata alla collaborazione.", "Press review dedicated to the collaboration.")
   }
 ];
 

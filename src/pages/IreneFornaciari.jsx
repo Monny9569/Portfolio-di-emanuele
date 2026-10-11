@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { t } from "../i18n";
 
 import irene1 from "../assets/press/V01.jpg";
 import irene2 from "../assets/press/V02.jpg";
@@ -21,7 +22,7 @@ export default function IreneFornaciari() {
             <span className="transition-transform duration-300 group-hover:-translate-x-1">
               ←
             </span>
-            Torna al Diario di Bordo
+            {t("Torna al Diario di Bordo", "Back to the Logbook")}
           </Link>
       
        </div>
@@ -40,7 +41,7 @@ export default function IreneFornaciari() {
             <div className="overflow-hidden">
               <img
                 src={irene1}
-                alt="Vintage Baby - copertina"
+                alt={t("Vintage Baby - copertina", "Vintage Baby - cover")}
                 className="block h-full w-full object-cover hover:scale-105 transition duration-500"
               />
             </div>
@@ -54,7 +55,7 @@ export default function IreneFornaciari() {
             <div className="overflow-hidden">
               <img
                 src={irene2}
-                alt="Retro copertina"
+                alt={t("Retro copertina", "Back cover")}
                 className="block h-full w-full object-cover hover:scale-105 transition duration-500"
               />
             </div>
@@ -67,7 +68,7 @@ export default function IreneFornaciari() {
             <div className="overflow-hidden">
               <img
                 src={irene3}
-                alt="Dettaglio album"
+                alt={t("Dettaglio album", "Album detail")}
                 className="block h-full w-full object-cover hover:scale-105 transition duration-500"
               />
             </div>
@@ -75,13 +76,13 @@ export default function IreneFornaciari() {
         </div>
 
         <p className="mt-5 font-open-sans-sc font-medium text-[10px] sm:text-[11px] uppercase tracking-[0.16em] sm:tracking-[0.24em] text-gray-500 text-center sm:text-left">
-          Tocca l’immagine per ingrandire
+          {t("Tocca l’immagine per ingrandire", "Tap the image to enlarge")}
         </p>
       </div>
           {/* TESTO */}
           <div className="order-1 lg:order-2 max-w-[720px] w-full min-w-0">
             <p className="font-open-sans-sc font-medium text-[10px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.38em] text-gray-500 mb-4">
-              Collaborazione 
+              {t("Collaborazione ", "Collaboration ")}
             </p>
 
             <h1 className="font-serif italic text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.05] mb-5 break-words">
@@ -92,12 +93,11 @@ export default function IreneFornaciari() {
 
             <div className="space-y-6 font-open-sans-sc font-medium text-base sm:text-lg md:text-[1.22rem] leading-[1.85] sm:leading-[1.9] text-gray-800 [&_strong]:font-extrabold">
               <p className="break-words">
-                Nel 2009 <strong>Emanuele Monetti</strong> ha collaborato con
-                <strong> Irene Fornaciari</strong> all&apos;album
-                <strong> VINTAGE BABY</strong>, firmando assieme ad Irene il testo
-                originale italiano del brano
+                {t("Nel 2009 ", "In 2009 ")}<strong>Emanuele Monetti</strong>{t(" ha collaborato con", " collaborated with")}
+                <strong> Irene Fornaciari</strong>{t(" all'album", " on the album")}
+                <strong> VINTAGE BABY</strong>{t(", firmando assieme ad Irene il testo originale italiano del brano", ", co-writing with Irene the original Italian lyrics of the song")}
                 <strong> LA TIRITERA DELLA SERA</strong>{" "}
-                <span className="italic">(cover di Ride My See-Saw)</span>.
+                <span className="italic">{t("(cover di Ride My See-Saw)", "(cover of Ride My See-Saw)")}</span>.
               </p>
             </div>
           </div>
@@ -113,13 +113,13 @@ export default function IreneFornaciari() {
               type="button"
               onClick={() => setOpenImage(null)}
               className="absolute right-4 top-[max(1rem,env(safe-area-inset-top,0px))] z-10 inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-white/90 px-4 text-xs uppercase tracking-[0.2em] text-gray-900 shadow-lg"
-              aria-label="Chiudi immagine"
+              aria-label={t("Chiudi immagine", "Close image")}
             >
-              Chiudi
+              {t("Chiudi", "Close")}
             </button>
             <img
               src={openImage}
-              alt="Zoom"
+              alt={t("Zoom", "Zoom")}
               className="max-h-[min(88svh,100%)] max-w-full object-contain shadow-2xl"
             />
           </div>

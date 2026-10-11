@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import HeroGallery from "../sections/HeroGallery";
 import Timeline from '../sections/Timeline';
 import Footer from "../sections/footer";
+import { t } from "../i18n";
 
 export default function HomePage() {
  
@@ -11,7 +12,7 @@ export default function HomePage() {
       <Navbar />
       <main className="page-with-bottom-player min-w-0">
 
-        <h1 className="sr-only">Emanuele Monetti — cantautore e musicista</h1>
+        <h1 className="sr-only">{t("Emanuele Monetti — cantautore e musicista", "Emanuele Monetti — singer-songwriter and musician")}</h1>
         <HeroGallery />
         <Timeline />
 

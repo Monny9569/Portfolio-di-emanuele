@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { PlayIcon } from "@heroicons/react/24/outline";
 import BottomYouTubePlayer from "../components/BottomYouTubePlayer";
 import Footer from "../sections/footer";
+import { t } from "../i18n";
 
 const COVER_FRONT = "/timeline/esse.jpeg";
 const COVER_BACK = "/timeline/esseback.jpg";
@@ -16,15 +17,19 @@ const ESSE_ALBUM_TRACK = {
   youtubeEmbed: "https://youtu.be/vwPm2KkO3dY?si=Sg95_xN1Cf12xK8w",
 };
 
-const DESCRIPTION =
-  "Il nuovo lavoro del cantautore Emanuele Monetti: «ESSE», si tratta di un'opera musicale divisa in cinque brani che ripercorrono le fasi salienti della vita. Un'esperienza musicale al limite della sperimentazione dove le sonorità cercano di interpretare sensazioni e stati d'animo. L'ascoltatore può immergersi in una particolare atmosfera ritrovando il concetto dell'essere e quindi esistere riferito all'esperienza di vita di ogni individuo.";
+const DESCRIPTION = t(
+  "Il nuovo lavoro del cantautore Emanuele Monetti: «ESSE», si tratta di un'opera musicale divisa in cinque brani che ripercorrono le fasi salienti della vita. Un'esperienza musicale al limite della sperimentazione dove le sonorità cercano di interpretare sensazioni e stati d'animo. L'ascoltatore può immergersi in una particolare atmosfera ritrovando il concetto dell'essere e quindi esistere riferito all'esperienza di vita di ogni individuo.",
+  "The new work by singer-songwriter Emanuele Monetti: «ESSE», a musical piece divided into five tracks that retrace the key stages of life. A musical experience bordering on experimentation, where the sonorities seek to interpret sensations and states of mind. The listener can immerse themselves in a particular atmosphere, rediscovering the concept of being, and therefore of existing, as it relates to every individual's life experience."
+);
 
 const esseTracks = [
   {
     roman: "I",
     title: "La nascita",
-    hint:
+    hint: t(
       'Ancora embrione sento il mondo più veloce di me, poi l\'impatto con la materia inorganica: "LA NASCITA"',
+      'Still an embryo, I feel the world moving faster than me, then the impact with inorganic matter: "LA NASCITA"'
+    ),
     tone: "warm",
     youtubeTitle: "EMANUELE MONETTI - LA NASCITA (ESSE)",
     youtubeEmbed: "https://youtu.be/r-BayW8enQM?si=f949mtpR05gfYLdg",
@@ -40,8 +45,10 @@ const esseTracks = [
   {
     roman: "III",
     title: "Voce del cielo",
-    hint:
+    hint: t(
       'La pioggia, il tuono: "VOCE DEL CIELO"… da dietro il vetro comincio a capire',
+      'The rain, the thunder: "VOCE DEL CIELO"… from behind the glass I begin to understand'
+    ),
     tone: "warm",
     youtubeTitle: "EMANUELE MONETTI - VOCE DEL CIELO (ESSE)",
     youtubeEmbed: "https://youtu.be/pSNvmlfwA0g?si=ROgietmlZOeQH0SC",
@@ -49,7 +56,10 @@ const esseTracks = [
   {
     roman: "IV",
     title: "L'attesa del non so",
-    hint: 'Tra i battiti del cuore "L\'ATTESA DEL NON SO"',
+    hint: t(
+      'Tra i battiti del cuore "L\'ATTESA DEL NON SO"',
+      'Between heartbeats: "L\'ATTESA DEL NON SO"'
+    ),
     tone: "slate",
     youtubeTitle: "EMANUELE MONETTI - L'ATTESA DEL NON SO (ESSE)",
     youtubeEmbed: "https://youtu.be/igemsvkBM58?si=48YnMtj6Re5uwRc5",
@@ -57,7 +67,10 @@ const esseTracks = [
   {
     roman: "V",
     title: "I ricordi",
-    hint: 'I miei giorni, adesso, sempre, ciò che è stato: "I RICORDI"',
+    hint: t(
+      'I miei giorni, adesso, sempre, ciò che è stato: "I RICORDI"',
+      'My days, now, always, all that has been: "I RICORDI"'
+    ),
     tone: "warm",
     youtubeTitle: "EMANUELE MONETTI - I RICORDI (ESSE)",
     youtubeEmbed: "https://youtu.be/GrstONbxzPo?si=GOuO6r51w5IcfR9V",
@@ -65,10 +78,13 @@ const esseTracks = [
 ];
 
 const ARCHIVE_ROWS = [
-  { label: "Anno", value: "2017" },
-  { label: "Musiche originali", value: "Emanuele Monetti" },
-  { label: "Copertina", value: "Luca Dalmazio — Self-Portrait" },
-  { label: "Formato", value: "Opera musicale in cinque parti" },
+  { label: t("Anno", "Year"), value: "2017" },
+  { label: t("Musiche originali", "Original music"), value: "Emanuele Monetti" },
+  { label: t("Copertina", "Cover"), value: "Luca Dalmazio — Self-Portrait" },
+  {
+    label: t("Formato", "Format"),
+    value: t("Opera musicale in cinque parti", "Musical work in five parts"),
+  },
 ];
 
 const listenButtonClass =
@@ -162,7 +178,7 @@ function PartMovement({ roman, title, hint, onListen }) {
       )}
       <button type="button" onClick={onListen} className={partListenButtonClass}>
         <PlayIcon className="h-2 w-2 shrink-0 opacity-80 sm:h-2.5 sm:w-2.5" aria-hidden />
-        Ascolta
+        {t("Ascolta", "Listen")}
       </button>
     </article>
   );
@@ -219,13 +235,13 @@ export default function Esse() {
             <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16 xl:gap-20">
               <header className="order-1 min-w-0 lg:col-start-1 lg:row-start-1">
                 <p className="mb-4 text-[10px] uppercase tracking-[0.38em] text-[#9d2b2b] sm:text-[11px]">
-                  Album · 2017
+                  {t("Album · 2017", "Album · 2017")}
                 </p>
                 <h1 className="mb-5 font-serif text-[clamp(3.2rem,12vw,5.5rem)] leading-[0.92] tracking-[-0.02em] text-[#161616]">
                   ESSE
                 </h1>
                 <p className="mb-6 text-[10px] uppercase tracking-[0.32em] text-[#5c574f] sm:text-[11px]">
-                  Opera musicale in cinque parti
+                  {t("Opera musicale in cinque parti", "Musical work in five parts")}
                 </p>
                 <div className="h-px w-16 bg-[#b01c24] lg:mb-0" />
               </header>
@@ -234,7 +250,7 @@ export default function Esse() {
                 <div className="cover-elevated w-full max-w-[min(100%,22rem)] sm:max-w-md lg:max-w-lg">
                   <img
                     src={COVER_FRONT}
-                    alt="Copertina album ESSE"
+                    alt={t("Copertina album ESSE", "Album cover of ESSE")}
                     className="block h-auto w-full object-contain"
                     width={640}
                     height={640}
@@ -245,9 +261,12 @@ export default function Esse() {
               </figure>
 
               <div className="order-3 space-y-2 font-serif text-[0.95rem] leading-[1.7] text-[#4a4540] sm:text-[1.02rem] lg:col-start-1 lg:row-start-2">
-                <p>Musiche originali di Emanuele Monetti</p>
+                <p>{t("Musiche originali di Emanuele Monetti", "Original music by Emanuele Monetti")}</p>
                 <p className="text-[#5c574f]">
-                  In copertina l&apos;opera del pittore Luca Dalmazio: «Self-Portrait»
+                  {t(
+                    "In copertina l'opera del pittore Luca Dalmazio: «Self-Portrait»",
+                    "On the cover, the work of painter Luca Dalmazio: «Self-Portrait»"
+                  )}
                 </p>
               </div>
 
@@ -258,13 +277,13 @@ export default function Esse() {
                   className={listenButtonClass}
                 >
                   <PlayIcon className="h-4 w-4 shrink-0" aria-hidden />
-                  Ascolta
+                  {t("Ascolta", "Listen")}
                 </button>
                 <Link to="/#timeline" className={backButtonClass}>
                   <span className="transition-transform duration-300 group-hover:-translate-x-0.5">
                     ←
                   </span>
-                  Torna al Diario
+                  {t("Torna al Diario", "Back to the Logbook")}
                 </Link>
               </div>
             </div>
@@ -285,7 +304,7 @@ export default function Esse() {
           <div className="mx-auto max-w-[88rem]">
             <div className="text-center">
               <h2 className="font-serif text-3xl italic text-[#161616] sm:text-4xl md:text-[2.6rem]">
-                Opera in cinque parti
+                {t("Opera in cinque parti", "Work in five parts")}
               </h2>
               <div className="mx-auto mt-4 mb-12 h-px w-20 bg-[#b01c24] sm:mb-14" />
             </div>
@@ -326,16 +345,35 @@ export default function Esse() {
             <div className="mx-auto mb-8 h-px w-12 bg-[#c4a574]/30 sm:mb-10" aria-hidden />
             <div className="space-y-5 text-left font-serif text-[1.02rem] leading-[1.86] text-[#e8e0d4]/90 sm:space-y-6 sm:text-[1.06rem] sm:leading-[1.9] md:text-[1.08rem] md:leading-[1.92]">
               <p>
-                In latino, <span className="text-[#f3efe8]">esse</span> è l&apos;infinito presente
-                del verbo <span className="text-[#f3efe8]">essere</span>. Dal punto di vista
-                grammaticale è un verbo anomalo: il suo paradigma — sum, es, fui, esse — corrisponde
-                all&apos;italiano «essere» e all&apos;inglese «to be».
+                {t(
+                  <>
+                    In latino, <span className="text-[#f3efe8]">esse</span> è l&apos;infinito presente
+                    del verbo <span className="text-[#f3efe8]">essere</span>. Dal punto di vista
+                    grammaticale è un verbo anomalo: il suo paradigma — sum, es, fui, esse — corrisponde
+                    all&apos;italiano «essere» e all&apos;inglese «to be».
+                  </>,
+                  <>
+                    In Latin, <span className="text-[#f3efe8]">esse</span> is the present infinitive
+                    of the verb <span className="text-[#f3efe8]">to be</span>. Grammatically it is an
+                    irregular verb: its paradigm — sum, es, fui, esse — corresponds to the Italian
+                    «essere» and the English «to be».
+                  </>
+                )}
               </p>
               <p>
-                In filosofia, da questa radice nasce il concetto stesso di{" "}
-                <span className="text-[#f3efe8]">essere</span>: l&apos;
-                <span className="text-[#f3efe8]">esistenza</span>, la presenza, ciò che permane
-                nell&apos;esperienza di ogni individuo.
+                {t(
+                  <>
+                    In filosofia, da questa radice nasce il concetto stesso di{" "}
+                    <span className="text-[#f3efe8]">essere</span>: l&apos;
+                    <span className="text-[#f3efe8]">esistenza</span>, la presenza, ciò che permane
+                    nell&apos;esperienza di ogni individuo.
+                  </>,
+                  <>
+                    In philosophy, the very concept of <span className="text-[#f3efe8]">being</span>{" "}
+                    arises from this root: <span className="text-[#f3efe8]">existence</span>,
+                    presence, that which endures in the experience of every individual.
+                  </>
+                )}
               </p>
             </div>
           </motion.div>
@@ -347,7 +385,7 @@ export default function Esse() {
             <div className="cover-elevated mx-auto w-full max-w-md lg:mx-0 lg:max-w-none">
               <img
                 src={COVER_BACK}
-                alt="Retro copertina ESSE — informazioni e tracklist"
+                alt={t("Retro copertina ESSE — informazioni e tracklist", "ESSE back cover — information and tracklist")}
                 className="block h-auto w-full object-contain"
                 loading="lazy"
                 decoding="async"
@@ -355,7 +393,7 @@ export default function Esse() {
             </div>
             <div className="min-w-0">
               <h2 className="mb-6 font-serif text-2xl italic text-[#161616] sm:mb-7 sm:text-3xl">
-                Retro copertina
+                {t("Retro copertina", "Back cover")}
               </h2>
               <dl className="space-y-4 border border-[#d2c8bb]/90 bg-[#faf7f0]/80 px-6 py-7 sm:px-8 sm:py-8">
                 {ARCHIVE_ROWS.map((row) => (
@@ -383,7 +421,7 @@ export default function Esse() {
               <span className="transition-transform duration-300 group-hover:-translate-x-1">
                 ←
               </span>
-              Torna al Diario di Bordo
+              {t("Torna al Diario di Bordo", "Back to the Logbook")}
             </Link>
           </div>
         </section>

@@ -1,3 +1,4 @@
+import { t } from "../i18n";
 import tuttoegiadiverso from "../assets/tuttoegiadiverso.jpeg";
 import esse from "../assets/esse.jpeg";
 import labellezzadellasera from "../assets/labellezzadellasera.jpeg";
@@ -14,7 +15,7 @@ export const releases = [
     image: tuttoegiadiverso,
     backImage: tuttoegiadiversoBack,
     description:
-      "Un viaggio nelle sonorità pop-rock moderne, con testi introspettivi e ritmi incalzanti.",
+      t("Un viaggio nelle sonorità pop-rock moderne, con testi introspettivi e ritmi incalzanti.", "A journey through modern pop-rock sounds, with introspective lyrics and driving rhythms."),
     spotifyEmbed:"https://open.spotify.com/embed/album/2EPBkFcUQLkJA4dcOOTDoo?utm_source=generator&theme=0",
     spotifyLink: "https://open.spotify.com/intl-it/album/2EPBkFcUQLkJA4dcOOTDoo",
     buyLink: "https://..."
@@ -25,12 +26,12 @@ export const releases = [
     title: "Esse",
     image: esse,
     backImage: esseback,
-    subtitle: "Opera musicale in cinque parti",
+    subtitle: t("Opera musicale in cinque parti", "A musical work in five parts"),
     description:
-    "Un'opera che attraversa i passaggi essenziali della vita, traducendo emozioni, tensioni interiori e percezioni in un linguaggio musicale sospeso tra scrittura e sperimentazione.",
+    t("Un'opera che attraversa i passaggi essenziali della vita, traducendo emozioni, tensioni interiori e percezioni in un linguaggio musicale sospeso tra scrittura e sperimentazione.", "A work that moves through the essential passages of life, translating emotions, inner tensions and perceptions into a musical language suspended between songwriting and experimentation."),
     credits: [
-    "Musiche originali di Emanuele Monetti",
-    "In copertina: Luca Dalmazio, Self-Portrait",
+    t("Musiche originali di Emanuele Monetti", "Original music by Emanuele Monetti"),
+    t("In copertina: Luca Dalmazio, Self-Portrait", "Cover: Luca Dalmazio, Self-Portrait"),
     ],
     spotifyLink: "https://open.spotify.com/...",
     buyLink: "https://..."
@@ -38,33 +39,33 @@ export const releases = [
  {
     date: "2023",
     title: "La bellezza della sera",
-    subtitle: "Opera musicale in cinque parti",
+    subtitle: t("Opera musicale in cinque parti", "A musical work in five parts"),
     image: labellezzadellasera,
     backImage: labellezzadellasera,
     description:
-      "Un'opera che attraversa i passaggi essenziali della vita.",
+      t("Un'opera che attraversa i passaggi essenziali della vita.", "A work that moves through the essential passages of life."),
     spotifyLink: "https://open.spotify.com/...",
     buyLink: "https://..."
   },
   {
     date: "2024",
     title: "L' Amore Cos è",
-    subtitle: "Opera musicale in cinque parti",
+    subtitle: t("Opera musicale in cinque parti", "A musical work in five parts"),
     image: lamorecose,
     backImage: lamorecose,
     description:
-      "Un'opera che attraversa i passaggi essenziali della vita.",
+      t("Un'opera che attraversa i passaggi essenziali della vita.", "A work that moves through the essential passages of life."),
     spotifyLink: "https://open.spotify.com/...",
     buyLink: "https://..."
   },
    {
     date: "2025",
     title: "Giada",
-    subtitle: "Opera musicale in cinque parti",
+    subtitle: t("Opera musicale in cinque parti", "A musical work in five parts"),
     image: giada,
     backImage: giada,
     description:
-      "Un'opera che attraversa i passaggi essenziali della vita.",
+      t("Un'opera che attraversa i passaggi essenziali della vita.", "A work that moves through the essential passages of life."),
     spotifyLink: "https://open.spotify.com/...",
     buyLink: "https://..."
   },

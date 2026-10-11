@@ -20,6 +20,7 @@ import coverBack from "../assets/albums/tutto-back.jpg";
 import articolo from "../assets/albums/articolo-la-nuova.jpg";
 import credits from "../assets/albums/credits.jpg";
 import discoa from "../assets/albums/discoa.jpg";
+import { t } from "../i18n";
 const easeOut = [0.22, 1, 0.36, 1];
 const SECTION_COUNT = 5;
 
@@ -108,27 +109,33 @@ export default function TuttoEGiaDiversoPage() {
   // Crediti
   const creditGroups = [
     {
-      title: "Testi e musica",
+      title: t("Testi e musica", "Lyrics and music"),
       lines: ["Emanuele Monetti"],
     },
     {
-      title: "Arrangiamenti",
+      title: t("Arrangiamenti", "Arrangements"),
       lines: ["Daniele Cimitan", "Piercarlo D'Amato", "Emanuele Monetti"],
     },
     {
-      title: "Musicisti",
+      title: t("Musicisti", "Musicians"),
       lines: [
-        "Programmazione e tastiere: Daniele Cimitan",
-        "Pianoforte: Emanuele Monetti, Francesco Sartori",
-        "Chitarra elettrica e acustica: Al Guariento",
-        "Basso: Massimo Vanzan",
-        "Sax soprano: Maurizio Caldura",
+        t("Programmazione e tastiere: Daniele Cimitan", "Programming and keyboards: Daniele Cimitan"),
+        t("Pianoforte: Emanuele Monetti, Francesco Sartori", "Piano: Emanuele Monetti, Francesco Sartori"),
+        t("Chitarra elettrica e acustica: Al Guariento", "Electric and acoustic guitar: Al Guariento"),
+        t("Basso: Massimo Vanzan", "Bass: Massimo Vanzan"),
+        t("Sax soprano: Maurizio Caldura", "Soprano sax: Maurizio Caldura"),
       ],
     },
   ];
   const creditStudioBlocks = [
-    "Registrato al New Tendency Studio da Daniele Cimitan. Mixato al Condulmer Recording Studio da Sandro Franchin. Mastering: Davide Truccolo.",
-    "Produzione artistica: Piercarlo D'Amato. Produttore esecutivo: Ricky Gianco.",
+    t(
+      "Registrato al New Tendency Studio da Daniele Cimitan. Mixato al Condulmer Recording Studio da Sandro Franchin. Mastering: Davide Truccolo.",
+      "Recorded at New Tendency Studio by Daniele Cimitan. Mixed at Condulmer Recording Studio by Sandro Franchin. Mastering: Davide Truccolo."
+    ),
+    t(
+      "Produzione artistica: Piercarlo D'Amato. Produttore esecutivo: Ricky Gianco.",
+      "Artistic production: Piercarlo D'Amato. Executive producer: Ricky Gianco."
+    ),
   ];
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -218,7 +225,7 @@ export default function TuttoEGiaDiversoPage() {
                 className="group inline-flex min-h-[44px] items-center gap-3 text-[11px] uppercase tracking-[0.24em] text-gray-500 transition-colors duration-300 hover:text-gray-900"
               >
                 <span className="transition-transform duration-300 group-hover:-translate-x-1">←</span>
-                Torna al Diario di Bordo
+                {t("Torna al Diario di Bordo", "Back to the Logbook")}
               </Link>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -226,7 +233,7 @@ export default function TuttoEGiaDiversoPage() {
               {/* Colonna testo */}
               <div className="order-2 lg:order-1">
                 <span className="text-[11px] uppercase tracking-[0.35em] text-[#92484f] mb-4 block">
-                  Album · Ottobre 2014
+                  {t("Album · Ottobre 2014", "Album · October 2014")}
                 </span>
                 <h1 className="mb-10 max-w-full font-serif text-3xl leading-[1.15] text-balance text-[#161616] sm:text-4xl md:text-5xl lg:text-5xl xl:max-w-none xl:text-[3.4rem] xl:whitespace-nowrap">
                   …Tutto è già <span className="italic">diverso</span>
@@ -240,7 +247,7 @@ export default function TuttoEGiaDiversoPage() {
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                     <path d="M8 5v14l11-7z" />
                   </svg>
-                  Ascolta
+                  {t("Ascolta", "Listen")}
                 </button>
               </div>
               {/* Colonna immagine */}
@@ -253,7 +260,7 @@ export default function TuttoEGiaDiversoPage() {
                   <div className="cover-elevated w-full max-w-md lg:max-w-lg">
                     <motion.img
                       src={coverFront}
-                      alt="Copertina album Tutto è già diverso"
+                      alt={t("Copertina album Tutto è già diverso", "Album cover of Tutto è già diverso")}
                       className="block w-full transition-shadow duration-500 will-change-transform"
                       style={{
                         y: prefersReducedMotion ? 0 : heroCoverY,
@@ -281,11 +288,11 @@ export default function TuttoEGiaDiversoPage() {
               type="button"
               onClick={() => setOpenImage(discoa)}
               className="cover-elevated mx-auto block w-full max-w-4xl cursor-zoom-in"
-              aria-label="Ingrandisci foto CD jewel case"
+              aria-label={t("Ingrandisci foto CD jewel case", "Enlarge photo of the CD jewel case")}
             >
               <img
                 src={discoa}
-                alt="Jewel case con CD aperto"
+                alt={t("Jewel case con CD aperto", "Jewel case with the CD open")}
                 className="block h-auto w-full object-contain"
               />
             </button>
@@ -400,7 +407,7 @@ export default function TuttoEGiaDiversoPage() {
                   <div className="cover-elevated w-full max-w-md">
                     <img
                       src={coverBack}
-                      alt="Retro copertina"
+                      alt={t("Retro copertina", "Back cover")}
                       className="block w-full transition-shadow duration-500"
                     />
                   </div>
@@ -429,12 +436,12 @@ export default function TuttoEGiaDiversoPage() {
                   type="button"
                   onClick={() => setOpenImage(credits)}
                   className="cursor-zoom-in w-full h-full"
-                  aria-label="Guarda immagine crediti"
+                  aria-label={t("Guarda immagine crediti", "View credits image")}
                 >
                   <div className="cover-elevated w-full max-w-none overflow-hidden rounded">
                     <img
                       src={credits}
-                      alt="Crediti album"
+                      alt={t("Crediti album", "Album credits")}
                       className="block h-auto w-full"
                       style={{ objectFit: "cover" }}
                     />
@@ -485,8 +492,16 @@ export default function TuttoEGiaDiversoPage() {
             {...scrollReveal}
           >
             <p className="font-serif text-lg md:text-xl text-gray-800 text-center leading-relaxed mb-10 max-w-3xl mx-auto">
-              Articolo di Alessandro Torre dalla &ldquo;NUOVA di Venezia Mestre&rdquo; del
-              10.10.2014
+              {t(
+                <>
+                  Articolo di Alessandro Torre dalla &ldquo;NUOVA di Venezia Mestre&rdquo; del
+                  10.10.2014
+                </>,
+                <>
+                  Article by Alessandro Torre from &ldquo;NUOVA di Venezia Mestre&rdquo;,
+                  10.10.2014
+                </>
+              )}
             </p>
             <button
               type="button"
@@ -495,7 +510,7 @@ export default function TuttoEGiaDiversoPage() {
             >
               <img
                 src={articolo}
-                alt="Articolo La Nuova"
+                alt={t("Articolo La Nuova", "La Nuova article")}
                 className="w-full h-auto shadow-[0_30px_70px_rgba(0,0,0,0.2)] hover:shadow-[0_40px_90px_rgba(0,0,0,0.25)] transition-shadow duration-500"
               />
             </button>
@@ -526,11 +541,11 @@ export default function TuttoEGiaDiversoPage() {
               onClick={() => setOpenImage(null)}
               className="absolute right-4 top-[max(1rem,env(safe-area-inset-top,0px))] z-20 inline-flex min-h-[44px] items-center rounded-full bg-white/90 px-5 py-2.5 text-xs uppercase tracking-[0.2em] text-gray-900 shadow-lg transition-colors hover:bg-white"
             >
-              Chiudi
+              {t("Chiudi", "Close")}
             </button>
             <img
               src={openImage}
-              alt="Dettaglio"
+              alt={t("Dettaglio", "Detail")}
               className="h-auto max-h-[min(88svh,100%)] w-full max-w-full object-contain"
             />
           </div>

@@ -11,6 +11,7 @@ import {
   isMobileViewport,
 } from "../utils/cinemaVideoGesture";
 import { loadYouTubeIframeAPI } from "../utils/youtubeIframeApi";
+import { t } from "../i18n";
 
 /** Estrae l’ID video da URL watch / youtu.be / embed. */
 function youtubeVideoId(url) {
@@ -381,7 +382,7 @@ export default function CinemaVideoModal({
           <motion.button
             type="button"
             className="absolute inset-0 cursor-default bg-black/35 max-md:bg-black/55"
-            aria-label="Chiudi il video"
+            aria-label={t("Chiudi il video", "Close the video")}
             onClick={handleClose}
             tabIndex={-1}
             initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
@@ -397,7 +398,7 @@ export default function CinemaVideoModal({
             type="button"
             onClick={handleClose}
             className="cinema-close-mobile md:hidden"
-            aria-label="Chiudi video"
+            aria-label={t("Chiudi video", "Close video")}
           >
             <XMarkIcon className="h-5 w-5" aria-hidden />
           </button>
@@ -414,7 +415,9 @@ export default function CinemaVideoModal({
             onClick={(e) => e.stopPropagation()}
           >
             <h2 id="cinema-video-title" className="sr-only">
-              {session.title ? `Video: ${session.title}` : "Video"}
+              {session.title
+                ? t(`Video: ${session.title}`, `Video: ${session.title}`)
+                : t("Video", "Video")}
             </h2>
 
             <motion.div
@@ -462,7 +465,7 @@ export default function CinemaVideoModal({
                   type="button"
                   onClick={handleClose}
                   className="hidden h-11 min-h-[44px] w-11 min-w-[44px] shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/85 transition hover:border-white/30 hover:bg-white/10 hover:text-white md:inline-flex"
-                  aria-label="Chiudi video"
+                  aria-label={t("Chiudi video", "Close video")}
                 >
                   <XMarkIcon className="h-5 w-5" aria-hidden />
                 </button>
@@ -504,7 +507,9 @@ export default function CinemaVideoModal({
                       key={`${embedSrc}-${iframeEpoch}`}
                       src={embedSrc}
                       title={
-                        session.title ? `Video: ${session.title}` : "Video"
+                        session.title
+                          ? t(`Video: ${session.title}`, `Video: ${session.title}`)
+                          : t("Video", "Video")
                       }
                       className="absolute inset-0 z-0 h-full w-full border-0"
                       initial={{ opacity: 0 }}
@@ -526,7 +531,7 @@ export default function CinemaVideoModal({
                         onClick={handleTapToPlay}
                         className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-[#f3efe8]/40 bg-black/70 px-8 py-3.5 font-serif text-sm italic text-[#f3efe8] shadow-[0_12px_36px_rgba(0,0,0,0.5)] backdrop-blur-sm transition hover:border-[#f3efe8]/60 hover:bg-black/85 active:scale-[0.98]"
                       >
-                        Tocca per avviare
+                        {t("Tocca per avviare", "Tap to play")}
                       </button>
                     </div>
                   ) : null}
@@ -574,8 +579,11 @@ export default function CinemaVideoModal({
                               className="inline-flex h-[4.25rem] w-[4.25rem] items-center justify-center rounded-full border border-[#f3efe8]/35 bg-black/55 text-[#f3efe8] shadow-[0_12px_40px_rgba(0,0,0,0.55)] backdrop-blur-sm transition hover:scale-[1.03] hover:border-[#f3efe8]/55 hover:bg-black/70 active:scale-[0.98]"
                               aria-label={
                                 session.title
-                                  ? `Avvia il video ${session.title}`
-                                  : "Avvia il video"
+                                  ? t(
+                                      `Avvia il video ${session.title}`,
+                                      `Play the video ${session.title}`,
+                                    )
+                                  : t("Avvia il video", "Play the video")
                               }
                             >
                               <PlayIcon className="ml-1 h-9 w-9" aria-hidden />
@@ -583,7 +591,10 @@ export default function CinemaVideoModal({
                           ) : (
                             <>
                               <p className="max-w-xs font-serif text-sm leading-relaxed text-[#f3efe8]/90 md:text-base">
-                                Per guardare il video abilita i contenuti esterni.
+                                {t(
+                                  "Per guardare il video abilita i contenuti esterni.",
+                                  "To watch the video, enable external content.",
+                                )}
                               </p>
                               <button
                                 type="button"
@@ -594,7 +605,7 @@ export default function CinemaVideoModal({
                                 }}
                                 className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-[#b01c24] px-6 py-2.5 text-[10px] font-medium uppercase tracking-[0.24em] text-[#e8c4c6] transition hover:bg-[#b01c24] hover:text-white"
                               >
-                                Gestisci preferenze
+                                {t("Gestisci preferenze", "Manage preferences")}
                               </button>
                             </>
                           )}
@@ -609,7 +620,7 @@ export default function CinemaVideoModal({
                       onClick={handleFullscreenClick}
                       className="absolute bottom-3 left-1/2 z-20 -translate-x-1/2 rounded-full border border-white/20 bg-black/70 px-4 py-2 text-[9px] font-medium uppercase tracking-[0.22em] text-white/90 backdrop-blur-sm md:hidden"
                     >
-                      Schermo intero
+                      {t("Schermo intero", "Fullscreen")}
                     </button>
                   ) : null}
                 </motion.div>
@@ -617,7 +628,7 @@ export default function CinemaVideoModal({
 
               <footer className="hidden shrink-0 border-t border-white/[0.06] px-5 py-2 text-center md:block">
                 <p className="text-[9px] uppercase tracking-[0.28em] text-white/35">
-                  Premi ESC per uscire
+                  {t("Premi ESC per uscire", "Press ESC to exit")}
                 </p>
               </footer>
             </motion.div>

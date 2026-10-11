@@ -1,11 +1,12 @@
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import { t } from "../i18n";
 
 export default function FlipCard({
   frontImage,
   backImage,
-  altFront = "Immagine fronte",
-  altBack = "Immagine retro",
+  altFront = t("Immagine fronte", "Front image"),
+  altBack = t("Immagine retro", "Back image"),
   className = "",
   aspectClass = "aspect-[1/1]",
   shadowClass = "cover-elevated",
@@ -78,7 +79,7 @@ export default function FlipCard({
             shadow-none backdrop-blur-[6px] transition
             active:scale-95 active:bg-black/45
           `}
-          aria-label={flipped ? "Mostra fronte" : "Vedi il retro della copertina"}
+          aria-label={flipped ? t("Mostra fronte", "Show front") : t("Vedi il retro della copertina", "See the back of the cover")}
         >
           <ArrowPathIcon
             className={`h-4 w-4 stroke-[1.65] transition-transform duration-500 ease-out ${

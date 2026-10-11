@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import bioPortrait from "../assets/Bio.jpg";
 import { socialLinks } from "../data/social";
 import { getBackdropFilterSupported } from "../utils/backdropSupport";
+import { t } from "../i18n";
 
 export default function Navbar() {
   const location = useLocation();
@@ -17,11 +18,11 @@ export default function Navbar() {
   const isOverHeroRef = useRef(true);
 
   const items = [
-    { name: "Home", path: "/" },
-    { name: "Diario di Bordo", path: "#timeline" },
+    { name: "Home", label: "Home", path: "/" },
+    { name: "Diario di Bordo", label: t("Diario di Bordo", "Logbook"), path: "#timeline" },
     //{ name: "Collaborazioni", path: "#collaborations" },
-    { name: "Bio", path: "/bio" },
-    { name: "Contatti", path: "/contatti" },
+    { name: "Bio", label: "Bio", path: "/bio" },
+    { name: "Contatti", label: t("Contatti", "Contact"), path: "/contatti" },
   ];
 
   useEffect(() => {
@@ -255,7 +256,7 @@ export default function Navbar() {
                       : "text-[#6d6256] hover:text-[#534a40] hover:opacity-[0.98] hover:-translate-y-px"
                   }`}
                 >
-                  {item.name}
+                  {item.label}
                 </a>
                 <span
                   className={`absolute -bottom-[3px] left-0 h-px origin-left transition-[width,opacity] duration-[480ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-all ${
@@ -289,7 +290,7 @@ export default function Navbar() {
             }
           `}
             aria-expanded={isOpen}
-            aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
+            aria-label={isOpen ? t("Chiudi menu", "Close menu") : t("Apri menu", "Open menu")}
           >
             {/* Tre segmenti sfalsati (chiuso) → X centrata (aperto) */}
             <span className="relative block h-[14px] w-[22px]" aria-hidden>
@@ -374,14 +375,14 @@ export default function Navbar() {
                     Emanuele Monetti
                   </p>
                   <p className="mt-2 text-[10px] font-semibold uppercase leading-relaxed tracking-[0.28em] text-gray-600 sm:text-[11px] sm:tracking-[0.32em]">
-                    Cantautore · Autore · Compositore
+                    {t("Cantautore · Autore · Compositore", "Singer-songwriter · Author · Composer")}
                   </p>
                 </div>
               </header>
 
               <nav
                 className="flex min-h-0 flex-1 flex-col justify-center py-5 sm:py-6"
-                aria-label="Navigazione principale"
+                aria-label={t("Navigazione principale", "Main navigation")}
               >
                 <motion.ul
                   className="flex flex-col gap-3 sm:gap-3.5"
@@ -412,7 +413,7 @@ export default function Navbar() {
                           aria-hidden
                         />
                         <span className="font-brand relative pl-3 text-[clamp(1.16rem,4.7vw,1.88rem)] font-normal leading-[1.35] tracking-[0.18em] antialiased sm:pl-4 sm:text-[clamp(1.24rem,4.4vw,1.96rem)] sm:tracking-[0.19em]">
-                          {item.name}
+                          {item.label}
                         </span>
                         <span
                           className={`ml-auto text-lg transition-transform duration-300 group-hover:translate-x-0.5 ${
@@ -449,7 +450,7 @@ export default function Navbar() {
                         {instagram.label}
                       </p>
                       <p className="mt-0.5 truncate font-sans text-sm font-semibold text-white sm:text-base">
-                        Frammenti di musica
+                        {t("Frammenti di musica", "Frammenti di musica")}
                       </p>
                       {instagram.description && (
                         <p className="mt-0.5 truncate text-xs text-white/50">
@@ -469,7 +470,7 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  aria-label="Chiudi menu"
+                  aria-label={t("Chiudi menu", "Close menu")}
                   className="relative flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center rounded-full bg-[#1f1c19] text-[#b01c24] shadow-[0_12px_40px_rgba(0,0,0,0.3)] ring-4 ring-[#b01c24]/0 transition hover:scale-105 hover:bg-black hover:ring-[#b01c24]/25 active:scale-95"
                 >
                   <span className="absolute inset-2 rounded-full border border-white/10" aria-hidden />

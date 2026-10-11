@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { t } from "../i18n";
 
 const PDF_URL = "/bio/un-carnevale-per-venezia-1980.pdf";
 
@@ -215,7 +216,7 @@ export default function CarnevaleArchivePreview({ variant = "paper" }) {
             <motion.button
               type="button"
               className="absolute inset-0 cursor-default bg-[#050403]/82 backdrop-blur-md"
-              aria-label="Chiudi il documento"
+              aria-label={t("Chiudi il documento", "Close the document")}
               onClick={close}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -235,14 +236,14 @@ export default function CarnevaleArchivePreview({ variant = "paper" }) {
               onClick={(e) => e.stopPropagation()}
             >
               <h2 id="carnevale-lightbox-title" className="sr-only">
-                Un Carnevale per Venezia — documento PDF
+                {t("Un Carnevale per Venezia — documento PDF", "Un Carnevale per Venezia — PDF document")}
               </h2>
 
               <button
                 type="button"
                 onClick={close}
                 className="absolute right-3 top-3 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.12] bg-black/35 text-[#f0ebe3] shadow-[0_4px_24px_rgba(0,0,0,0.4)] backdrop-blur-sm transition hover:border-[#c4a574]/35 hover:bg-black/50 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c4a574]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0908] sm:right-4 sm:top-4"
-                aria-label="Chiudi"
+                aria-label={t("Chiudi", "Close")}
               >
                 <XMarkIcon className="h-5 w-5" strokeWidth={1.75} />
               </button>
@@ -260,7 +261,7 @@ export default function CarnevaleArchivePreview({ variant = "paper" }) {
               </div>
 
               <p className="shrink-0 border-t border-white/[0.06] px-3 py-2.5 text-center font-bio-display text-[9px] font-medium uppercase tracking-[0.28em] text-[#8f877c] sm:px-4 sm:text-[10px] sm:tracking-[0.3em]">
-                Archivio RAI · 1980 · prima pagina
+                {t("Archivio RAI · 1980 · prima pagina", "RAI Archive · 1980 · first page")}
               </p>
             </motion.div>
           </motion.div>
@@ -279,7 +280,7 @@ export default function CarnevaleArchivePreview({ variant = "paper" }) {
         className="w-full"
       >
         <p className={`font-bio-display mb-2.5 text-[0.72rem] font-semibold uppercase tracking-[0.22em] md:text-[0.74rem] md:tracking-[0.24em] ${kickerColor}`}>
-          Un Carnevale per Venezia
+          {t("Un Carnevale per Venezia", "Un Carnevale per Venezia")}
         </p>
 
         <button
@@ -289,7 +290,7 @@ export default function CarnevaleArchivePreview({ variant = "paper" }) {
           className={`group w-full text-left outline-none transition-opacity duration-300 focus-visible:ring-2 focus-visible:ring-[#b8945d]/45 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f3f0e6] disabled:pointer-events-none disabled:opacity-60 ${status === "error" ? "cursor-default" : ""}`}
           aria-haspopup="dialog"
           aria-expanded={open}
-          aria-label="Apri il documento d’archivio a schermo intero"
+          aria-label={t("Apri il documento d’archivio a schermo intero", "Open the archive document full screen")}
         >
           <motion.div
             whileHover={status === "ready" ? { y: -1 } : {}}
@@ -303,12 +304,12 @@ export default function CarnevaleArchivePreview({ variant = "paper" }) {
             <div className={`relative z-0 flex min-h-[168px] w-full items-center justify-center overflow-hidden ${innerCanvasFrame}`}>
               {status === "loading" ? (
                 <span className="font-bio-display text-[10px] font-medium uppercase tracking-[0.2em] text-[#9a8b7c]">
-                  Caricamento…
+                  {t("Caricamento…", "Loading…")}
                 </span>
               ) : null}
               {status === "error" ? (
                 <span className="px-3 text-center font-bio-body text-[0.88rem] leading-snug text-[#5c5248]">
-                  Documento non disponibile.
+                  {t("Documento non disponibile.", "Document not available.")}
                 </span>
               ) : null}
               <canvas
@@ -321,7 +322,7 @@ export default function CarnevaleArchivePreview({ variant = "paper" }) {
         </button>
 
         <p className={`font-bio-display mt-2.5 text-[10px] font-medium uppercase tracking-[0.28em] md:text-[11px] md:tracking-[0.3em] ${footerColor}`}>
-          Archivio RAI · 1980
+          {t("Archivio RAI · 1980", "RAI Archive · 1980")}
         </p>
       </motion.aside>
 

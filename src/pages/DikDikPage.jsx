@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import FlipCard from "../components/FlipCard";
+import { t } from "../i18n";
 
 import dikdikFront from "../assets/press/V05.jpg";
 import dikdikBack from "../assets/press/V04.jpg";
@@ -12,61 +13,61 @@ const ELENCO_BRANI_LATO_A = [
     titolo: "PAROLE D'AMORE",
     autori: "Emanuele Monetti",
     musicisti:
-      "Emanuela Cortesi (coro), Riccardo Eterno (coro), Marco Ferradini (coro), Ricky Gianco (seconda voce), Joe Vescovi (organo Hammond)",
+      t("Emanuela Cortesi (coro), Riccardo Eterno (coro), Marco Ferradini (coro), Ricky Gianco (seconda voce), Joe Vescovi (organo Hammond)", "Emanuela Cortesi (backing vocals), Riccardo Eterno (backing vocals), Marco Ferradini (backing vocals), Ricky Gianco (second vocal), Joe Vescovi (Hammond organ)"),
   },
   {
     titolo: "L'ULTIMO BATTITO DEL CUORE",
     autori: "Emanuele Monetti",
-    musicisti: "Maurizio Solieri (solo guitar), Joe Vescovi (organo Hammond)",
+    musicisti: t("Maurizio Solieri (solo guitar), Joe Vescovi (organo Hammond)", "Maurizio Solieri (solo guitar), Joe Vescovi (Hammond organ)"),
   },
   {
     titolo: "LA FRENESIA",
     autori: "Emanuele Monetti",
     musicisti:
-      "Maurizio Solieri (seconda voce), Maurizio Solieri (solo guitar)",
+      t("Maurizio Solieri (seconda voce), Maurizio Solieri (solo guitar)", "Maurizio Solieri (second vocal), Maurizio Solieri (solo guitar)"),
   },
   {
     titolo: "IL TEMPORALE",
     autori: "Emanuele Monetti",
     musicisti:
-      "Ricky Gianco (seconda voce), Pietruccio Montalbetti (armonica), David Pieralisi (solo guitar), Joe Vescovi (organo Hammond)",
+      t("Ricky Gianco (seconda voce), Pietruccio Montalbetti (armonica), David Pieralisi (solo guitar), Joe Vescovi (organo Hammond)", "Ricky Gianco (second vocal), Pietruccio Montalbetti (harmonica), David Pieralisi (solo guitar), Joe Vescovi (Hammond organ)"),
   },
   {
     titolo: "LA SPESA",
     autori: "Emanuele Monetti",
     musicisti:
-      "Emanuela Cortesi (coro), Riccardo Eterno (coro), Marco Ferradini (coro), Ricky Gianco (coro), David Pieralisi (solo guitar), Joe Vescovi (organo Hammond)",
+      t("Emanuela Cortesi (coro), Riccardo Eterno (coro), Marco Ferradini (coro), Ricky Gianco (coro), David Pieralisi (solo guitar), Joe Vescovi (organo Hammond)", "Emanuela Cortesi (backing vocals), Riccardo Eterno (backing vocals), Marco Ferradini (backing vocals), Ricky Gianco (backing vocals), David Pieralisi (solo guitar), Joe Vescovi (Hammond organ)"),
   },
   {
     titolo: "COME IL VENTO",
     autori: "Emanuele Monetti",
     musicisti:
-      "Emanuela Cortesi (coro), Riccardo Eterno (coro), Marco Ferradini (coro), Joe Vescovi (organo Hammond)",
+      t("Emanuela Cortesi (coro), Riccardo Eterno (coro), Marco Ferradini (coro), Joe Vescovi (organo Hammond)", "Emanuela Cortesi (backing vocals), Riccardo Eterno (backing vocals), Marco Ferradini (backing vocals), Joe Vescovi (Hammond organ)"),
   },
   {
     titolo: "SI RIPETERÀ",
     autori: "Emanuele Monetti",
     musicisti:
-      "Dario Baldan Bembo (organo Hammond), Riccardo Eterno (coro), Marco Ferradini (coro)",
+      t("Dario Baldan Bembo (organo Hammond), Riccardo Eterno (coro), Marco Ferradini (coro)", "Dario Baldan Bembo (Hammond organ), Riccardo Eterno (backing vocals), Marco Ferradini (backing vocals)"),
   },
   {
     titolo: "COME FOSSE UNA CANZONE",
     autori: "Emanuele Monetti",
     musicisti:
-      "Dario Baldan Bembo (organo Hammond), Emanuela Cortesi (coro), Riccardo Eterno (coro), Marco Ferradini (coro), Gae Manfredini (chitarra solista)",
+      t("Dario Baldan Bembo (organo Hammond), Emanuela Cortesi (coro), Riccardo Eterno (coro), Marco Ferradini (coro), Gae Manfredini (chitarra solista)", "Dario Baldan Bembo (Hammond organ), Emanuela Cortesi (backing vocals), Riccardo Eterno (backing vocals), Marco Ferradini (backing vocals), Gae Manfredini (lead guitar)"),
   },
   {
     titolo: "NEGLI OCCHI MIEI",
     autori: "Emanuele Monetti",
     musicisti:
-      "Riccardo Eterno (coro), Marco Ferradini (coro), Gae Manfredini (solo guitar), Pietruccio Montalbetti (armonica), Joe Vescovi (organo Hammond)",
+      t("Riccardo Eterno (coro), Marco Ferradini (coro), Gae Manfredini (solo guitar), Pietruccio Montalbetti (armonica), Joe Vescovi (organo Hammond)", "Riccardo Eterno (backing vocals), Marco Ferradini (backing vocals), Gae Manfredini (solo guitar), Pietruccio Montalbetti (harmonica), Joe Vescovi (Hammond organ)"),
   },
   {
     titolo: "I RAGAZZI DELLA VIA STENDHAL",
     autori:
       "Piercarlo D'Amato, Gioachino Lanotte, Emanuele Monetti, Pietruccio Montalbetti",
     musicisti:
-      "Donato Begotti (solo guitar), Emanuela Cortesi (coro), Riccardo Eterno (coro), Marco Ferradini (coro), Pietruccio Montalbetti (armonica), Mario Neri (organo Hammond)",
+      t("Donato Begotti (solo guitar), Emanuela Cortesi (coro), Riccardo Eterno (coro), Marco Ferradini (coro), Pietruccio Montalbetti (armonica), Mario Neri (organo Hammond)", "Donato Begotti (solo guitar), Emanuela Cortesi (backing vocals), Riccardo Eterno (backing vocals), Marco Ferradini (backing vocals), Pietruccio Montalbetti (harmonica), Mario Neri (Hammond organ)"),
   },
 ];
 
@@ -85,7 +86,7 @@ export default function DikDikPage() {
           <span className="transition-transform duration-300 group-hover:-translate-x-1">
             ←
           </span>
-          Torna al Diario di Bordo
+          {t("Torna al Diario di Bordo", "Back to the Logbook")}
         </Link>
       
        </div>
@@ -97,8 +98,8 @@ export default function DikDikPage() {
               <FlipCard
                 frontImage={dikdikFront}
                 backImage={dikdikcd1}
-                altFront="Dik Dik - Isole in viaggio - copertina"
-                altBack="Dik Dik - Isole in viaggio - retro copertina"
+                altFront={t("Dik Dik - Isole in viaggio - copertina", "Dik Dik - Isole in viaggio - cover")}
+                altBack={t("Dik Dik - Isole in viaggio - retro copertina", "Dik Dik - Isole in viaggio - back cover")}
                 aspectClass="aspect-square"
                 roundedClass="0"
               />
@@ -109,7 +110,7 @@ export default function DikDikPage() {
               <div className="cover-elevated relative aspect-square w-full overflow-hidden rounded-none bg-neutral-200">
                 <img
                   src={dikdikBack}
-                  alt="Dik Dik — ISOLE IN VIAGGIO — artwork CD"
+                  alt={t("Dik Dik — ISOLE IN VIAGGIO — artwork CD", "Dik Dik — ISOLE IN VIAGGIO — CD artwork")}
                   className="h-full w-full object-cover motion-reduce:transition-none motion-reduce:group-hover/disc:scale-100 transition-[transform] duration-[1.35s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/disc:scale-[1.02] group-active/disc:scale-[1.01]"
                   loading="lazy"
                   decoding="async"
@@ -120,7 +121,7 @@ export default function DikDikPage() {
           {/* COLONNA DESTRA */}
           <div className="max-w-[720px] w-full min-w-0">
             <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.38em] text-gray-500 mb-4">
-              Collaborazione 
+              {t("Collaborazione ", "Collaboration ")}
             </p>
 
             <h1 className="font-serif italic text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.05] mb-5 break-words">
@@ -131,39 +132,34 @@ export default function DikDikPage() {
 
             <div className="dikdik-prose dikdik-prose-stack max-w-[66ch] text-gray-800">
               <p>
-              Nel 1997 la storica band italiana <strong> DIK DIK </strong> decide di uscire dopo quasi 20 anni con 
-              un album di canzoni inedite. Per l'occasione scelgono come autore <strong>Emanuele Monetti</strong>.
+              {t("Nel 1997 la storica band italiana ", "In 1997 the historic Italian band ")}<strong> DIK DIK </strong>{t(" decide di uscire dopo quasi 20 anni con un album di canzoni inedite. Per l'occasione scelgono come autore ", " decided to come back after almost 20 years with an album of new songs. For the occasion they chose as their songwriter ")}<strong>Emanuele Monetti</strong>.
               </p>
 
               <p>
                 <span className="whitespace-normal">
-                  Monetti firmerà tutti i brani dell’intero album
+                  {t("Monetti firmerà tutti i brani dell’intero album", "Monetti would write every track on the entire album")}
                   <strong> ISOLE&nbsp;IN&nbsp;VIAGGIO,&nbsp;</strong>
                 </span>
-                prodotto da
-                <strong> Ricky&nbsp;Gianco</strong>. Il progetto è molto ambizioso e vede la
-                collaborazione di musicisti come
+                {t("prodotto da", "produced by")}
+                <strong> Ricky&nbsp;Gianco</strong>{t(". Il progetto è molto ambizioso e vede la collaborazione di musicisti come", ". The project is very ambitious and features the collaboration of musicians such as")}
                 <strong> Dario&nbsp;Baldan&nbsp;Bembo</strong>,
-                <strong> Maurizio Solieri</strong> e
-                <strong> Marco&nbsp;Ferradini</strong> per citarne alcuni.
+                <strong> Maurizio Solieri</strong>{t(" e", " and")}
+                <strong> Marco&nbsp;Ferradini</strong>{t(" per citarne alcuni.", " to name a few.")}
               </p>
 
               <p>
-                La promozione dell’album non sarà all’altezza e per
-                questo motivo resterà lontano da programmazioni radiotelevisive.
-                Resta comunque ancora oggi, per gli operatori del settore, uno dei lavori più
-                apprezzati dello storico gruppo.
+                {t("La promozione dell’album non sarà all’altezza e per questo motivo resterà lontano da programmazioni radiotelevisive. Resta comunque ancora oggi, per gli operatori del settore, uno dei lavori più apprezzati dello storico gruppo.", "The album’s promotion would not live up to it, and for this reason it stayed away from radio and television programming. Even today, however, industry insiders still regard it as one of the most appreciated works of the historic group.")}
               </p>
             </div>
             <div className="mt-10 overflow-hidden rounded-[22px] bg-white shadow-[0_22px_60px_rgba(0,0,0,0.14)]">
             <img
               src={dikdikConference}
-              alt="Conferenza stampa dei Dik Dik a Milano, settembre 1997"
+              alt={t("Conferenza stampa dei Dik Dik a Milano, settembre 1997", "Dik Dik press conference in Milan, September 1997")}
               className="w-full h-auto object-cover"
             />
           </div>
             <p className="mt-3 text-[10px] sm:text-[11px] tracking-[0.12em] sm:tracking-[0.22em] text-gray-500 leading-snug break-words">
-              Da Sinistra:
+              {t("Da Sinistra:", "From left:")}
               <br />
               <span className="sm:whitespace-nowrap">Ricky Gianco</span>,{' '}
               <span className="sm:whitespace-nowrap">PEPE (DikDik)</span>,{' '}
@@ -183,7 +179,7 @@ export default function DikDikPage() {
         {/* ELENCO BRANI */}
         <div className="max-w-[720px] md:max-w-[880px] w-full min-w-0 mb-12 md:mb-16 font-open-sans-sc font-medium">
           <h2 className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.38em] text-gray-500 mb-3 font-extrabold">
-            Elenco Brani
+            {t("Elenco Brani", "Track Listing")}
           </h2>
           <div className="w-20 h-px bg-[#9d2b2b] mb-5" />
           <ol className="list-none pl-0 grid grid-cols-1 md:grid-cols-2 md:gap-x-8 lg:gap-x-10 gap-y-5 md:gap-y-5">
@@ -203,7 +199,7 @@ export default function DikDikPage() {
                 <div className="ml-0 sm:ml-8 min-w-0 space-y-2.5">
                   <div className="border-l-2 border-[#9d2b2b]/50 pl-3 min-w-0">
                     <p className="text-[9px] uppercase tracking-[0.2em] text-[#9d2b2b] mb-1">
-                      Autori
+                      {t("Autori", "Songwriters")}
                     </p>
                     <p className="text-xs text-gray-700 leading-snug break-words">
                       {row.autori}
@@ -211,7 +207,7 @@ export default function DikDikPage() {
                   </div>
                   <div className="border-l-2 border-[#5c6b7a]/45 pl-3 min-w-0">
                     <p className="text-[9px] uppercase tracking-[0.2em] text-[#5c6b7a] mb-1">
-                      Musicisti
+                      {t("Musicisti", "Musicians")}
                     </p>
                     <p className="text-xs text-gray-700 leading-snug break-words">
                       {row.musicisti}
@@ -226,7 +222,7 @@ export default function DikDikPage() {
         {/* ARTICOLO GIORNALE */}
         <div className="max-w-[900px] w-full min-w-0">
           <h2 className="text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.38em] text-gray-500 mb-4 leading-relaxed break-words">
-            Articolo di Mario Luzzatto Fegiz dal CORRIERE DELLA SERA
+            {t("Articolo di Mario Luzzatto Fegiz dal CORRIERE DELLA SERA", "Article by Mario Luzzatto Fegiz from CORRIERE DELLA SERA")}
           </h2>
 
           <div className="w-20 h-px bg-[#9d2b2b] mb-8" />
@@ -234,7 +230,7 @@ export default function DikDikPage() {
           <div className="overflow-hidden rounded-[22px] shadow-[0_22px_60px_rgba(0,0,0,0.14)] bg-white">
             <img
               src={dikdikArticle}
-              alt="Articolo di giornale dedicato ai Dik Dik e alla collaborazione con Emanuele Monetti"
+              alt={t("Articolo di giornale dedicato ai Dik Dik e alla collaborazione con Emanuele Monetti", "Newspaper article about Dik Dik and their collaboration with Emanuele Monetti")}
               className="w-full h-auto object-cover"
             />
           </div>

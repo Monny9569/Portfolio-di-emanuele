@@ -6,6 +6,7 @@ import BioMobileExperience from "./BioMobileExperience";
 import Footer from "../sections/footer";
 import CarnevaleArchivePreview from "../components/CarnevaleArchivePreview";
 import { BIO_PARAGRAPHS } from "../data/bioNarrative";
+import { t } from "../i18n";
 
 import img174 from "../assets/bio/img174.png";
 import img176 from "../assets/bio/img176.png";
@@ -298,7 +299,7 @@ function BioSceneScrollCue({ sceneIndex, footerFade = true }) {
       <motion.button
         type="button"
         onClick={handleClick}
-        aria-label={isLast ? "Torna alla prima scena" : "Vai alla scena successiva"}
+        aria-label={isLast ? t("Torna alla prima scena", "Back to the first scene") : t("Vai alla scena successiva", "Go to the next scene")}
         className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-2 border-[#e8dcc8]/55 bg-[rgba(22,19,16,0.72)] text-[#faf3e8] shadow-[0_0_0_1px_rgba(232,220,200,0.12),0_4px_14px_rgba(0,0,0,0.35),0_0_28px_rgba(196,165,116,0.18)] backdrop-blur-[8px] transition-[border-color,background-color,box-shadow,color,transform] duration-300 ease-out hover:border-[#f5ebe0]/85 hover:bg-[rgba(32,28,24,0.82)] hover:text-white hover:shadow-[0_0_0_1px_rgba(245,235,224,0.22),0_8px_28px_rgba(0,0,0,0.42),0_0_36px_rgba(212,188,148,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d4bc94]/55 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0908] md:h-11 md:w-11"
         animate={reduceMotion ? undefined : { y: [0, 5, 0] }}
         transition={bounceTransition}
@@ -458,7 +459,7 @@ export default function BioExperiencePage() {
             >
               <ParallaxSceneBg
                 src={img263}
-                alt="Emanuele Monetti, anni delle prime canzoni"
+                alt={t("Emanuele Monetti, anni delle prime canzoni", "Emanuele Monetti, the years of his first songs")}
                 variant="narrativePortrait"
                 portraitGrounded
                 objectPosition="28% 100%"
@@ -504,7 +505,7 @@ export default function BioExperiencePage() {
             <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-black">
               <motion.img
                 src={img174}
-                alt="Emanuele Monetti al pianoforte, anni giovanili"
+                alt={t("Emanuele Monetti al pianoforte, anni giovanili", "Emanuele Monetti at the piano, in his youth")}
                 className="absolute inset-0 h-full w-full max-w-none object-cover"
                 style={{
                   objectPosition: "50% 8%",
@@ -566,7 +567,7 @@ export default function BioExperiencePage() {
           <div className={bioSceneStage}>
             <ParallaxSceneBg
               src={venezia}
-              alt="Maschera veneziana e gondole al Bacino di San Marco — Un carnevale per Venezia (1980)"
+              alt={t("Maschera veneziana e gondole al Bacino di San Marco — Un carnevale per Venezia (1980)", "Venetian mask and gondolas in the St Mark's Basin — Un carnevale per Venezia (1980)")}
               variant="default"
               objectPositionClassName="object-[62%_55%] sm:object-[58%_52%] md:object-[52%_50%] lg:object-[48%_48%]"
             />
@@ -626,7 +627,7 @@ export default function BioExperiencePage() {
             <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-black">
               <ParallaxSceneBg
                 src={leleLive}
-                alt="Emanuele Monetti in concerto"
+                alt={t("Emanuele Monetti in concerto", "Emanuele Monetti in concert")}
                 variant="heroSubject"
                 objectPositionClassName="object-[50%_48%] sm:object-[50%_46%] md:object-[50%_44%] lg:object-[50%_42%] xl:object-[50%_40%]"
               />
@@ -718,7 +719,7 @@ export default function BioExperiencePage() {
                   >
                     <ParallaxFramedImg
                       src={img262}
-                      alt="Emanuele Monetti, anni delle produzioni discografiche"
+                      alt={t("Emanuele Monetti, anni delle produzioni discografiche", "Emanuele Monetti, the years of his record productions")}
                       className="absolute inset-0"
                       imgClassName="object-[50%_42%] sm:object-[50%_40%] lg:object-[50%_38%]"
                     />
@@ -747,7 +748,7 @@ export default function BioExperiencePage() {
             <motion.div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
               <img
                 src={img176}
-                alt="Emanuele Monetti al pianoforte"
+                alt={t("Emanuele Monetti al pianoforte", "Emanuele Monetti at the piano")}
                 className="absolute inset-0 h-full w-full object-cover object-[52%_40%] sm:object-[50%_38%] md:object-[48%_36%] lg:object-[46%_34%]"
                 loading="lazy"
                 decoding="async"
@@ -790,7 +791,7 @@ export default function BioExperiencePage() {
                 >
                   <img
                     src={dikDikPhoto}
-                    alt="Emanuele Monetti con i Dik Dik"
+                    alt={t("Emanuele Monetti con i Dik Dik", "Emanuele Monetti with the Dik Dik")}
                     className="block aspect-[4/3] w-full rounded-[8px] object-cover"
                     loading="lazy"
                     decoding="async"
@@ -815,7 +816,7 @@ export default function BioExperiencePage() {
             <div className="pointer-events-none absolute inset-0 z-0">
               <ParallaxSceneBg
                 src={img262}
-                alt="Emanuele Monetti dal vivo"
+                alt={t("Emanuele Monetti dal vivo", "Emanuele Monetti live")}
                 variant="heroSubject"
                 objectPositionClassName="object-[48%_46%] sm:object-[46%_44%] md:object-[44%_42%] lg:object-[42%_40%] xl:object-[40%_38%]"
               />
@@ -899,7 +900,7 @@ export default function BioExperiencePage() {
                   />
                   <img
                     src={tuttoCd}
-                    alt="Album …Tutto è già diverso"
+                    alt={t("Album …Tutto è già diverso", "Album …Tutto è già diverso")}
                     className="relative z-[1] w-full max-h-[min(42svh,420px)] object-contain drop-shadow-[0_28px_70px_rgba(0,0,0,0.55)] max-md:max-h-[min(38svh,360px)] md:max-h-[min(46svh,500px)]"
                     loading="lazy"
                     decoding="async"
@@ -923,7 +924,7 @@ export default function BioExperiencePage() {
           <div className={bioSceneStage}>
             <ParallaxEsseArt
               src={esseArt}
-              alt="ESSE — opera strumentale di Emanuele Monetti"
+              alt={t("ESSE — opera strumentale di Emanuele Monetti", "ESSE — instrumental work by Emanuele Monetti")}
             />
             <div className="pointer-events-none absolute inset-0 z-[1]" aria-hidden>
               {/* Vignettatura ai bordi per fondere l'opera con la cornice scena */}
